@@ -5,7 +5,7 @@ module.exports = {
 		.setName('vct')
 		.setDescription('Launches the YouTube Watch Together activity.'),
 	async execute(interaction) {
-		const theatreChannel = await interaction.client.channels.fetch('932240564102000710');
+		const theatreChannel = await interaction.client.channels.fetch('988512416222564412');
 
 		const invite = await theatreChannel.createInvite({
 			unique: true,
