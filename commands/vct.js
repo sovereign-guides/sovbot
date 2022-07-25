@@ -7,7 +7,7 @@ module.exports = {
 	async execute(interaction) {
 		if (interaction.member.voice.channelId !== '988512416222564412') {
 			return await interaction.reply({
-				content: `You must join <#988512416222564412> for this!`,
+				content: 'You must join <#988512416222564412> for this!',
 				ephemeral: true,
 			});
 		}
