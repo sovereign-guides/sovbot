@@ -16,9 +16,9 @@ module.exports = {
 			unique: true,
 			targetType: 2,
 			targetApplication: '880218394199220334',
-			reason: `${interaction.member.user.tag} requested to watch VCT.`
+			reason: `${interaction.member.user.tag} requested to watch VCT.`,
 		});
 
 		await interaction.reply(`[Join ${interaction.member.displayName} in watching VCT!](<${invite}>)`);
-	}
-}
+	},
+};
