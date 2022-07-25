@@ -3,11 +3,12 @@ const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
 const fs = require('node:fs');
 
-// Create a new client instance
 const client = new Client({
 	intents: [
-		GatewayIntentBits.Guilds
-	]
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.MessageContent,
+	],
 });
 
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
