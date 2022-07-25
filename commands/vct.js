@@ -5,14 +5,9 @@ module.exports = {
 		.setName('vct')
 		.setDescription('Launches the YouTube Watch Together activity.'),
 	async execute(interaction) {
-		if (interaction.member.voice.channelId !== '988512416222564412') {
-			return await interaction.reply({
-				content: 'You must join <#988512416222564412> for this!',
-				ephemeral: true,
-			});
-		}
+		const theatreChannel = await interaction.client.channels.fetch('932240564102000710');
 
-		const invite = await interaction.member.voice.channel.createInvite({
+		const invite = await theatreChannel.createInvite({
 			unique: true,
 			targetType: 2,
 			targetApplication: '880218394199220334',
