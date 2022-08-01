@@ -4,6 +4,7 @@ module.exports = {
 		const threadChannel = await message.client.channels.fetch('989643005470310500');
 
 		if (message.channelId !== threadChannel.id) return;
+		if (message.author.bot === true) return;
 
 		async function lengthCheck() {
 			if (!message.content.length > 100) return;
