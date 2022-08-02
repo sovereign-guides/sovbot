@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'messageCreate',
 	async execute(message) {
-		const threadChannel = await message.client.channels.fetch('989643005470310500');
+		const threadChannel = await message.client.channels.cache.get('989643005470310500');
 
 		if (message.channelId !== threadChannel.id) return;
 		if (message.author.bot === true) return;
