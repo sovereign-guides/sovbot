@@ -1,9 +1,10 @@
 module.exports = {
 	name: 'messageCreate',
 	async execute(message) {
-		const threadChannel = await message.client.channels.cache.get('989643005470310500');
 
-		if (message.channelId !== threadChannel.id) return;
+		// #feedback
+		if (message.channelId !== '989643005470310500') return;
+
 		if (message.author.bot === true) return;
 
 		async function lengthCheck() {
@@ -19,7 +20,7 @@ module.exports = {
 			return `${message.content.slice(0, pointOfSlice)} - ${message.author.username}`;
 		}
 
-		const thread = await threadChannel.threads.create({
+		const thread = await message.channel.threads.create({
 			startMessage: message,
 			name: await lengthCheck(message) || `${message} - ${message.author.username}`,
 			autoArchiveDuration: 60 * 24 * 7,
