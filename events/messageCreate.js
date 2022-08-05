@@ -2,9 +2,7 @@ module.exports = {
 	name: 'messageCreate',
 	async execute(message) {
 
-		// #feedback
 		if (message.channelId !== '989643005470310500') return;
-
 		if (message.author.bot === true) return;
 
 		async function lengthCheck() {
