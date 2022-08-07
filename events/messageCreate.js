@@ -8,24 +8,21 @@ module.exports = {
 		async function lengthCheck() {
 			if (!message.content.length > 100) return;
 
-			// compensates for the ` - {message.author.username}` ending
-			const threadSignatureLength = 3 + message.author.username.length;
-
 			// purposefully negative so that we index from the end of the string
-			const pointOfSlice = 100 - message.content.length - threadSignatureLength;
+			const pointOfSlice = 100 - message.content.length;
 
 			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/slice
-			return `${message.content.slice(0, pointOfSlice)} - ${message.author.username}`;
+			return `${message.content.slice(0, pointOfSlice)}`;
 		}
 
 		const thread = await message.channel.threads.create({
 			startMessage: message,
-			name: await lengthCheck(message) || `${message} - ${message.author.username}`,
-			autoArchiveDuration: 60 * 24 * 7,
+			name: await lengthCheck(message) || `${message}`,
+			autoArchiveDuration: 60 * 24 * 3,
 			rateLimitPerUser: 0,
 			reason: `${message.author.tag} submitted feedback.`,
 		});
 
-		console.log(`Created thread: ${thread.name}`);
+		console.log(`Feedback: ${thread.name} by ${message.author.tag}`);
 	},
 };
