@@ -1,28 +1,38 @@
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const wait = require('node:timers/promises').setTimeout;
+const { feedbackChannelId } = require('../config.json');
+
 module.exports = {
 	name: 'messageCreate',
 	async execute(message) {
 
-		if (message.channelId !== '989643005470310500') return;
-		if (message.author.bot === true) return;
+		if (message.channelId !== feedbackChannelId) return;
 
-		async function lengthCheck() {
-			if (!message.content.length > 100) return;
+		// Returns if new message is the bot's form message
+		if (message.embeds[0]?.title === 'Server Feedback') return;
 
-			// purposefully negative so that we index from the end of the string
-			const pointOfSlice = 100 - message.content.length;
+		const feedbackEmbed = new EmbedBuilder()
+			.setColor(0x2f3136)
+			.setTitle('Server Feedback')
+			.setDescription('Here you can find a list of all user submitted feedback.\nUpvote a suggestion to automatically join its thread!')
+			.addFields({
+				name: 'Before submitting feedback',
+				value: '`>` Please look and see if your idea has already been discussed!',
+			});
 
-			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/slice
-			return `${message.content.slice(0, pointOfSlice)}`;
-		}
+		const row = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+					.setCustomId('feedback-button')
+					.setLabel('Give feedback')
+					.setStyle(1),
+			);
 
-		const thread = await message.channel.threads.create({
-			startMessage: message,
-			name: await lengthCheck(message) || `${message}`,
-			autoArchiveDuration: 60 * 24 * 3,
-			rateLimitPerUser: 0,
-			reason: `${message.author.tag} submitted feedback.`,
+		await wait(500);
+
+		await message.channel.send({
+			embeds: [feedbackEmbed],
+			components: [row],
 		});
-
-		console.log(`Feedback: ${thread.name} by ${message.author.tag}`);
 	},
 };

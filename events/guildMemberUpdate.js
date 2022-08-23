@@ -1,3 +1,5 @@
+const { feedbackChannelId } = require('../config.json');
+
 module.exports = {
 	name: 'guildMemberUpdate',
 	async execute(oldMember, newMember) {
@@ -7,7 +9,7 @@ module.exports = {
 			await newMember.roles.add('985979444869070898');
 
 			// #💬│general-chat: 797229760978747414
-			const generalChat = newMember.guild.channels.cache.get('797229760978747414');
+			const generalChat = newMember.guild.channels.cache.get(feedbackChannelId);
 
 			const welcomeMessagesArray = [
 				'Tell us what your favorite skin line is!',
