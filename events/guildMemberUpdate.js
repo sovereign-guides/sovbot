@@ -21,7 +21,7 @@ module.exports = {
 			const welcomeMessage = welcomeMessagesArray[Math.floor(Math.random() * welcomeMessagesArray.length)];
 
 			await generalChat.send({
-				content: `Welcome to the server ${newMember}! ${welcomeMessage}`,
+				content: `Welcome to the server ${newMember}! Want to break the ice? ${welcomeMessage}`,
 				allowedMentions: { users: [newMember.user.id] },
 			});
 		}
