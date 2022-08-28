@@ -1,6 +1,10 @@
 {
-    "token": "",
-    "clientId": "",
-    "guildId": "",
-    "feedbackChannel": ""
+  "token": "",
+  "clientId": "",
+  "guildId": "",
+  "channels": {
+    "utility": {
+      "feedbackChannelId": ""
+    }
+  }
 }

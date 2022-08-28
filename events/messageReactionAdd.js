@@ -1,4 +1,4 @@
-const { feedbackChannelId } = require('../config.json');
+const { channels: { utility: { feedbackChannelId } } } = require('../config.json');
 
 module.exports = {
 	name: 'messageReactionAdd',
