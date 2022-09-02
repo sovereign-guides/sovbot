@@ -1,25 +1,43 @@
 const { InteractionType, ModalBuilder, TextInputBuilder, ActionRowBuilder, EmbedBuilder, AttachmentBuilder,
-	ChannelType, underscore,
+	ChannelType, underscore, italic,
 } = require('discord.js');
 const { channels: { utility: { feedbackChannelId } } } = require('../config.json');
 
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
-		if (interaction.type === InteractionType.ApplicationCommand) {
-			const command = interaction.client.commands.get(interaction.commandName);
-			if (!command) return;
-
-			try {
-				await command.execute(interaction);
-				console.log(`${interaction.user.tag} in #${interaction.channel.name} from ${interaction.guild.name} triggered ${interaction.commandName}`);
+		if (interaction.isAutocomplete()) {
+			if (interaction.commandName === 'faq') {
+				const focusedValue = interaction.options.getFocused();
+				const choices = ['Personal: Name', 'Val: Rank'];
+				const filtered = choices.filter(choice => choice.startsWith(focusedValue));
+				await interaction.respond(
+					filtered.map(choice => ({ name: choice, value: choice })),
+				);
 			}
-			catch (error) {
-				console.error(error);
-				await interaction.reply({
-					content: 'There was an error while executing this command!',
-					ephemeral: true,
-				});
+		}
+
+		else if (interaction.isChatInputCommand()) {
+			if (interaction.commandName === 'faq') {
+				const choice = interaction.options.getString('query');
+				const target = interaction.options.getUser('target');
+
+				// Handles whether a user was mentioned
+				// eslint-disable-next-line no-inner-declarations
+				async function whetherMention() {
+					if (target) {
+						return `${italic(`${choice} for ${target}`)}\n`;
+					}
+					else { return ''; }
+				}
+
+				if (choice === 'Val: Rank') {
+					await interaction.reply(`${await whetherMention()}Sov is Immortal!`);
+				}
+
+				else if (choice === 'Personal: Name') {
+					await interaction.reply(`${await whetherMention()}Sov's name is Eric!`);
+				}
 			}
 		}
 
