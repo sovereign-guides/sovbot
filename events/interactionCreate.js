@@ -36,7 +36,7 @@ module.exports = {
 				}
 
 				else if (choice === 'Val: ValoPlant') {
-					await interaction.reply(`${await whetherMention()}The website Sov uses it ${hyperlink('valoplant.gg', 'https://valoplant.gg/sovereign')}`);
+					await interaction.reply(`${await whetherMention()}The website Sov uses is: ${hyperlink('valoplant', 'https://valoplant.gg/sovereign')}!`);
 				}
 
 				else if (choice === 'Personal: Name') {
