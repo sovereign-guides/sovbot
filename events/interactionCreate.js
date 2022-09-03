@@ -1,4 +1,4 @@
-const { InteractionType, ModalBuilder, TextInputBuilder, ActionRowBuilder, EmbedBuilder, AttachmentBuilder,
+const { ModalBuilder, TextInputBuilder, ActionRowBuilder, EmbedBuilder, AttachmentBuilder,
 	ChannelType, underscore, italic,
 } = require('discord.js');
 const { channels: { utility: { feedbackChannelId } } } = require('../config.json');
