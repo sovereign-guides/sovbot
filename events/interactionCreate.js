@@ -9,7 +9,7 @@ module.exports = {
 		if (interaction.isAutocomplete()) {
 			if (interaction.commandName === 'faq') {
 				const focusedValue = interaction.options.getFocused();
-				const choices = ['Personal: Name', 'Val: Rank'];
+				const choices = ['Personal: Name', 'Val: Rank', 'Val: ValoPlant'];
 				const filtered = choices.filter(choice => choice.startsWith(focusedValue));
 				await interaction.respond(
 					filtered.map(choice => ({ name: choice, value: choice })),
