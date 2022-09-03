@@ -1,5 +1,5 @@
 const { ModalBuilder, TextInputBuilder, ActionRowBuilder, EmbedBuilder, AttachmentBuilder,
-	ChannelType, underscore, italic,
+	ChannelType, underscore, italic, hyperlink,
 } = require('discord.js');
 const { channels: { utility: { feedbackChannelId } } } = require('../config.json');
 
@@ -33,6 +33,10 @@ module.exports = {
 
 				if (choice === 'Val: Rank') {
 					await interaction.reply(`${await whetherMention()}Sov is Immortal!`);
+				}
+
+				else if (choice === 'Val: ValoPlant') {
+					await interaction.reply(`${await whetherMention()}The website Sov uses it ${hyperlink('valoplant.gg', 'https://valoplant.gg/sovereign')}`);
 				}
 
 				else if (choice === 'Personal: Name') {
