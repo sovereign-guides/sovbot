@@ -1,10 +1,5 @@
 {
   "token": "",
   "clientId": "",
-  "guildId": "",
-  "channels": {
-    "utility": {
-      "feedbackChannelId": ""
-    }
-  }
+  "guildId": ""
 }
