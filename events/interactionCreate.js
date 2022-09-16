@@ -29,15 +29,15 @@ module.exports = {
 				}
 
 				if (choice === 'Val: Rank') {
-					await interaction.reply(`${await whetherMention()}Sov is Immortal!`);
+					await interaction.reply(`${await whetherMention()}Airen is Immortal!`);
 				}
 
 				else if (choice === 'Val: ValoPlant') {
-					await interaction.reply(`${await whetherMention()}The website Sov uses is: ${hyperlink('valoplant', 'https://valoplant.gg/sovereign')}!`);
+					await interaction.reply(`${await whetherMention()}The website Airen uses is: ${hyperlink('valoplant', 'https://valoplant.gg/sovereign')}!`);
 				}
 
 				else if (choice === 'Personal: Name') {
-					await interaction.reply(`${await whetherMention()}Sov's name is Eric!`);
+					await interaction.reply(`${await whetherMention()}Airen's name is Eric!`);
 				}
 			}
 		}
