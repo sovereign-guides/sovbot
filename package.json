@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "lint": "eslint .",
     "ready": "node --trace-warnings index.js",
     "deploy-commands": "node deploy-commands.js",
     "start": "yarn run deploy-commands && yarn run ready"

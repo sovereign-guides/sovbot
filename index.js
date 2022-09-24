@@ -7,7 +7,7 @@ const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMembers,
-	]
+	],
 });
 
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
