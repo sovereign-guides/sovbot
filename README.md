@@ -26,5 +26,5 @@ based S.G. encyclopedia.
 If you're interested in contributing to SovBot, you should check out my
 [GitHub Projects](https://github.com/zayKenyon/sovbot/projects) page or 
 [open issues](https://github.com/zayKenyon/sovbot/issues). There's a
-[contribution guide](https://github.com/zayKenyon/sovbot/blob/main/CONTRIBUTING.MD) you should read once you decide on
+[contribution guide](https://github.com/zayKenyon/sovbot/blob/main/CONTRIBUTING.md) you should read once you decide on
 what you want to contribute.
