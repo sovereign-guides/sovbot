@@ -1,9 +1,8 @@
-const verifiedDate = new Date();
-
 module.exports = {
 	name: 'guildMemberUpdate',
 	async execute(oldMember, newMember) {
 		if (oldMember.pending === true && newMember.pending !== true) {
+			const verifiedDate = new Date();
 
 			console.group(`${newMember.user.tag} (${newMember.user.id})`);
 			console.info(`${verifiedDate.toUTCString()}: completed screening.`);
