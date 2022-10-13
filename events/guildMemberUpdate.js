@@ -1,13 +1,16 @@
+const verifiedDate = new Date();
+
 module.exports = {
 	name: 'guildMemberUpdate',
 	async execute(oldMember, newMember) {
 		if (oldMember.pending === true && newMember.pending !== true) {
 
+			console.group(`${newMember.user.tag} (${newMember.user.id})`);
+			console.info(`${verifiedDate.toUTCString()}: completed screening.`);
+
 			// @Member: 985979444869070898
 			await newMember.roles.add('985979444869070898');
-
-			// #💬│general-chat: 797229760978747414
-			const generalChat = newMember.guild.channels.cache.get('797229760978747414');
+			console.info(`${verifiedDate.toUTCString()}: applied verified role.`);
 
 			const welcomeMessagesArray = [
 				'Tell us what your favorite skin line is!',
@@ -20,10 +23,13 @@ module.exports = {
 
 			const welcomeMessage = welcomeMessagesArray[Math.floor(Math.random() * welcomeMessagesArray.length)];
 
-			await generalChat.send({
-				content: `Welcome to the server ${newMember}! Want to break the ice? ${welcomeMessage}`,
-				allowedMentions: { users: [newMember.user.id] },
-			});
+			// #💬│general-chat: 797229760978747414
+			await newMember.guild.channels.cache.get('797229760978747414')
+				.send({
+					content: `Welcome to the server ${newMember}! Want to break the ice? ${welcomeMessage}`,
+					allowedMentions: { users: [newMember.user.id] },
+				});
+			console.info(`${verifiedDate.toUTCString()}: welcomed.`);
 		}
 	},
 };
