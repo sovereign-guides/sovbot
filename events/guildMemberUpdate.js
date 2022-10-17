@@ -29,6 +29,7 @@ module.exports = {
 					allowedMentions: { users: [newMember.user.id] },
 				});
 			console.info(`${verifiedDate.toUTCString()}: welcomed.`);
+			console.groupEnd();
 		}
 	},
 };
