@@ -1,15 +1,12 @@
+const { Events } = require('discord.js');
+
 module.exports = {
-	name: 'guildMemberUpdate',
+	name: Events.GuildMemberUpdate,
 	async execute(oldMember, newMember) {
 		if (oldMember.pending === true && newMember.pending !== true) {
-			const verifiedDate = new Date();
-
-			console.group(`${newMember.user.tag} (${newMember.user.id})`);
-			console.info(`${verifiedDate.toUTCString()}: completed screening.`);
 
 			// @Member: 985979444869070898
 			await newMember.roles.add('985979444869070898');
-			console.info(`${verifiedDate.toUTCString()}: applied verified role.`);
 
 			const welcomeMessagesArray = [
 				'Tell us what your favorite skin line is!',
@@ -17,8 +14,7 @@ module.exports = {
 				'Tell us who your favorite pro-player is!',
 				'Tell us what video you came from!',
 				'Tell us what your favorite gun is!',
-				'Tell us which you prefer from Phantom or Vandal!',
-			];
+				'Tell us which you prefer from Phantom or Vandal!' ];
 
 			const welcomeMessage = welcomeMessagesArray[Math.floor(Math.random() * welcomeMessagesArray.length)];
 
@@ -28,8 +24,6 @@ module.exports = {
 					content: `Welcome to the server ${newMember}! Want to break the ice? ${welcomeMessage}`,
 					allowedMentions: { users: [newMember.user.id] },
 				});
-			console.info(`${verifiedDate.toUTCString()}: welcomed.`);
-			console.groupEnd();
 		}
 	},
 };
