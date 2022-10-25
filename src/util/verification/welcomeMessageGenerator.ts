@@ -1,5 +1,5 @@
 const welcomeMessagesArray: string[] = [
-    'Tell us what your favorite skin line is!',
+	'Tell us what your favorite skin line is!',
 	'Tell us what team you support!',
 	'Tell us who your favorite pro-player is!',
 	'Tell us what video you came from!',
