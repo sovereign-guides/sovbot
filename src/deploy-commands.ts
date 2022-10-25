@@ -1,7 +1,7 @@
-const fs = require('node:fs');
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord.js');
-const { clientId, guildId, discordToken } = require('./dev.config.json');
+import fs from 'node:fs';
+import { REST } from '@discordjs/rest';
+import { Routes } from 'discord.js';
+import { clientId, guildId, discordToken } from './dev.config.json';
 
 const commands = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
