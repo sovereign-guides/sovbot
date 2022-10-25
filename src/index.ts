@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { Client, GatewayIntentBits } from 'discord.js';
-import { discordToken } from './dev.config.json';
+import { discordToken } from './config.json';
 
 const client = new Client({
 	intents: [
