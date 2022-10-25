@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
+    "rootDir": "src",
     "outDir": "./built",
     "module": "commonjs",
     "target": "es5",
