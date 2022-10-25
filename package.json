@@ -4,15 +4,17 @@
   "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint . --ext .ts",
     "ready": "node --trace-warnings .",
     "deploy-commands": "node src/deploy-commands.ts",
     "start": "yarn run deploy-commands && yarn run ready"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.41.0",
+    "@typescript-eslint/parser": "^5.41.0",
     "cz-conventional-changelog": "3.3.0",
-    "eslint": "^8.20.0",
+    "eslint": "^8.26.0",
     "typescript": "^4.8.4"
   },
   "config": {
