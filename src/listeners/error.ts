@@ -2,7 +2,7 @@ import { Events } from 'discord.js';
 
 module.exports = {
     name: Events.Error,
-    once: true,
+    once: false,
     async execute(error: Error) {
         console.log(error);
     },
