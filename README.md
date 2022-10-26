@@ -5,16 +5,15 @@
 [![wakatime](https://wakatime.com/badge/github/zayKenyon/sovbot.svg?style=flat-square)](https://wakatime.com/badge/github/zayKenyon/sovbot)
 
 This is the source code for [SovBot#9299](https://discord.com/users/1000927602518798487). It is completely written by me,
-[zay#6353](https://discord.com/users/452793411401940995). I use [Discord.js](https://discord.js.org/#/) with JavaScript 
-purely because that's just what I know, though I have eventual plans to re-write this in 
-[TypeScript](https://www.typescriptlang.org/) (PRs welcome)!
+[zay#6353](https://discord.com/users/452793411401940995). I use [Discord.js](https://discord.js.org/#/) with
+[TypeScript](https://www.typescriptlang.org/)!
 
 ---
 
 ## Current features:
 
-- [Member verification](https://github.com/zayKenyon/sovbot/blob/main/events/guildMemberUpdate.js#4): Handles server
-onboarding, and the question prompts too.
+- [Member verification](./src/listeners/guildMemberUpdate.ts): Handles server onboarding, and the question prompts too.
+- [Context](./src/listeners/messageCreate.ts): Replies to message links with that message's content.
 
 ---
 
