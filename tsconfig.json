@@ -1,0 +1,15 @@
+{
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "./built",
+    "module": "commonjs",
+    "target": "es5",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "noImplicitAny": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
