@@ -5,7 +5,9 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint . --ext .ts",
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/index.ts",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
