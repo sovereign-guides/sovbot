@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
+    "@types/node": "*",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
     "cz-conventional-changelog": "3.3.0",
