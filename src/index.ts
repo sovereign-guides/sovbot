@@ -13,7 +13,7 @@ const client = new Client({
 });
 
 const listenerPath = path.join(__dirname, 'listeners');
-const listenerFiles = fs.readdirSync(listenerPath).filter(file => file.endsWith('.ts'));
+const listenerFiles = fs.readdirSync(listenerPath);
 listenerFiles.forEach(file => {
 	const filePath = path.join(listenerPath, file);
 
