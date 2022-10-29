@@ -33,7 +33,7 @@ module.exports = {
                     color: 0x2f3136,
                     author: { name: `${resolvedMessage.author.tag}`, iconURL: resolvedMessage.author.displayAvatarURL() },
                     fields: [
-                        { name: 'Channel', value: `${resolvedMessage.channel} ➡️ ${message.channel}`, inline: true },
+                        { name: 'Channel', value: `${resolvedMessage.channel} ➡️  ${message.channel}`, inline: true },
                         { name: 'Jump', value: `${hyperlink('Go to message', resolvedMessage.url)}`, inline: true },
                         { name: 'Message', value: contentExistenceCheck(resolvedMessage.content) } ],
                     image: { url: resolvedMessage.attachments?.first()?.url || '' },
