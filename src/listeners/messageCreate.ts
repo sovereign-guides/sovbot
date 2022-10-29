@@ -29,6 +29,8 @@ module.exports = {
             const resolvedMessage = await resolvedChannel.messages.fetch(messageIdFromMessageLink);
 
             if (resolvedMessage) {
+                const messageSentDate = new Date(resolvedMessage.createdTimestamp).toUTCString();
+
                 const resolvedMessageEmbed = {
                     color: 0x2f3136,
                     author: { name: `${resolvedMessage.author.tag}`, iconURL: resolvedMessage.author.displayAvatarURL() },
@@ -37,8 +39,7 @@ module.exports = {
                         { name: 'Jump', value: `${hyperlink('Go to message', resolvedMessage.url)}`, inline: true },
                         { name: 'Message', value: contentExistenceCheck(resolvedMessage.content) } ],
                     image: { url: resolvedMessage.attachments?.first()?.url || '' },
-                    footer: { text: `Quoted by ${message.author.tag}` },
-                    timestamp: new Date().toISOString(),
+                    footer: { text: `Originally sent on: ${messageSentDate}` },
                 };
 
                 await message.reply({ embeds: [resolvedMessageEmbed], allowedMentions: { users: [] } });
