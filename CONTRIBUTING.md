@@ -13,13 +13,15 @@ We <3 corrections and improvements
 
 ### Local development
 
-1. Clone the repo: `git@github.com:zayKenyon/sovbot.git`
+1. Clone the repo with `git clone git@github.com:zayKenyon/sovbot.git`
 
-2. Rename `config.json.example` to `config.json` and fill in the values. 
+2. Enter the 'src' directory and rename `config.json.example` to `config.json` and fill in the values. 
 
-3. Run `docker compose -f docker-compose.yml up -d` to start the bot service.
+3. Run `docker compose -f ../docker-compose.yml up -d` to start the bot service.
 
-`📝` When updating, you can use the `update.sh` script.
+(Assuming you're in the root directory)
+
+`📝` When updating, you can use the `bash update.sh` script.
 
 `📝` View logs with `docker compose -f docker-compose.yml logs -t -f`
 
