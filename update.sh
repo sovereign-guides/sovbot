@@ -1,15 +1,8 @@
+#!/bin/bash
 echo Updating SovBot...
 
-echo Stopping PM2 instance,
-pm2 stop 2
-
-echo Pulling commits,
-git pull
-
-echo Running build script,
-yarn run build
-
-echo Starting PM2 instance,
-pm2 start 2
+docker compose -f docker-compose.yml stop
+git pull origin main
+docker compose -f docker-compose.yml start
 
 echo Update finished!

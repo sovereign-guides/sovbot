@@ -1,21 +1,29 @@
 # Contributing
+We <3 corrections and improvements
+
+---
 
 ### Prerequisites
-- Yarn: `npm install --global yarn`
 - [Node.js](https://nodejs.org/en/) 16.9 or newer.
+- Yarn: `npm install --global yarn`
+- [Docker](https://docs.docker.com/)
 - A Discord [bot application](https://discord.com/developers/applications/).
 
-## Local development
+---
 
-Clone the repo and install dependencies.
-```bash
-git clone https://github.com/zayKenyon/sovbot.git
-yarn install
-```
-Rename `config.json.example` to `config.json` and fill in the values. `GuildId` isn't strictly necessary, but it's
-useful for testing purposes.
+### Local development
 
-You can use `yarn run start` to deploy commands & run the bot.
+1. Clone the repo: `git@github.com:zayKenyon/sovbot.git`
+
+2. Rename `config.json.example` to `config.json` and fill in the values. 
+
+3. Run `docker compose -f docker-compose.yml up -d` to start the bot service.
+
+`📝` When updating, you can use the `update.sh` script.
+
+`📝` View logs with `docker compose -f docker-compose.yml logs -t -f`
+
+---
 
 ### Linting
 
