@@ -12,7 +12,7 @@ This is the source code for [SovBot#9299](https://discord.com/users/100092760251
 
 ## Current features:
 
-- [Member verification](./src/listeners/guildMemberUpdate.ts): Handles server onboarding, and the question prompts too.
+- [Member verification](./src/listeners/rulesScreeningVerification.ts): Handles server onboarding, and the question prompts too.
 
 ---
 
