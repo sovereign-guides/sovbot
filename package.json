@@ -7,7 +7,7 @@
     "lint": "eslint . --ext .ts",
     "build": "tsc --build",
     "start:dev": "ts-node src/index.ts",
-    "start:prod": "node dist/index.js"
+    "start:prod": "yarn run build && node dist/index.js"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
