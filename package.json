@@ -1,6 +1,6 @@
 {
   "name": "sovbot",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
@@ -15,11 +15,10 @@
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
     "eslint": "^8.26.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.8.4"
+    "ts-node": "^10.9.1"
   },
   "dependencies": {
-    "@discordjs/rest": "1.3.0",
-    "discord.js": "14.6.0"
+    "discord.js": "14.6.0",
+    "typescript": "^4.9.4"
   }
 }
