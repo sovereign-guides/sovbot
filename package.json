@@ -1,6 +1,6 @@
 {
   "name": "sovbot",
-  "version": "2.3.4",
+  "version": "2.4.0",
   "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
@@ -18,7 +18,9 @@
     "ts-node": "^10.9.1"
   },
   "dependencies": {
+    "@types/node-fetch": "2.x",
     "discord.js": "14.6.0",
+    "twitter-api-sdk": "1.2.1",
     "typescript": "^4.9.4"
   }
 }

@@ -1,5 +1,5 @@
 {
   "discordToken": "",
   "clientId": "",
-  "guildId": ""
+  "twitterBearerToken": ""
 }

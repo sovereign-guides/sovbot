@@ -5,8 +5,13 @@ import { discordToken } from './config.json';
 
 const client = new Client({
 	intents: [
-		GatewayIntentBits.Guilds,
+		// Privileged Intents
 		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.MessageContent,
+
+		// Normal Intents.
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
 	],
 });
 

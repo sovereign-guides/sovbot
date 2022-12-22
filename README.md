@@ -12,7 +12,9 @@ This is the source code for [SovBot#9299](https://discord.com/users/100092760251
 
 ## Current features:
 
-- [Member verification](./src/listeners/rulesScreeningVerification.ts): Handles server onboarding, and the question prompts too.
+- [Member verification](src/listeners/rulesScreeningVerification.ts): Handles server onboarding, and the question prompts too.
+
+- [Post on Patch](src/listeners/postOnPatch.ts): Automatically creates a Forum Post whenever a new patch is announced.
 
 ---
 
