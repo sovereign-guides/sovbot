@@ -46,7 +46,7 @@ async function transformShortURL(patchDescription: string): Promise<string> {
 }
 
 async function createForumPost(message: Message, title: string, body: string) {
-	const channel = message.guild?.channels.cache.get('1035303298267369553');
+	const channel = message.guild?.channels.cache.get('1047249775180927026');
 	if (!channel || channel?.type !== 15) {
 		return;
 	}
