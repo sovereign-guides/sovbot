@@ -18,7 +18,7 @@ async function createForumPost(message: Message, title: string, body: string) {
 		autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek,
 	}).then(async (post) => {
 		const embed = new EmbedBuilder()
-			.setColor('#2f3136')
+			.setColor('#15af98')
 			.setDescription(`Come and discuss this in ${hyperlink(post.name, post.url)}!`);
 
 		await message.reply({ embeds: [embed] });
