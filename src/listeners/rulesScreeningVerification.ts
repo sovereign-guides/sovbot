@@ -29,7 +29,11 @@ module.exports = {
             await channel.send({
                 content: `Welcome to the server ${newMember}! Want to break the ice? ${welcomeMessageGenerator()}`,
                 allowedMentions: { users: [newMember.user.id] },
-            });
+            })
+                .then(async (message) => {
+                    const blobComfyWave = await message.guild.emojis.cache.get('1007825867361235074');
+                    await message.react(blobComfyWave || '👋');
+                });
         }
     },
 };
