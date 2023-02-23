@@ -18,7 +18,6 @@
     "ts-node": "^10.9.1"
   },
   "dependencies": {
-    "@types/node-fetch": "2.x",
     "discord.js": "14.6.0",
     "typescript": "^4.9.4"
   }
