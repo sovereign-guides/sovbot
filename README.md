@@ -5,16 +5,15 @@
 [![wakatime](https://wakatime.com/badge/github/zayKenyon/sovbot.svg?style=flat-square)](https://wakatime.com/badge/github/zayKenyon/sovbot)
 
 This is the source code for [SovBot#9299](https://discord.com/users/1000927602518798487). It is completely written by me,
-[zay#6353](https://discord.com/users/452793411401940995). I use [Discord.js](https://discord.js.org/#/) with
-[TypeScript](https://www.typescriptlang.org/)!
+[zay#6353](https://discord.com/users/452793411401940995).
 
 ---
 
 ## Current features:
 
-- [Member verification](src/listeners/rulesScreeningVerification.ts): Handles server onboarding, and the question prompts too.
+- [Member verification](src/events/rulesScreeningVerification.js): Greets members once they've verified!
 
-- [Post on Patch](src/listeners/postOnPatch.ts): Automatically creates a Forum Post whenever a new patch is announced.
+- [Post on Patch](src/events/postOnPatch.js): Creates a discussion post in a Forum!
 
 ---
 

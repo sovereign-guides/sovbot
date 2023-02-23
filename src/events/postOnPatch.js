@@ -1,11 +1,11 @@
-import { EmbedBuilder, Events, hyperlink, Message, ThreadAutoArchiveDuration } from 'discord.js';
+const { EmbedBuilder, Events, hyperlink } = require('discord.js');
 
-function isPatchNotes(patchDescription: string) {
+function isPatchNotes(patchDescription) {
 	const regExp = new RegExp('Patch\\sNotes\\s([+-]?(?=\\.\\d|\\d)(?:\\d+)?\\.?\\d*)');
 	return patchDescription?.match(regExp);
 }
 
-async function createForumPost(message: Message, title: string, body: string) {
+async function createForumPost(message, title, body) {
 	const channel = message.guild?.channels.cache.get('1047249775180927026');
 	if (!channel || channel?.type !== 15) {
 		return;
@@ -15,10 +15,13 @@ async function createForumPost(message: Message, title: string, body: string) {
 		name: title,
 		message: { content: body },
 		appliedTags: ['1047250886772138114'],
-		autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek,
+
+		// ThreadAutoArchiveDuration wasn't being exported,
+		// this is the ENUM for 1 week.
+		autoArchiveDuration: 10080,
 	}).then(async (post) => {
 		const embed = new EmbedBuilder()
-			.setColor('#15af98')
+			.setColor(0x15af98)
 			.setDescription(`Come and discuss this in ${hyperlink(post.name, post.url)}!`);
 
 		await message.reply({ embeds: [embed] });
@@ -27,7 +30,7 @@ async function createForumPost(message: Message, title: string, body: string) {
 
 module.exports = {
 	name: Events.MessageCreate,
-	async execute(message: Message) {
+	async execute(message) {
 		if (message.channelId !== '988509424089956374') {
 			return;
 		}

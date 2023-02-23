@@ -1,7 +1,6 @@
-import type { Client } from 'discord.js';
-import { Events } from 'discord.js';
+const { Events } = require('discord.js');
 
-function validateClient(client: Client) {
+function validateClient(client) {
 	if (!client.user) {
 		console.log('Client could not start.');
 		return;
@@ -13,7 +12,7 @@ function validateClient(client: Client) {
 module.exports = {
 	name: Events.ClientReady,
 	once: true,
-	async execute(client: Client) {
+	async execute(client) {
 		validateClient(client);
 	},
 };
