@@ -15,6 +15,8 @@ This is the source code for [SovBot#9299](https://discord.com/users/100092760251
 
 - [Post on Patch](src/events/postOnPatch.js): Creates a discussion post in a Forum!
 
+- [Publish Premium VODs](src/commands/post.js): Posts and tags a premium video, pushes the video's Id into an AutoMod list.
+
 ---
 
 ## Contributing

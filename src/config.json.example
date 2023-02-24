@@ -1,5 +1,6 @@
 {
   "discordToken": "",
   "clientId": "",
-  "guildId": ""
+  "guildId": "",
+  "youTubeAPIKey": ""
 }
