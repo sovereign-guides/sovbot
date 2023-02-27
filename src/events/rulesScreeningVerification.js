@@ -1,9 +1,9 @@
 const { Events } = require('discord.js');
 
 const welcomeMessagesArray = [
-	'Tell us what your favorite skin line is!',
-	'Tell us what team you support!',
-	'Tell us which you prefer from Phantom or Vandal!',
+	'What\'s your philosophy when it comes to warm-up?',
+	'What\'s one thing that you want to improve in?',
+	'What\'s one thing in your gameplay that you are most proud of?',
 ];
 
 function welcomeMessageGenerator() {
@@ -28,7 +28,7 @@ module.exports = {
 			}
 
 			await channel.send({
-				content: `Welcome to the server ${newMember}! Want to break the ice? ${welcomeMessageGenerator()}`,
+				content: `Welcome ${newMember}! ${welcomeMessageGenerator()}`,
 				allowedMentions: { users: [newMember.user.id] },
 			})
 				.then(async (message) => {
