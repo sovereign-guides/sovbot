@@ -65,7 +65,9 @@ module.exports = {
 						.addChoices(
 							{ name: 'Watch Party', value: '1078028194894069782' },
 							{ name: 'Coaching', value: '1078028217002229820' },
-							{ name: 'Coach\'s Notes', value: '1078028249176752229' }))),
+							{ name: 'Coach\'s Notes', value: '1078028249176752229' },
+							{ name: 'Part-2 Breakdowns', value: '1081315836515598406' },
+							{ name: 'VOD Review', value: '1081315937971605625' }))),
 	async execute(interaction) {
 		const vodLink = interaction.options.getString('link');
 
