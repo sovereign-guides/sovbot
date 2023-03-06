@@ -84,7 +84,15 @@ module.exports = {
 		await updateAutoModRule(interaction, vodLinkId);
 
 		const vodType = interaction.options.getString('type');
+
 		const vodTitle = await getVideoTitle(vodLinkId, youTubeAPIKey);
+		if (vodTitle === undefined) {
+			return await interaction.reply({
+				content: `Please un-private video: ${inlineCode(vodLink)} first!`,
+				ephemeral: true,
+			});
+		}
+
 		await createForumPost(interaction, vodTitle, vodType, vodLink)
 			.then(interaction.reply(`Published: ${inlineCode(vodTitle)}`));
 	},
