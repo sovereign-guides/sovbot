@@ -2,5 +2,6 @@
   "discordToken": "",
   "clientId": "",
   "guildId": "",
-  "youTubeAPIKey": ""
+  "youTubeAPIKey": "",
+  "pastebinAPIKey": ""
 }
