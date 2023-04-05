@@ -17,6 +17,8 @@ This is the source code for [SovBot#9299](https://discord.com/users/100092760251
 
 - [Publish Premium VODs](src/commands/post.js): Posts and tags a premium video, pushes the video's Id into an AutoMod list.
 
+- [Prune Unverified Members](src/commands/prune.js): Removes members that have yet to be verified after 3 weeks of being in the server.
+
 ---
 
 ## Contributing
