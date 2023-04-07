@@ -12,6 +12,7 @@ const client = new Client({
 		// Normal Intents.
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.AutoModerationExecution,
 	],
 });
 
