@@ -19,6 +19,8 @@ This is the source code for [SovBot#9299](https://discord.com/users/100092760251
 
 - [Prune Unverified Members](src/commands/prune.js): Removes members that have yet to be verified after 3 weeks of being in the server.
 
+- [AutoMod Link Restrictions](src/events/watchThisLinkPerms.js): Tells ineligible users why their message did not get sent in the #📸│watch-this channel.
+
 ---
 
 ## Contributing
