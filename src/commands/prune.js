@@ -2,12 +2,9 @@ const { SlashCommandBuilder,
 	PermissionFlagsBits,
 	EmbedBuilder,
 	Collection,
-	hideLinkEmbed,
 	ActionRowBuilder,
 	ButtonBuilder,
 } = require('discord.js');
-const axios = require('axios');
-const { pastebinAPIKey } = require('../config.json');
 
 function filterMap(memberMap) {
 	// Technically, everybody on a server always has at least 1 role.
@@ -23,52 +20,24 @@ function weekDifferenceCalculator(member) {
 
 	const weekTimeDifference = Math.floor(epochTimeDifference / 1000 / 60 / 60 / 24 / 7);
 	// Members get three weeks of lee-way.
-	return weekTimeDifference >= 3;
+	return weekTimeDifference >= 0;
 }
 
-async function listFromMap(unverifiedMemberMap) {
-	let unverifiedMemberIDs = '';
-	for (const unverifiedMember of unverifiedMemberMap.values()) {
-		unverifiedMemberIDs = unverifiedMemberIDs + '\n' + unverifiedMember.user.id;
-	}
-
-	return unverifiedMemberIDs;
-}
+// async function listFromMap(unverifiedMemberMap) {
+// 	let unverifiedMemberIDs = '';
+// 	for (const unverifiedMember of unverifiedMemberMap.values()) {
+// 		unverifiedMemberIDs = unverifiedMemberIDs + '\n' + unverifiedMember.user.id;
+// 	}
+//
+// 	return unverifiedMemberIDs;
+// }
 
 function commandResponseEmbed(unverifiedMemberMap) {
-// function commandResponseEmbed(unverifiedMemberMap) {
 	return new EmbedBuilder()
 		.setColor(0x0eae96)
 		.setTitle('😴 Unverified Members')
-		// .setDescription(hideLinkEmbed(pasteBinLink))
-		// FIXME
-		.setDescription('CHANGE HEADERS BACK TO INCLUDE ID EXPORT')
-		.setFooter({
-			text: `${unverifiedMemberMap.size} Unverified Members`,
-		});
+		.setDescription(`${unverifiedMemberMap.size} Unverified Members`);
 }
-
-// async function createPasteBinExport(unverifiedMemberIDs) {
-// 	let pasteLink = '';
-//
-// 	axios.post('https://pastebin.com/api/api_post.php', {
-// 		api_dev_key: pastebinAPIKey,
-// 		api_option: 'paste',
-// 		api_paste_code: unverifiedMemberIDs,
-// 		api_paste_private: 1,
-// 		api_paste_expire_date: '10M',
-// 	},
-// 	{
-// 		headers: {
-// 			'Content-Type': 'application/x-www-form-urlencoded',
-// 		},
-// 	}).then(res => {
-// 		pasteLink = res.data;
-// 		console.log(pasteLink);
-// 	});
-//
-// 	return pasteLink;
-// }
 
 async function sendCommandResponse(interaction, unverifiedMembersEmbed) {
 	const row = new ActionRowBuilder()
@@ -165,9 +134,6 @@ module.exports = {
 		const memberMap = await interaction.guild.channels.cache.get('1014955201926533230').members;
 
 		const unverifiedMemberMap = filterMap(memberMap);
-		const unverifiedMemberIDs = await listFromMap(unverifiedMemberMap);
-
-		// const pasteBinLink = await createPasteBinExport(unverifiedMemberIDs);
 
 		const unverifiedMembersEmbed = commandResponseEmbed(unverifiedMemberMap);
 
