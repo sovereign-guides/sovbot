@@ -23,15 +23,6 @@ function weekDifferenceCalculator(member) {
 	return weekTimeDifference >= 0;
 }
 
-// async function listFromMap(unverifiedMemberMap) {
-// 	let unverifiedMemberIDs = '';
-// 	for (const unverifiedMember of unverifiedMemberMap.values()) {
-// 		unverifiedMemberIDs = unverifiedMemberIDs + '\n' + unverifiedMember.user.id;
-// 	}
-//
-// 	return unverifiedMemberIDs;
-// }
-
 function commandResponseEmbed(unverifiedMemberMap) {
 	return new EmbedBuilder()
 		.setColor(0x0eae96)
