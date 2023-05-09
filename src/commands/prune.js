@@ -20,7 +20,7 @@ function weekDifferenceCalculator(member) {
 
 	const weekTimeDifference = Math.floor(epochTimeDifference / 1000 / 60 / 60 / 24 / 7);
 	// Members get three weeks of lee-way.
-	return weekTimeDifference >= 0;
+	return weekTimeDifference >= 3;
 }
 
 function commandResponseEmbed(unverifiedMemberMap) {
