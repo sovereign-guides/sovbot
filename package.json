@@ -1,6 +1,6 @@
 {
   "name": "sovbot",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "main": "src/index.js",
   "license": "MIT",
   "author": "Zay Kenyon",

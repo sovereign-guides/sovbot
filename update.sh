@@ -1,8 +1,7 @@
 #!/bin/bash
 echo Updating SovBot...
 
-docker compose -f docker-compose.yml stop
 git pull origin main
-docker compose -f docker-compose.yml start
+pm2 restart ecosystem.config.js
 
 echo Update finished!

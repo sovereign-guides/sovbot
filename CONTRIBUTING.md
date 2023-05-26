@@ -17,13 +17,13 @@ We <3 corrections and improvements
 
 2. Enter the 'src' directory and rename `config.json.example` to `config.json` and fill in the values. 
 
-3. Run `docker compose -f ../docker-compose.yml up -d` to start the bot service.
+3. Run `pm2 start ecosystem.config.js` to start the bot service.
 
 (Assuming you're in the root directory)
 
 `📝` When updating, you can use the `bash update.sh` script.
 
-`📝` View logs with `docker compose -f docker-compose.yml logs -t -f`
+`📝` View logs with `pm2 logs ecosystem.config.js`
 
 ---
 
