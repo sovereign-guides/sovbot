@@ -33,14 +33,11 @@ async function updateAutoModRule(interaction, vodLinkId) {
 	});
 }
 
-async function createForumPost(interaction, vodTitle, vodType, vodLink) {
-	const vodLibrary = await interaction.guild.channels.cache.get('1068608833729077308');
-	if (!vodLibrary.isThread) return;
-
-	await vodLibrary.threads.create({
+async function createForumPost(interaction, vodTitle, vodShelfId, vodLink) {
+	const shelf = await interaction.guild.channels.cache.get(vodShelfId);
+	await shelf.threads.create({
 		name: vodTitle,
-		appliedTags: [`${vodType}`],
-		message:  {
+		message: {
 			content: `${vodLink}`,
 		},
 	});
@@ -56,20 +53,23 @@ module.exports = {
 				.setDescription('Upload a VOD to the library!')
 				.addStringOption(option =>
 					option.setName('link')
-						.setDescription('The link for the VOD')
-						.setRequired(true))
+						.setDescription('The YouTube link for the VOD')
+						.setRequired(true),
+				)
 				.addStringOption(option =>
-					option.setName('type')
-						.setDescription('Label which type of VOD this is')
+					option.setName('shelf')
+						.setDescription('Which shelf should this go to?')
 						.setRequired(true)
 						.addChoices(
-							{ name: 'Watch Party', value: '1078028194894069782' },
-							{ name: 'Coaching', value: '1078028217002229820' },
-							{ name: 'Coach\'s Notes', value: '1078028249176752229' },
-							{ name: 'Part-2 Breakdowns', value: '1081315836515598406' },
-							{ name: 'VOD Review', value: '1081315937971605625' }))),
+							{ name: '📼│coaching-vods', value: '1112568774219010070' },
+							{ name: '📼│pro-vod-reviews', value: '1112568841248186449' },
+							{ name: '📼│watch-party-vods', value: '1112550276113649705' },
+						),
+				),
+		),
 	async execute(interaction) {
 		const vodLink = interaction.options.getString('link');
+		const vodShelfId = interaction.options.getString('shelf');
 
 		const matchLinkResult = matchLinkValidity(vodLink);
 		if (matchLinkResult === null) {
@@ -83,8 +83,6 @@ module.exports = {
 
 		await updateAutoModRule(interaction, vodLinkId);
 
-		const vodType = interaction.options.getString('type');
-
 		const vodTitle = await getVideoTitle(vodLinkId, youTubeAPIKey);
 		if (vodTitle === undefined) {
 			return await interaction.reply({
@@ -93,7 +91,7 @@ module.exports = {
 			});
 		}
 
-		await createForumPost(interaction, vodTitle, vodType, vodLink)
+		await createForumPost(interaction, vodTitle, vodShelfId, vodLink)
 			.then(interaction.reply(`Published: ${inlineCode(vodTitle)}`));
 	},
 };
