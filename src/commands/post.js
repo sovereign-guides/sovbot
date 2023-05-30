@@ -2,10 +2,12 @@ const { SlashCommandBuilder, PermissionFlagsBits, inlineCode } = require('discor
 const axios = require('axios');
 const { youTubeAPIKey } = require('../config.json');
 
+
 function testLinkValidity(link) {
 	const regex = new RegExp('(?:youtu.be\\/|v\\/|u\\/\\w\\/|embed\\/|watch\\?v=)([^#\\&\\?]*)');
 	return link.match(regex);
 }
+
 
 async function getVideoTitle(vodLinkId) {
 	const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&fields=items(id, snippet(title))&id=${vodLinkId}&key=${youTubeAPIKey}`;
@@ -26,8 +28,9 @@ async function getVideoTitle(vodLinkId) {
 	return title;
 }
 
-async function updateAutoModRule(interaction, vodLinkId) {
-	const blockPremiumVideosRule = await interaction.guild.autoModerationRules.fetch('1078256973558075453');
+
+async function updateAutoModRule(autoModRules, vodLinkId) {
+	const blockPremiumVideosRule = await autoModRules.fetch('1078256973558075453');
 
 	const blockedWords = blockPremiumVideosRule.triggerMetadata.keywordFilter;
 	blockedWords.push(`*${vodLinkId}*`);
@@ -37,8 +40,9 @@ async function updateAutoModRule(interaction, vodLinkId) {
 	});
 }
 
-async function createForumPost(interaction, vodShelfId, vodTitle, vodLink) {
-	const shelf = await interaction.guild.channels.cache.get(vodShelfId);
+
+async function createForumPost(shelves, vodShelfId, vodTitle, vodLink) {
+	const shelf = await shelves.get(vodShelfId);
 	await shelf.threads.create({
 		name: vodTitle,
 		message: {
@@ -46,6 +50,7 @@ async function createForumPost(interaction, vodShelfId, vodTitle, vodLink) {
 		},
 	});
 }
+
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -89,9 +94,11 @@ module.exports = {
 			});
 		}
 
-		await updateAutoModRule(interaction, vodLinkId);
+		const autoModRules = await interaction.guild.autoModerationRules;
+		await updateAutoModRule(autoModRules, vodLinkId);
 
-		await createForumPost(interaction, vodShelfId, vodTitle, vodLink)
+		const shelves = await interaction.guild.channels.cache;
+		await createForumPost(shelves, vodShelfId, vodTitle, vodLink)
 			.then(interaction.reply(`Published: ${inlineCode(vodTitle)}`));
 	},
 };
