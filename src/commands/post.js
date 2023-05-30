@@ -2,9 +2,9 @@ const { SlashCommandBuilder, PermissionFlagsBits, inlineCode } = require('discor
 const axios = require('axios');
 const { youTubeAPIKey } = require('../config.json');
 
-function matchLinkValidity(link) {
-	const youtubeRegex = new RegExp('(?:youtu.be\\/|v\\/|u\\/\\w\\/|embed\\/|watch\\?v=)([^#\\&\\?]*)');
-	return link.match(youtubeRegex);
+function testLinkValidity(link) {
+	const regex = new RegExp('(?:youtu.be\\/|v\\/|u\\/\\w\\/|embed\\/|watch\\?v=)([^#\\&\\?]*)');
+	return link.match(regex);
 }
 
 async function getVideoTitle(vodLinkId) {
@@ -16,7 +16,11 @@ async function getVideoTitle(vodLinkId) {
 			title = res.data.items[0].snippet.title;
 		})
 		.catch(function(e) {
-			console.error(e);
+			// TypeErrors are thrown when func cannot access .snippet,
+			// these are handled by presence-checking title.
+			if (!(e instanceof TypeError)) {
+				console.log(e);
+			}
 		});
 
 	return title;
@@ -33,7 +37,7 @@ async function updateAutoModRule(interaction, vodLinkId) {
 	});
 }
 
-async function createForumPost(interaction, vodTitle, vodShelfId, vodLink) {
+async function createForumPost(interaction, vodShelfId, vodTitle, vodLink) {
 	const shelf = await interaction.guild.channels.cache.get(vodShelfId);
 	await shelf.threads.create({
 		name: vodTitle,
@@ -71,19 +75,13 @@ module.exports = {
 		const vodLink = interaction.options.getString('link');
 		const vodShelfId = interaction.options.getString('shelf');
 
-		const matchLinkResult = matchLinkValidity(vodLink);
-		if (matchLinkResult === null) {
-			return await interaction.reply({
-				content: `${inlineCode(vodLink)}, is not valid, please submit another link.`,
-				ephemeral: true,
-			});
+		const valid = testLinkValidity(vodLink);
+		if (!valid) {
+			return await interaction.reply('Please check the provided link.');
 		}
 
-		const vodLinkId = matchLinkResult[1];
-
-		await updateAutoModRule(interaction, vodLinkId);
-
-		const vodTitle = await getVideoTitle(vodLinkId, youTubeAPIKey);
+		const vodLinkId = valid[1];
+		const vodTitle = await getVideoTitle(vodLinkId);
 		if (vodTitle === undefined) {
 			return await interaction.reply({
 				content: `Please un-private video: ${inlineCode(vodLink)} first!`,
@@ -91,7 +89,9 @@ module.exports = {
 			});
 		}
 
-		await createForumPost(interaction, vodTitle, vodShelfId, vodLink)
+		await updateAutoModRule(interaction, vodLinkId);
+
+		await createForumPost(interaction, vodShelfId, vodTitle, vodLink)
 			.then(interaction.reply(`Published: ${inlineCode(vodTitle)}`));
 	},
 };
