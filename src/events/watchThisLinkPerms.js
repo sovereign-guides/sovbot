@@ -37,7 +37,7 @@ function createLogEmbed(autoModerationActionExecution, user, messageStatus) {
 module.exports = {
 	name: Events.AutoModerationActionExecution,
 	async execute(autoModerationActionExecution) {
-		if (autoModerationActionExecution.ruleId !== '993877631084789821') {
+		if (autoModerationActionExecution.ruleId !== '1119941908064649316') {
 			return;
 		}
 
