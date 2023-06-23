@@ -4,10 +4,10 @@ We <3 corrections and improvements
 ---
 
 ### Prerequisites
-- [Node.js](https://nodejs.org/en/) 16.9 or newer.
-- Yarn: `npm install --global yarn`
+- [Node.js](https://nodejs.org/en/) >= v16.9.
+- [Yarn](https://yarnpkg.com/)
 - [Docker](https://docs.docker.com/)
-- A Discord [bot application](https://discord.com/developers/applications/).
+- [A Discord bot application](https://discord.com/developers/applications/).
 
 ---
 
@@ -15,11 +15,12 @@ We <3 corrections and improvements
 
 1. Clone the repo with `git clone git@github.com:zayKenyon/sovbot.git`
 
-2. Enter the 'src' directory and rename `config.json.example` to `config.json` and fill in the values. 
+2. Fill in the env variables with `cd src && mv config.json.example config.json && nano config.json`.
 
-3. Run `pm2 start ecosystem.config.js` to start the bot service.
+3. Install packages with `yarn install`
 
-(Assuming you're in the root directory)
+4. Run `pm2 start ecosystem.config.js` to start the bot service.
+
 
 `📝` When updating, you can use the `bash update.sh` script.
 
