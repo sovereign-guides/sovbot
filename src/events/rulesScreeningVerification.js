@@ -1,13 +1,31 @@
 const { Events } = require('discord.js');
 
-const welcomeMessagesArray = [
-	'What\'s your philosophy when it comes to warm-up?',
-	'What\'s one thing that you want to improve in?',
-	'What\'s one thing in your gameplay that you are most proud of?',
-];
+async function removeUnverifiedRole(guildMember) {
+	await guildMember.roles.remove('1121882989035528202', `${guildMember.user.username} verified!`);
+}
 
 function welcomeMessageGenerator() {
+	const welcomeMessagesArray = [
+		'What\'s your philosophy when it comes to warm-up?',
+		'What\'s one thing that you want to improve in?',
+		'What\'s one thing in your gameplay that you are most proud of?',
+	];
 	return welcomeMessagesArray[Math.floor(Math.random() * welcomeMessagesArray.length)];
+}
+
+async function sendWelcomeMessage(guildMember) {
+	// #chit-chat
+	const channel = await guildMember.guild.channels.cache.get('797229760978747414');
+
+	return await channel.send({
+		content: `Welcome ${guildMember}! ${welcomeMessageGenerator()}`,
+		allowedMentions: { users: [guildMember.id] },
+	});
+}
+
+async function reactToMessage(welcomeMessage) {
+	const blobComfyWave = await welcomeMessage.guild.emojis.cache.get('1007825867361235074');
+	await welcomeMessage.react(blobComfyWave || '👋');
 }
 
 module.exports = {
@@ -15,26 +33,12 @@ module.exports = {
 	async execute(oldMember, newMember) {
 		if (oldMember.pending && !newMember.pending) {
 
-			if (!newMember.guild.available) {
-				return;
-			}
+			if (!newMember.guild.available) { return; }
 
-			const memberRole = newMember.guild.roles.cache.get('985979444869070898');
-			await newMember.roles.add(memberRole);
+			await removeUnverifiedRole(newMember);
 
-			const channel = await newMember.guild.channels.cache.get('797229760978747414');
-			if (!channel || !channel.isTextBased()) {
-				return;
-			}
-
-			await channel.send({
-				content: `Welcome ${newMember}! ${welcomeMessageGenerator()}`,
-				allowedMentions: { users: [newMember.user.id] },
-			})
-				.then(async (message) => {
-					const blobComfyWave = await message.guild.emojis.cache.get('1007825867361235074');
-					await message.react(blobComfyWave || '👋');
-				});
+			const message = await sendWelcomeMessage(newMember);
+			await reactToMessage(message);
 		}
 	},
 };
