@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const { Client, GatewayIntentBits, Collection, Options } = require('discord.js');
 const { discordToken } = require('./config.json');
 
 const client = new Client({
@@ -14,6 +14,25 @@ const client = new Client({
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.AutoModerationExecution,
 	],
+	makeCache: Options.cacheWithLimits({
+		...Options.DefaultMakeCacheSettings,
+		MessageManager: 200,
+		GuildMemberManager: {
+			maxSize: 200,
+			keepOverLimit: member => member.id === client.user.id,
+		},
+	}),
+	sweepers: {
+		...Options.DefaultSweeperSettings,
+		messages: {
+			interval: 3600,
+			lifetime: 1800,
+		},
+		guildMembers: {
+			interval: 3600,
+			filter: () => guildMember => guildMember.user.bot && guildMember.user.id !== client.user.id,
+		},
+	},
 });
 
 client.commands = new Collection();
