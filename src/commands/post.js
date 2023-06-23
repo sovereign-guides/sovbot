@@ -70,9 +70,9 @@ module.exports = {
 						.setDescription('Which shelf should this go to?')
 						.setRequired(true)
 						.addChoices(
-							{ name: '📼│coaching-vods', value: '1112568774219010070' },
-							{ name: '📼│pro-vod-reviews', value: '1112568841248186449' },
-							{ name: '📼│watch-party-vods', value: '1112550276113649705' },
+							{ name: 'coaching-vods', value: '1112568774219010070' },
+							{ name: 'pro-vod-reviews', value: '1112568841248186449' },
+							{ name: 'watch-party-vods', value: '1112550276113649705' },
 						),
 				),
 		),

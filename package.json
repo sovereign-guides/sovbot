@@ -1,8 +1,8 @@
 {
   "name": "sovbot",
-  "version": "3.3.4",
+  "version": "3.3.6",
   "main": "src/index.js",
-  "license": "MIT",
+  "license": "ELv2",
   "author": "Zay Kenyon",
   "scripts": {
     "test": "echo \\\"Error: no test specified\\\" && exit 1",
