@@ -1,6 +1,6 @@
 module.exports = {
 	apps : [{
-		name   : 'SovBot',
+		name   : 'sovbot',
 		script : './src/index.js',
 	}],
 };
