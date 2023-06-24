@@ -13,7 +13,7 @@ We <3 corrections and improvements
 
 ### Local development
 
-1. Clone the repo with `git clone git@github.com:zayKenyon/sovbot.git`
+1. Clone the repo with `git clone git@github.com:sovereign-guides/sovbot.git`
 
 2. Fill in the env variables with `cd src && mv config.json.example config.json && nano config.json`.
 
