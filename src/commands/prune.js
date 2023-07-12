@@ -1,131 +1,53 @@
-const { SlashCommandBuilder,
-	PermissionFlagsBits,
-	EmbedBuilder,
-	Collection,
-	ActionRowBuilder,
-	ButtonBuilder,
-} = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
-function filterMap(memberMap) {
-	// Technically, everybody on a server always has at least 1 role.
-	// Regardless of what their profile says.
-	const removeVerified = new Collection(memberMap.filter(m => m.roles.cache.size === 1));
+function sweepCollection(members) {
+	members.sweep(member => member.user.bot === true);
+	members.sweep(member => member.pending === false);
+	members.sweep(member => {
+		const dateDifference = Date.now() - member.joinedTimestamp;
+		const twoWeeksUnix = 1209600;
 
-	return removeVerified.filter(m => weekDifferenceCalculator(m));
-}
-
-function weekDifferenceCalculator(member) {
-	const memberJoinDate = new Date(member.joinedAt);
-	const epochTimeDifference = new Date - memberJoinDate;
-
-	const weekTimeDifference = Math.floor(epochTimeDifference / 1000 / 60 / 60 / 24 / 7);
-	// Members get three weeks of lee-way.
-	return weekTimeDifference >= 3;
-}
-
-function commandResponseEmbed(unverifiedMemberMap) {
-	return new EmbedBuilder()
-		.setColor(0x0eae96)
-		.setTitle('😴 Unverified Members')
-		.setDescription(`${unverifiedMemberMap.size} Unverified Members`);
-}
-
-async function sendCommandResponse(interaction, unverifiedMembersEmbed) {
-	const row = new ActionRowBuilder()
-		.addComponents(
-			new ButtonBuilder()
-				.setCustomId('no')
-				.setEmoji('🙅')
-				// ENUM for the Failure style (red one)
-				.setStyle('4'),
-
-			new ButtonBuilder()
-				.setCustomId('yes')
-				.setEmoji('🫡')
-				// ENUM for the Success style (green one)
-				.setStyle('3'),
-		);
-
-	return await interaction.followUp({
-		embeds: [unverifiedMembersEmbed],
-		components: [row],
-		ephemeral: true,
+		// We want to remove users who have not been in the server for more than two weeks.
+		return dateDifference < twoWeeksUnix;
 	});
+
+	return members;
 }
 
-async function pruneTheBitches(unverifiedMemberMap) {
-	const dmMessage = '# ⚠️ Sovereign Guides Server Notice\n' +
-		'Your account has been removed from the server as you had not verified after 3 weeks of joining.\n' +
-		'\n' +
-		'You may reattempt verification at any time by rejoining the server using this link: https://discord.gg/Jb3Kdqwh8Q\n' +
-		'\n' +
-		'If you need more assistance, please see this GIF for more instruction: <https://i.imgur.com/TAEgBtg.mp4> or reach out to a member of our staff team by DMing @Sov ModMail (\'Sov ModMail\') at the top of the server\'s member list.';
+function notifyMembers(members) {
+	for (const [_, member] of members.entries()) {
+		member.send('# ⚠️ Sovereign Guides Server Notice\n'
+			+ 'Your account has been removed from the server as you had not verified after 2 weeks of joining.\n\n'
+			+ 'You may reattempt verification at any time by rejoining the server using this link: https://discord.gg/Jb3Kdqwh8Q\n\n'
+			+ 'If you need more assistance, please see this GIF for more instruction: <https://i.imgur.com/TAEgBtg.mp4> or reach out to a member of our staff team by DMing @Sov ModMail (\'Sov ModMail\') at the top of the server\'s member list.',
+		).catch(e => console.log(e));
+	}
+}
 
-	let failureCount = 0;
+async function kickMembers(members) {
+	let kickCounter = 0;
 
-	for (const unverifiedMember of unverifiedMemberMap.values()) {
-		await unverifiedMember.send(dmMessage)
-			.catch(() => failureCount++)
-			.then(async () => {
-				await unverifiedMember.kick()
-					.catch(() => failureCount++);
-			});
+	for await (const [_, member] of members.entries()) {
+		await member.kick('Pruned.').then(() => kickCounter++);
 	}
 
-	return failureCount;
-}
-
-function collectUserResponse(interaction, commandResponse, unverifiedMemberMap) {
-	const collector = commandResponse.createMessageComponentCollector({
-		componentType: 2,
-		time: 1000 * 60 * 15,
-	});
-
-	collector.on('collect', buttonInteraction => {
-		if (buttonInteraction.user.id !== interaction.user.id) {
-			return buttonInteraction.reply({ content: 'These buttons aren\'t for you!', ephemeral: true });
-		}
-
-		collector.stop();
-		commandResponse.edit({ components: [] });
-	});
-
-	collector.on('end', async collected => {
-		if (collected.first() === undefined) {
-			return commandResponse.edit({ components: [] });
-		}
-
-		const result = collected.first().customId;
-
-		if (result === 'yes') {
-			const followUp = interaction.followUp('Commencing prune!! 😈');
-			const failureCount = await pruneTheBitches(unverifiedMemberMap);
-			return (await followUp).edit(`${failureCount} failures`);
-		}
-
-		else {
-			return interaction.followUp('Cancelling prune :(');
-		}
-	});
+	return kickCounter;
 }
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('prune')
-		.setDescription('Remove unverified members.')
+		.setDescription('Removes old members who haven\'t completed Rules Screening.')
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	async execute(interaction) {
 		await interaction.deferReply();
 
-		await interaction.guild.members.fetch();
+		let members = await interaction.guild.members.fetch();
+		members = sweepCollection(members);
 
-		const memberMap = await interaction.guild.channels.cache.get('1014955201926533230').members;
+		notifyMembers(members);
+		const prunedTotal = await kickMembers(members);
 
-		const unverifiedMemberMap = filterMap(memberMap);
-
-		const unverifiedMembersEmbed = commandResponseEmbed(unverifiedMemberMap);
-
-		const commandResponse = await sendCommandResponse(interaction, unverifiedMembersEmbed);
-		collectUserResponse(interaction, commandResponse, unverifiedMemberMap);
+		return interaction.followUp(`Pruned ${prunedTotal} members.`);
 	},
 };
