@@ -1,9 +1,8 @@
 const { SlashCommandBuilder, PermissionFlagsBits, ChannelType, time, EmbedBuilder } = require('discord.js');
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
-const mongoose = require('mongoose');
+const { openDBConnection, closeDBConnection } = require('../utils/database');
 const Raffle = require('../schemas/raffle-schema');
-const { mongo } = require('../dev.config.json');
 
 function validateDate(date) {
 	let isValid = true;
@@ -52,17 +51,8 @@ async function saveRaffle(raffleMessage, prize, date, noOfWinners) {
 		entries: [],
 	});
 
-	const username = encodeURIComponent(mongo.username);
-	const password = encodeURIComponent(mongo.password);
-	const cluster = mongo.cluster;
-	const uri = `mongodb+srv://${username}:${password}@${cluster}/?retryWrites=true&w=majority`;
-
-	await mongoose.connect(uri, {
-		socketTimeoutMS: 10_000,
-	});
-
-	await doc.save()
-		.then(() => mongoose.connection.close());
+	await openDBConnection('raffles');
+	await doc.save().then(() => closeDBConnection());
 }
 
 module.exports = {
