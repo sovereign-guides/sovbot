@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { mongo } = require('../dev.config.json');
 
-module.exports.openDBConnection = exports.openDBConnection = async function openDBConnection(database) {
+module.exports.openDBConnection = async function openDBConnection(database) {
 	const username = encodeURIComponent(mongo.username);
 	const password = encodeURIComponent(mongo.password);
 	const cluster = mongo.cluster;
