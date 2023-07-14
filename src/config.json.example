@@ -2,5 +2,10 @@
   "discordToken": "",
   "clientId": "",
   "guildId": "",
-  "youTubeAPIKey": ""
+  "youTubeAPIKey": "",
+  "mongo": {
+   "username": "",
+   "password": "",
+   "cluster": ""
+  }
 }
