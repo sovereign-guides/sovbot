@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits, inlineCode } = require('discord.js');
 const axios = require('axios');
-const { youTubeAPIKey } = require('../config.json');
+const { youTubeAPIKey } = require('../../config.json');
 
 
 function testLinkValidity(link) {

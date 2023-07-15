@@ -11,15 +11,15 @@ This is the source code for [SovBot#9299](https://discord.com/users/100092760251
 
 ## Current features:
 
-- [Member verification](src/events/rulesScreeningVerification.js): Greets members once they've verified!
+- [Member verification](src/events/GuildMemberUpdate/rulesScreeningVerification.js): Greets members once they've verified!
 
-- [Post on Patch](src/events/postOnPatch.js): Creates a discussion post in a Forum!
+- [Post on Patch](src/events/MessageCreate/postOnPatch.js): Creates a discussion post in a Forum!
 
-- [Publish Premium VODs](src/commands/post.js): Posts and tags a premium video, pushes the video's Id into an AutoMod list.
+- [Publish Premium VODs](src/commands/utils/post.js): Posts and tags a premium video, pushes the video's Id into an AutoMod list.
 
-- [Prune Unverified Members](src/commands/prune.js): Removes members that have yet to be verified after 3 weeks of being in the server.
+- [Prune Unverified Members](src/commands/moderator/prune.js): Removes members that have yet to be verified after 3 weeks of being in the server.
 
-- [AutoMod Link Restrictions](src/events/watchThisLinkPerms.js): Tells ineligible users why their message did not get sent in the #watch-this channel.
+- [AutoMod Link Restrictions](src/events/AutoModerationActionExecution/watchThisLinkPerms.js): Tells ineligible users why their message did not get sent in the #watch-this channel.
 
 ---
 

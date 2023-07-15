@@ -10,7 +10,7 @@ const { SlashCommandBuilder,
 } = require('discord.js');
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
-const Raffle = require('../schemas/raffle-schema');
+const Raffle = require('../../schemas/raffle-schema');
 
 function validateDate(date) {
 	let isValid = true;
@@ -114,7 +114,7 @@ module.exports = {
 			const noOfWinners = interaction.options?.getNumber('winner-count') ?? 1;
 
 			if (validateDate(date) === false) {
-				return interaction.reply('Please enter a valid date.');
+				return interaction.followUp('Please enter a valid date.');
 			}
 
 			const raffleEmbed = createRaffleEmbed(prize, description, date);

@@ -4,7 +4,7 @@ const { Events,
 	ButtonStyle,
 	ActionRowBuilder,
 } = require('discord.js');
-const Raffle = require('../schemas/raffle-schema');
+const Raffle = require('../../schemas/raffle-schema');
 
 function isAlreadyInRaffle(userId, entries) {
 	return entries.includes(userId);
