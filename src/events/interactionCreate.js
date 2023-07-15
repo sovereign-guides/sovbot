@@ -1,14 +1,25 @@
 const { Events, EmbedBuilder } = require('discord.js');
 const Raffle = require('../schemas/raffle-schema');
-const { openDBConnection, closeDBConnection } = require('../utils/database');
 
-function updateEntries(message) {
+function isAlreadyInRaffle(userId, entries) {
+	return entries.includes(userId);
+}
+
+async function updateEntries(interaction, raffle) {
+	raffle.entries.push(interaction.user.id);
+	return raffle.save();
+}
+
+function updateTotal(raffleMessage, updatedRaffleDocument) {
 	const regex = new RegExp('\\*\\*[0-9]\\*\\*+');
 
-	const oldEntryCount = Number(message.match(regex)[0].split('**')[1]);
-	const newEntryCount = oldEntryCount + 1;
+	const newEntryCount = updatedRaffleDocument.entries.length;
 
-	return message.replace(regex, `**${newEntryCount}**`);
+	const oldEmbed = raffleMessage.embeds[0];
+	const newEmbedDescription = oldEmbed.description.replace(regex, `**${newEntryCount}**`);
+
+	return EmbedBuilder.from(oldEmbed)
+		.setDescription(newEmbedDescription);
 }
 
 module.exports = {
@@ -32,24 +43,22 @@ module.exports = {
 		}
 		else if (interaction.isButton()) {
 			if (interaction.customId === 'raffle-join') {
-				await openDBConnection('raffles');
+				const raffleMessage = interaction.message;
+				const raffle = await Raffle.findById(raffleMessage.id);
 
-				const primaryKey = interaction.message.id;
+				if (isAlreadyInRaffle(interaction.user.id, raffle.entries)) {
+					return await interaction.reply({
+						content: 'You have already entered this raffle!',
+						ephemeral: true,
+					});
+				}
 
-				await Raffle.findByIdAndUpdate(primaryKey, {
-					$push: { entries: interaction.user.id },
-				}).then(() => closeDBConnection());
-
-				const receivedEmbed = interaction.message.embeds[0];
-				let embedDescription = receivedEmbed.description;
-				embedDescription = updateEntries(embedDescription);
-
-				const updatedEmbed = EmbedBuilder.from(receivedEmbed)
-					.setDescription(embedDescription);
+				const updatedRaffleDocument = await updateEntries(interaction, raffle);
+				const updatedRaffleMessage = await updateTotal(raffleMessage, updatedRaffleDocument);
 
 				await interaction.update({
-					embeds: [updatedEmbed],
-				}).then(() => closeDBConnection());
+					embeds: [updatedRaffleMessage],
+				});
 			}
 		}
 	},

@@ -10,7 +10,6 @@ const { SlashCommandBuilder,
 } = require('discord.js');
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
-const { openDBConnection, closeDBConnection } = require('../utils/database');
 const Raffle = require('../schemas/raffle-schema');
 
 function validateDate(date) {
@@ -66,8 +65,7 @@ async function saveRaffle(raffleMessage, prize, date, noOfWinners) {
 		entries: [],
 	});
 
-	await openDBConnection('raffles');
-	await doc.save().then(() => closeDBConnection());
+	await doc.save();
 }
 
 module.exports = {
