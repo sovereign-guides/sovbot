@@ -46,13 +46,13 @@ function createEmbed(prize, description, date) {
 }
 
 function createButtons() {
-	const joinRaffle = new ButtonBuilder()
+	const joinRaffleButton = new ButtonBuilder()
 		.setCustomId('raffle-join')
 		.setLabel('🎟️')
 		.setStyle(ButtonStyle.Primary);
 
 	return new ActionRowBuilder()
-		.addComponents(joinRaffle);
+		.addComponents(joinRaffleButton);
 }
 
 async function saveRaffle(raffleMessage, prize, date, noOfWinners) {
