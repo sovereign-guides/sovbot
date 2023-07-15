@@ -30,7 +30,7 @@ function validateDate(date) {
 	return isValid;
 }
 
-function createEmbed(prize, description, date) {
+function createRaffleEmbed(prize, description, date) {
 	if (description) {
 		description = description + '\n' + '\n';
 	}
@@ -45,7 +45,7 @@ function createEmbed(prize, description, date) {
 		.setTimestamp();
 }
 
-function createButtons() {
+function createRaffleButtons() {
 	const joinRaffleButton = new ButtonBuilder()
 		.setCustomId('raffle-join')
 		.setLabel('🎟️')
@@ -117,8 +117,8 @@ module.exports = {
 				return interaction.reply('Please enter a valid date.');
 			}
 
-			const raffleEmbed = createEmbed(prize, description, date);
-			const raffleButtons = createButtons();
+			const raffleEmbed = createRaffleEmbed(prize, description, date);
+			const raffleButtons = createRaffleButtons();
 
 			const raffleMessage = await channel.send({
 				embeds: [raffleEmbed],
