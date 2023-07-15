@@ -10,13 +10,13 @@ function isAlreadyInRaffle(userId, entries) {
 	return entries.includes(userId);
 }
 
-async function leaveRaffle(interaction, raffle) {
-	raffle.entries.pop(interaction.user.id);
+async function leaveRaffle(userId, raffle) {
+	raffle.entries.pop(userId);
 	return raffle.save();
 }
 
-async function enterRaffle(interaction, raffle) {
-	raffle.entries.push(interaction.user.id);
+async function enterRaffle(userId, raffle) {
+	raffle.entries.push(userId);
 	return raffle.save();
 }
 
@@ -72,7 +72,7 @@ module.exports = {
 					});
 				}
 
-				const updatedRaffleDocument = await enterRaffle(interaction, raffle);
+				const updatedRaffleDocument = await enterRaffle(interaction.user.id, raffle);
 				const updatedRaffleMessageEmbed = await updateTotal(raffleMessage, updatedRaffleDocument);
 
 				await interaction.update({
@@ -91,7 +91,7 @@ module.exports = {
 					});
 				}
 
-				const updatedRaffleDocument = await leaveRaffle(interaction, raffle);
+				const updatedRaffleDocument = await leaveRaffle(interaction.user.id, raffle);
 				const updatedRaffleMessageEmbed = await updateTotal(raffleMessage, updatedRaffleDocument);
 
 				await raffleMessage.edit({
