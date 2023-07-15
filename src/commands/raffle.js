@@ -1,4 +1,13 @@
-const { SlashCommandBuilder, PermissionFlagsBits, ChannelType, time, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder,
+	PermissionFlagsBits,
+	ChannelType,
+	time,
+	EmbedBuilder,
+	bold,
+	ButtonBuilder,
+	ButtonStyle,
+	ActionRowBuilder,
+} = require('discord.js');
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
 const { openDBConnection, closeDBConnection } = require('../utils/database');
@@ -22,7 +31,7 @@ function validateDate(date) {
 	return isValid;
 }
 
-function createEmbed(prize, description, date, author) {
+function createEmbed(prize, description, date) {
 	if (description) {
 		description = description + '\n' + '\n';
 	}
@@ -33,12 +42,18 @@ function createEmbed(prize, description, date, author) {
 	return new EmbedBuilder()
 		.setColor(0x15af98)
 		.setTitle(`:confetti_ball: ${prize}`)
-		.setDescription(
-			`${description}Ends: ${time(date, 'R')} (${time(date, 'F')})
-Hosted by: ${author}
-Entries: **0**`,
-		)
+		.setDescription(`${description}Ends: ${time(date, 'R')} (${time(date, 'F')})\nEntries: ${bold('0')}`)
 		.setTimestamp();
+}
+
+function createButtons() {
+	const joinRaffle = new ButtonBuilder()
+		.setCustomId('raffle-join')
+		.setLabel('🎟️')
+		.setStyle(ButtonStyle.Primary);
+
+	return new ActionRowBuilder()
+		.addComponents(joinRaffle);
 }
 
 async function saveRaffle(raffleMessage, prize, date, noOfWinners) {
@@ -89,6 +104,8 @@ module.exports = {
 		),
 	async execute(interaction) {
 		if (interaction.options.getSubcommand() === 'start') {
+			await interaction.deferReply({ ephemeral: true });
+
 			const prize = interaction.options.getString('prize');
 			const description = interaction.options?.getString('description') || null;
 			const date = interaction.options.getNumber('date');
@@ -97,21 +114,25 @@ module.exports = {
 				// ?? await interaction.options.guild.channels.cache.get('1112540056528375913');
 				?? await interaction.guild.channels.cache.get('1126970529224597544');
 			const noOfWinners = interaction.options?.getNumber('winner-count') ?? 1;
-			const author = interaction.user;
 
 			if (validateDate(date) === false) {
 				return interaction.reply('Please enter a valid date.');
 			}
 
-			const raffleEmbed = createEmbed(prize, description, date, author);
+			const raffleEmbed = createEmbed(prize, description, date);
+			const raffleButtons = createButtons();
 
 			const raffleMessage = await channel.send({
 				embeds: [raffleEmbed],
+				components: [raffleButtons],
 			});
 
 			await saveRaffle(raffleMessage, prize, date, noOfWinners);
 
-			return interaction.reply(`Raffle started: ${raffleMessage.url}`);
+			return interaction.followUp({
+				content: `Raffle successfully started!\nId: ${raffleMessage.id}`,
+				ephemeral: true,
+			});
 		}
 	},
 };
