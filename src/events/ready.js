@@ -1,5 +1,7 @@
 const { Events } = require('discord.js');
 const mongoose = require('mongoose');
+const Raffle = require('../schemas/raffle-schema');
+const { queryDatabase } = require('../utils/raffle-utils');
 const { mongo } = require('../dev.config.json');
 
 async function connectToMongo(database) {
@@ -16,7 +18,7 @@ async function connectToMongo(database) {
 		.then(() => console.log(`MongoDB: Connected to ${database}.`));
 }
 
-function validateClient(client) {
+async function validateClient(client) {
 	if (!client.user) {
 		console.log('Client could not start.');
 		return;
@@ -25,11 +27,17 @@ function validateClient(client) {
 	console.log(`${client.user.tag} (${client.user.id}) is online!`);
 }
 
+async function scheduleTableQuery(table) {
+	// ToDo Adjust 2500 -> 60_000
+	setInterval(await queryDatabase, 2_500, table);
+}
+
 module.exports = {
 	name: Events.ClientReady,
 	once: true,
 	async execute(client) {
 		await connectToMongo('raffles');
-		validateClient(client);
+		await validateClient(client);
+		await scheduleTableQuery(Raffle);
 	},
 };

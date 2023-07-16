@@ -62,3 +62,4 @@ for (let file of eventFiles) {
 }
 
 client.login(discordToken);
+module.exports.SovBot = client;

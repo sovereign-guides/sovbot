@@ -1,6 +1,6 @@
 const { Events, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
-const { isAlreadyInRaffle, enterRaffle, updateTotal, leaveRaffle } = require('./utils/raffle-utils');
-const Raffle = require('../../../schemas/raffle-schema');
+const { isAlreadyInRaffle, enterRaffle, updateTotal, leaveRaffle } = require('../../utils/raffle-utils');
+const Raffle = require('../../schemas/raffle-schema');
 
 module.exports = {
 	name: Events.InteractionCreate,
