@@ -1,4 +1,5 @@
 const SovBot = require('../../index');
+const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, bold, userMention } = require('discord.js');
 
 async function resolveGuildMember(guild, memberId) {
 	return await guild.members.fetch(memberId);
@@ -56,6 +57,33 @@ async function getOriginalRaffleMessage(messageId, channel) {
 	return channel.messages.fetch(messageId);
 }
 
+async function disableRaffleMessageComponents(raffleMessage) {
+	const oldButton = raffleMessage.components[0].components[0];
+
+	const newButton = ButtonBuilder.from(oldButton)
+		.setDisabled(true);
+
+	const row = new ActionRowBuilder()
+		.addComponents(newButton);
+
+	await raffleMessage.edit({
+		components: [row],
+	});
+}
+
+async function editRaffleMessage(raffleMessage, winner) {
+	await disableRaffleMessageComponents(raffleMessage);
+
+	const oldEmbed = raffleMessage.embeds[0];
+	const oldDescription = oldEmbed.description;
+
+	const newDescription = oldDescription + '\n' + 'Winners: ' + `${userMention(winner)}`;
+	const newEmbed = EmbedBuilder.from(oldEmbed)
+		.setDescription(newDescription);
+
+	raffleMessage.edit({ embeds: [newEmbed] });
+}
+
 module.exports.announceRaffleWinner = async function announceRaffleWinner(raffle) {
 	const messageId = raffle._id;
 	const { channelId, prize, date, noOfWinners, entries } = raffle;
@@ -67,8 +95,7 @@ module.exports.announceRaffleWinner = async function announceRaffleWinner(raffle
 
 	const originalRaffleMessage = await getOriginalRaffleMessage(messageId, channel);
 
-	await originalRaffleMessage.reply({ content: `${winner} won!` });
+	await editRaffleMessage(originalRaffleMessage, winner);
 
-	// TODO Step 1: Edit Original Message
-	// TODO Step 2: Reply to original message with new winner!
+	await originalRaffleMessage.reply({ content: `Congratulations ${userMention(winner)}! You won the ${prize}!` });
 };

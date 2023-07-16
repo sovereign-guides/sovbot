@@ -28,8 +28,8 @@ async function validateClient(client) {
 }
 
 async function scheduleTableQuery(table) {
-	// ToDo Adjust 2500 -> 60_000
-	setInterval(await queryDatabase, 2_500, table);
+	// ToDo Adjust 10000 -> 60_000
+	setInterval(await queryDatabase, 10_000, table);
 }
 
 module.exports = {
