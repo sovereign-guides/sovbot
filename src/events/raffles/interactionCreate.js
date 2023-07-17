@@ -1,6 +1,31 @@
-const { Events, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
-const { isAlreadyInRaffle, enterRaffle, updateTotal, leaveRaffle } = require('../../utils/raffle-utils');
+const { Events, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const Raffle = require('../../schemas/raffle-schema');
+
+function isAlreadyInRaffle(userId, entries) {
+	return entries.includes(userId);
+}
+
+async function enterRaffle(userId, raffle) {
+	raffle.entries.push(userId);
+	return raffle.save();
+}
+
+function updateTotal(raffleMessage, updatedRaffleDocument) {
+	const regex = new RegExp('Entries: \\*\\*[0-9]\\*\\*+');
+
+	const oldEmbed = raffleMessage.embeds[0];
+
+	const newEntryCount = updatedRaffleDocument.entries.length;
+	const newEmbedDescription = oldEmbed.description.replace(regex, `Entries: **${newEntryCount}**`);
+
+	return EmbedBuilder.from(oldEmbed)
+		.setDescription(newEmbedDescription);
+}
+
+async function leaveRaffle(userId, raffle) {
+	raffle.entries.pop(userId);
+	return raffle.save();
+}
 
 module.exports = {
 	name: Events.InteractionCreate,

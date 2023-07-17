@@ -1,7 +1,7 @@
 const { Events } = require('discord.js');
 const mongoose = require('mongoose');
 const Raffle = require('../schemas/raffle-schema');
-const { queryDatabase } = require('../utils/raffle-utils');
+const queryRaffleDatabase = require('../utils/queryRaffleDatabase');
 const { mongo } = require('../dev.config.json');
 
 async function connectToMongo(database) {
@@ -29,7 +29,7 @@ async function validateClient(client) {
 
 async function scheduleTableQuery(table) {
 	// ToDo Adjust 10000 -> 60_000
-	setInterval(await queryDatabase, 10_000, table);
+	setInterval(await queryRaffleDatabase, 10_000, table);
 }
 
 module.exports = {
