@@ -30,7 +30,7 @@ function validateDate(date) {
 	return isValid;
 }
 
-function createRaffleEmbed(prize, description, date) {
+function createRaffleEmbed(prize, description, date, noOfWinners) {
 	if (description) {
 		description = description + '\n' + '\n';
 	}
@@ -41,7 +41,7 @@ function createRaffleEmbed(prize, description, date) {
 	return new EmbedBuilder()
 		.setColor(0x15af98)
 		.setTitle(`:confetti_ball: ${prize}`)
-		.setDescription(`${description}Ends: ${time(date, 'R')} (${time(date, 'F')})\nEntries: ${bold('0')}`)
+		.setDescription(`${description}Ends: ${time(date, 'R')} (${time(date, 'F')})\nEntries: ${bold('0')}\nWinners: ${bold(noOfWinners)}`)
 		.setTimestamp();
 }
 
@@ -117,7 +117,7 @@ module.exports = {
 				return interaction.followUp('Please enter a valid date.');
 			}
 
-			const raffleEmbed = createRaffleEmbed(prize, description, date);
+			const raffleEmbed = createRaffleEmbed(prize, description, date, noOfWinners);
 			const raffleButtons = createRaffleButtons();
 
 			const raffleMessage = await channel.send({

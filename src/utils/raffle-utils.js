@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const dayjs = require('dayjs');
-const { announceRaffleWinner } = require('../events/raffles/invokeRaffle');
+const { handleRaffleEnd } = require('../events/raffles/handleRaffleEnd');
 
 module.exports.isAlreadyInRaffle = function isAlreadyInRaffle(userId, entries) {
 	return entries.includes(userId);
@@ -17,12 +17,12 @@ module.exports.enterRaffle = async function enterRaffle(userId, raffle) {
 };
 
 module.exports.updateTotal = function updateTotal(raffleMessage, updatedRaffleDocument) {
-	const regex = new RegExp('\\*\\*[0-9]\\*\\*+');
+	const regex = new RegExp('Entries: \\*\\*[0-9]\\*\\*+');
 
 	const oldEmbed = raffleMessage.embeds[0];
 
 	const newEntryCount = updatedRaffleDocument.entries.length;
-	const newEmbedDescription = oldEmbed.description.replace(regex, `**${newEntryCount}**`);
+	const newEmbedDescription = oldEmbed.description.replace(regex, `Entries: **${newEntryCount}**`);
 
 	return EmbedBuilder.from(oldEmbed)
 		.setDescription(newEmbedDescription);
@@ -36,6 +36,6 @@ module.exports.queryDatabase = async function queryDatabase(table) {
 	if (docs.length === 0) { return; }
 
 	const raffle = docs[0];
-	await announceRaffleWinner(raffle);
+	await handleRaffleEnd(raffle);
 };
 
