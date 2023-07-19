@@ -2,53 +2,73 @@ const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, userMention, bold } = req
 const SovBot = require('../../index');
 
 async function resolveGuildMember(memberId, guild) {
-	return await guild.members.fetch(memberId);
+	return await guild.members.fetch(memberId)
+		.catch(e => {
+			if (e.code === 10017) {
+				return false;
+			}
+		});
 }
 
-async function hasPremiumRoles(guildMemberRoleManager) {
-	// TODO
-	// const memberPremiumRole = guildMemberRoleManager.premiumSubscriberRole;
-	const memberPremiumRole = guildMemberRoleManager.cache.get('1065727708824350792');
-	return memberPremiumRole !== undefined;
-}
-
-async function getPremiumExtraOdds(guildMemberRoleManager) {
+async function getPremiumExtraOdds(guildMemberRoles) {
 	const premiumRoles = new Map;
 	premiumRoles.set('1077686372518871060', { odds: '2' });
 	premiumRoles.set('1077688625967403119', { odds: '3' });
 	premiumRoles.set('1077690600280838245', { odds: '5' });
-
 	// TODO remove
 	premiumRoles.set('1065727708824350792', { odds: '6' });
 
-	// ToDo
-	// return premiumRoles.get(guildMemberRoleManager.premiumSubscriberRole).odds;
-	return premiumRoles.get('1065727708824350792').odds;
+	// TODO Remove
+	const tierZay = '1065727708824350792';
+
+	const tier3 = '1077690600280838245';
+	const tier2 = '1077688625967403119';
+	const tier1 = '1077686372518871060';
+
+	if (guildMemberRoles.has(tierZay)) {
+		return premiumRoles.get(tier1).odds;
+	}
+
+	if (guildMemberRoles.has(tier3)) {
+		return premiumRoles.get(tier3).odds;
+	}
+
+	else if (guildMemberRoles.has(tier2)) {
+		return premiumRoles.get(tier2).odds;
+	}
+
+	else if (guildMemberRoles.has(tier1)) {
+		return premiumRoles.get(tier1).odds;
+	}
+
+	else {
+		return 1;
+	}
 }
 
 async function getWinners(entries, guild, noOfWinners) {
-	let adjustedEntries = [...entries];
+	let entriesWithOdds = [];
 
 	for await (const memberId of entries) {
 		const guildMember = await resolveGuildMember(memberId, guild);
-		const guildMemberRoleManager = guildMember.roles;
-
-		if (!await hasPremiumRoles(guildMemberRoleManager)) {
+		if (!guildMember) {
 			continue;
 		}
 
-		const extraOdds = await getPremiumExtraOdds(guildMemberRoleManager);
-		for (let i = 1; i < extraOdds; i++) {
-			adjustedEntries.push(memberId);
+		const guildMemberRoles = guildMember.roles.cache;
+		const extraOdds = await getPremiumExtraOdds(guildMemberRoles);
+
+		for (let i = 0; i < extraOdds; i++) {
+			entriesWithOdds.push(memberId);
 		}
 	}
 
 	const winners = [];
 	for (let i = 0; i < noOfWinners; i++) {
-		const winner = adjustedEntries[Math.floor(Math.random() * adjustedEntries.length)]
+		const winner = entriesWithOdds[Math.floor(Math.random() * entriesWithOdds.length)]
 			?? '1000927602518798487';
 		winners.push(winner);
-		adjustedEntries = adjustedEntries.filter(entry => entry !== winner);
+		entriesWithOdds = entriesWithOdds.filter(entry => entry !== winner);
 	}
 
 	return winners;
