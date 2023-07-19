@@ -23,7 +23,7 @@ function updateTotal(raffleMessage, updatedRaffleDocument) {
 }
 
 async function leaveRaffle(userId, raffle) {
-	raffle.entries.pop(userId);
+	raffle.entries.pull(userId);
 	return raffle.save();
 }
 
