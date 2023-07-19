@@ -27,7 +27,7 @@ async function getPremiumExtraOdds(guildMemberRoles) {
 	const tier1 = '1077686372518871060';
 
 	if (guildMemberRoles.has(tierZay)) {
-		return premiumRoles.get(tier1).odds;
+		return premiumRoles.get(tierZay).odds;
 	}
 
 	if (guildMemberRoles.has(tier3)) {
@@ -122,7 +122,7 @@ async function editRaffleMessage(originalRaffleMessage, mentionsOfWinners) {
 }
 
 async function migrateRaffleDocument(oldRaffleDoc, winners) {
-	const doc = PastRaffle({
+	const doc = new PastRaffle({
 		_id: oldRaffleDoc._id,
 		channelId: oldRaffleDoc.channelId,
 		prize: oldRaffleDoc.prize,
