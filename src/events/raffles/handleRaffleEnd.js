@@ -1,4 +1,5 @@
 const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, userMention, bold } = require('discord.js');
+const PastRaffle = require('../../schemas/raffles/past-raffle-schema');
 const SovBot = require('../../index');
 
 async function resolveGuildMember(memberId, guild) {
@@ -120,6 +121,23 @@ async function editRaffleMessage(originalRaffleMessage, mentionsOfWinners) {
 	await originalRaffleMessage.edit({ embeds: [newEmbed] });
 }
 
+async function migrateRaffleDocument(oldRaffleDoc, winners) {
+	const doc = PastRaffle({
+		_id: oldRaffleDoc._id,
+		channelId: oldRaffleDoc.channelId,
+		prize: oldRaffleDoc.prize,
+		description: oldRaffleDoc.description,
+		date: oldRaffleDoc.date,
+		noOfWinners: oldRaffleDoc.noOfWinners,
+		entries: oldRaffleDoc.entries,
+		winners: winners,
+	});
+
+	await doc.save()
+		.catch(console.error)
+		.then(await oldRaffleDoc.deleteOne());
+}
+
 module.exports.handleRaffleEnd = async function handleRaffleEnd(raffle) {
 	const messageId = raffle._id;
 	const { channelId, prize, noOfWinners, entries } = raffle;
@@ -128,6 +146,9 @@ module.exports.handleRaffleEnd = async function handleRaffleEnd(raffle) {
 	const guild = channel.guild;
 
 	const arrayOfWinners = await getWinners(entries, guild, noOfWinners);
+
+	await migrateRaffleDocument(raffle, arrayOfWinners);
+
 	const mentionsOfWinners = convertUserIdsToMentions(arrayOfWinners);
 
 	const originalRaffleMessage = await getOriginalRaffleMessage(messageId, channel);

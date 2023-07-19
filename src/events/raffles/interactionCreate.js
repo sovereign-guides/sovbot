@@ -1,5 +1,5 @@
 const { Events, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
-const Raffle = require('../../schemas/raffle-schema');
+const UpcomingRaffle = require('../../schemas/raffles/upcoming-raffle-schema');
 
 function isAlreadyInRaffle(userId, entries) {
 	return entries.includes(userId);
@@ -35,7 +35,7 @@ module.exports = {
 
 		if (interaction.customId === 'raffle-join') {
 			const raffleMessage = interaction.message;
-			const raffle = await Raffle.findById(raffleMessage.id);
+			const raffle = await UpcomingRaffle.findById(raffleMessage.id);
 
 			if (isAlreadyInRaffle(interaction.user.id, raffle.entries)) {
 				const leaveRaffleButton = new ButtonBuilder()
@@ -62,7 +62,7 @@ module.exports = {
 		}
 		else if (interaction.customId === 'raffle-leave') {
 			const raffleMessage = await interaction.channel.messages.fetch(interaction.message.reference.messageId);
-			const raffle = await Raffle.findById(raffleMessage.id);
+			const raffle = await UpcomingRaffle.findById(raffleMessage.id);
 
 			if (!isAlreadyInRaffle(interaction.user.id, raffle.entries)) {
 				return await interaction.update({

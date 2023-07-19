@@ -1,6 +1,6 @@
 const { Events } = require('discord.js');
 const mongoose = require('mongoose');
-const Raffle = require('../schemas/raffle-schema');
+const Raffle = require('../schemas/raffles/upcoming-raffle-schema');
 const queryRaffleDatabase = require('../utils/queryRaffleDatabase');
 const { mongo } = require('../dev.config.json');
 

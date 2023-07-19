@@ -10,7 +10,7 @@ const { SlashCommandBuilder,
 } = require('discord.js');
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
-const Raffle = require('../../schemas/raffle-schema');
+const UpcomingRaffle = require('../../schemas/raffles/upcoming-raffle-schema');
 
 function validateDate(date) {
 	let isValid = true;
@@ -55,11 +55,12 @@ function createRaffleButtons() {
 		.addComponents(joinRaffleButton);
 }
 
-async function saveRaffle(raffleMessage, prize, date, noOfWinners) {
-	const doc = new Raffle({
+async function saveRaffle(raffleMessage, prize, description, date, noOfWinners) {
+	const doc = new UpcomingRaffle({
 		_id: raffleMessage.id,
 		channelId:  raffleMessage.channelId,
 		prize: prize,
+		description: description,
 		date: date,
 		noOfWinners: noOfWinners,
 		entries: [],
@@ -125,7 +126,7 @@ module.exports = {
 				components: [raffleButtons],
 			});
 
-			await saveRaffle(raffleMessage, prize, date, noOfWinners);
+			await saveRaffle(raffleMessage, prize, description, date, noOfWinners);
 
 			return interaction.followUp({
 				content: `Raffle successfully started!\nId: ${raffleMessage.id}`,
