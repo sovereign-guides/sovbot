@@ -80,6 +80,7 @@ module.exports = {
 				.addStringOption(option =>
 					option.setName('prize')
 						.setDescription('What is being won?')
+						.setMaxLength(256)
 						.setRequired(true),
 				)
 				.addNumberOption(option =>
