@@ -50,7 +50,9 @@ async function getPremiumExtraOdds(guildMemberRoles) {
 async function getWinners(entries, guild, noOfWinners) {
 	let entriesWithOdds = [];
 
-	for await (const memberId of entries) {
+	for await (const entry of entries) {
+		const memberId = entry._id;
+
 		const guildMember = await resolveGuildMember(memberId, guild);
 		if (!guildMember) {
 			continue;
@@ -60,7 +62,7 @@ async function getWinners(entries, guild, noOfWinners) {
 		const extraOdds = await getPremiumExtraOdds(guildMemberRoles);
 
 		for (let i = 0; i < extraOdds; i++) {
-			entriesWithOdds.push(memberId);
+			entriesWithOdds.push(entry);
 		}
 	}
 
@@ -75,10 +77,10 @@ async function getWinners(entries, guild, noOfWinners) {
 	return winners;
 }
 
-function convertUserIdsToMentions(arrayOfWinners) {
+function convertWinnerArrayToMentions(arrayOfWinners) {
 	const mentionsOfWinners = [];
 	for (const winner of arrayOfWinners) {
-		mentionsOfWinners.push(userMention(winner));
+		mentionsOfWinners.push(userMention(winner._id));
 	}
 
 	return mentionsOfWinners;
@@ -135,7 +137,7 @@ async function migrateRaffleDocument(oldRaffleDoc, winners) {
 
 	await doc.save()
 		.catch(console.error)
-		.then(await oldRaffleDoc.deleteOne());
+		.then(await oldRaffleDoc.deleteOne()).catch(console.error);
 }
 
 module.exports.handleRaffleEnd = async function handleRaffleEnd(raffle) {
@@ -149,7 +151,7 @@ module.exports.handleRaffleEnd = async function handleRaffleEnd(raffle) {
 
 	await migrateRaffleDocument(raffle, arrayOfWinners);
 
-	const mentionsOfWinners = convertUserIdsToMentions(arrayOfWinners);
+	const mentionsOfWinners = convertWinnerArrayToMentions(arrayOfWinners);
 
 	const originalRaffleMessage = await getOriginalRaffleMessage(messageId, channel);
 	await editRaffleMessage(originalRaffleMessage, mentionsOfWinners);

@@ -47,7 +47,7 @@ function createRaffleEmbed(prize, description, date, noOfWinners) {
 
 function createRaffleButtons() {
 	const joinRaffleButton = new ButtonBuilder()
-		.setCustomId('raffle-join')
+		.setCustomId('button-raffle-join')
 		.setLabel('🎟️')
 		.setStyle(ButtonStyle.Primary);
 

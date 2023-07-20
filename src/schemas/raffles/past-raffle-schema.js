@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const raffleEntrySchema = require('./raffle-entry-schema');
 const { Schema } = mongoose;
 
 const pastRaffleSchema = new Schema({
@@ -8,7 +9,7 @@ const pastRaffleSchema = new Schema({
 	description: String,
 	date: Number,
 	noOfWinners: Number,
-	entries: Array,
+	entries: [raffleEntrySchema],
 	winners: Array,
 });
 

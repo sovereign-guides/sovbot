@@ -1,12 +1,10 @@
-const { Events, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
+const { Events,
+	EmbedBuilder,
+} = require('discord.js');
 const UpcomingRaffle = require('../../schemas/raffles/upcoming-raffle-schema');
 
-function isAlreadyInRaffle(userId, entries) {
-	return entries.includes(userId);
-}
-
-async function joinRaffle(userId, raffle) {
-	raffle.entries.push(userId);
+async function joinRaffle(userId, raffle, vodLinkInput, focusInput) {
+	raffle.entries.push({ _id: userId, vodLink: vodLinkInput, focus: focusInput });
 	return raffle.save();
 }
 
@@ -25,29 +23,16 @@ function updateTotal(raffleMessage, updatedRaffleDocument) {
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
-		if (!interaction.isButton()) { return; }
-		if (interaction.customId !== 'raffle-join') { return; }
+		if (!interaction.isModalSubmit()) { return; }
+		if (interaction.customId !== 'modal-raffle-join') { return; }
 
 		const raffleMessage = interaction.message;
 		const raffle = await UpcomingRaffle.findById(raffleMessage.id);
 
-		if (isAlreadyInRaffle(interaction.user.id, raffle.entries)) {
-			const leaveRaffleButton = new ButtonBuilder()
-				.setCustomId('raffle-leave')
-				.setLabel('Leave Raffle')
-				.setStyle(ButtonStyle.Danger);
+		const vodLinkInput = interaction.fields.getTextInputValue('vodLinkInput');
+		const focusInput = interaction.fields.getTextInputValue('focusInput');
 
-			const row = new ActionRowBuilder()
-				.addComponents(leaveRaffleButton);
-
-			return await interaction.reply({
-				content: 'You have already entered this raffle!',
-				components: [row],
-				ephemeral: true,
-			});
-		}
-
-		const updatedRaffleDocument = await joinRaffle(interaction.user.id, raffle);
+		const updatedRaffleDocument = await joinRaffle(interaction.user.id, raffle, vodLinkInput, focusInput);
 		const updatedRaffleMessageEmbed = await updateTotal(raffleMessage, updatedRaffleDocument);
 
 		await interaction.update({

@@ -2,7 +2,7 @@ const { Events, EmbedBuilder } = require('discord.js');
 const UpcomingRaffle = require('../../schemas/raffles/upcoming-raffle-schema');
 
 function isAlreadyInRaffle(userId, entries) {
-	return entries.includes(userId);
+	return entries.id(userId);
 }
 
 function updateTotal(raffleMessage, updatedRaffleDocument) {
@@ -17,8 +17,8 @@ function updateTotal(raffleMessage, updatedRaffleDocument) {
 		.setDescription(newEmbedDescription);
 }
 
-async function leaveRaffle(userId, raffle) {
-	raffle.entries.pop(userId);
+async function leaveRaffleButton(userId, raffle) {
+	raffle.entries.pull(userId);
 	return raffle.save();
 }
 
@@ -26,7 +26,7 @@ module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
 		if (!interaction.isButton()) { return; }
-		if (interaction.customId !== 'raffle-leave') { return; }
+		if (interaction.customId !== 'button-raffle-leave') { return; }
 
 		const raffleMessage = await interaction.channel.messages.fetch(interaction.message.reference.messageId);
 		const raffle = await UpcomingRaffle.findById(raffleMessage.id);
@@ -39,7 +39,7 @@ module.exports = {
 			});
 		}
 
-		const updatedRaffleDocument = await leaveRaffle(interaction.user.id, raffle);
+		const updatedRaffleDocument = await leaveRaffleButton(interaction.user.id, raffle);
 		const updatedRaffleMessageEmbed = await updateTotal(raffleMessage, updatedRaffleDocument);
 
 		await raffleMessage.edit({

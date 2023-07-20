@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const raffleEntrySchema = require('./raffle-entry-schema');
 
 const upcomingRaffleSchema = new Schema({
 	_id: String,
@@ -8,8 +9,10 @@ const upcomingRaffleSchema = new Schema({
 	description: String,
 	date: Number,
 	noOfWinners: Number,
-	entries: Array,
+	entries: [raffleEntrySchema],
 });
 
 const UpcomingRaffle = mongoose.model('Upcoming-Raffle', upcomingRaffleSchema);
+
+module.exports = upcomingRaffleSchema;
 module.exports = UpcomingRaffle;
