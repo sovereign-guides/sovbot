@@ -41,8 +41,8 @@ function createJoinRaffleModal() {
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
-		if (!interaction.isButton()) { return; }
-		if (interaction.customId !== 'button-raffle-join') { return; }
+		if (!interaction.isButton()) return;
+		if (interaction.customId !== 'button-raffle-join') return;
 
 		const raffleMessage = interaction.message;
 		const raffle = await UpcomingRaffle.findById(raffleMessage.id);

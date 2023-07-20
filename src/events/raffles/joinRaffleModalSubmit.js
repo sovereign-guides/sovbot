@@ -23,8 +23,8 @@ function updateTotal(raffleMessage, updatedRaffleDocument) {
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
-		if (!interaction.isModalSubmit()) { return; }
-		if (interaction.customId !== 'modal-raffle-join') { return; }
+		if (!interaction.isModalSubmit()) return;
+		if (interaction.customId !== 'modal-raffle-join') return;
 
 		const raffleMessage = interaction.message;
 		const raffle = await UpcomingRaffle.findById(raffleMessage.id);

@@ -7,7 +7,7 @@ async function addUnverifiedRole(guildMember) {
 module.exports = {
 	name: Events.GuildMemberAdd,
 	async execute(guildMember) {
-		if (!guildMember.guild.available) { return; }
+		if (!guildMember.guild.available) return;
 
 		await addUnverifiedRole(guildMember);
 	},

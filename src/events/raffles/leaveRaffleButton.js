@@ -25,8 +25,8 @@ async function leaveRaffleButton(userId, raffle) {
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
-		if (!interaction.isButton()) { return; }
-		if (interaction.customId !== 'button-raffle-leave') { return; }
+		if (!interaction.isButton()) return;
+		if (interaction.customId !== 'button-raffle-leave') return;
 
 		const raffleMessage = await interaction.channel.messages.fetch(interaction.message.reference.messageId);
 		const raffle = await UpcomingRaffle.findById(raffleMessage.id);
