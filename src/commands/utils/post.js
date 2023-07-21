@@ -1,12 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits, inlineCode } = require('discord.js');
 const axios = require('axios');
+const matchYouTubeLink = require('../../utils/matchYouTubeLink');
 const { youTubeAPIKey } = require('../../config.json');
-
-
-function testLinkValidity(link) {
-	const regex = new RegExp('(?:youtu.be\\/|v\\/|u\\/\\w\\/|embed\\/|watch\\?v=)([^#\\&\\?]*)');
-	return link.match(regex);
-}
 
 
 async function getVideoTitle(vodLinkId) {
@@ -28,7 +23,6 @@ async function getVideoTitle(vodLinkId) {
 	return title;
 }
 
-
 async function updateAutoModRule(autoModRules, vodLinkId) {
 	const blockPremiumVideosRule = await autoModRules.fetch('1078256973558075453');
 
@@ -39,7 +33,6 @@ async function updateAutoModRule(autoModRules, vodLinkId) {
 		triggerMetadata: { keywordFilter: blockedWords },
 	});
 }
-
 
 async function createForumPost(shelves, vodShelfId, vodTitle, vodLink) {
 	const shelf = await shelves.get(vodShelfId);
@@ -80,7 +73,7 @@ module.exports = {
 		const vodLink = interaction.options.getString('link');
 		const vodShelfId = interaction.options.getString('shelf');
 
-		const valid = testLinkValidity(vodLink);
+		const valid = matchYouTubeLink(vodLink);
 		if (!valid) {
 			return await interaction.reply('Please check the provided link.');
 		}
