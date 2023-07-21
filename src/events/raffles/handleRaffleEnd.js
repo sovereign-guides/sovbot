@@ -1,8 +1,16 @@
-const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, bold } = require('discord.js');
+const { EmbedBuilder,
+	ButtonBuilder,
+	ActionRowBuilder,
+	bold,
+	ChannelType,
+	userMention,
+	ButtonStyle,
+} = require('discord.js');
 const PastRaffle = require('../../schemas/raffles/past-raffle-schema');
 const getWinners = require('../../utils/raffles/getWinners');
 const convertWinnerArrayToMentions = require('../../utils/raffles/convertWinnerArrayToMentions');
 const getOriginalRaffleMessage = require('../../utils/raffles/getOriginalRaffleMessage');
+const resolveGuildMember = require('../../utils/raffles/resolveGuildMember');
 const SovBot = require('../../index');
 
 
@@ -56,6 +64,51 @@ async function migrateRaffleDocument(oldRaffleDoc, winners) {
 		.then(await oldRaffleDoc.deleteOne()).catch(console.error);
 }
 
+function createPrivateThreadButtons() {
+	const agentButton = new ButtonBuilder()
+		.setCustomId('thread-set-agent-button')
+		.setLabel('Set Agent')
+		.setStyle(ButtonStyle.Secondary);
+
+	const mapButton = new ButtonBuilder()
+		.setCustomId('thread-set-map-button')
+		.setLabel('Set Map')
+		.setStyle(ButtonStyle.Secondary);
+
+	const rankButton = new ButtonBuilder()
+		.setCustomId('thread-set-rank-button')
+		.setLabel('Set Rank')
+		.setStyle(ButtonStyle.Secondary);
+
+	return new ActionRowBuilder().addComponents(agentButton, mapButton, rankButton);
+}
+
+async function createPrivateThreads(raffle, arrayOfWinners, originalRaffleMessage) {
+	const guild = originalRaffleMessage.guild;
+
+	for (const winner of arrayOfWinners) {
+		const guildMember = await resolveGuildMember(winner._id, guild);
+		if (!guildMember) {
+			continue;
+		}
+
+		const thread = await originalRaffleMessage.channel.threads.create({
+			name: (guildMember.nickname ?? guildMember.user.username) + ' — ' + raffle._id,
+			type: ChannelType.PrivateThread,
+			invitable: false,
+		});
+
+		const buttonRow = createPrivateThreadButtons();
+		await thread.send({
+			content: `Congrats ${userMention(guildMember.id)}, you won ${bold(raffle.prize)}!\n`
+				+ 'Now, before we can continue, please fill in some information about your VOD submitted via the buttons below!\n\n'
+				+ `🔎 What is the particular focus? ${winner.focus}\n`
+				+ `🔗 The YouTube link to your VOD? ${winner.vodLink}`,
+			components: [buttonRow],
+		}).then(m => m.pin());
+	}
+}
+
 
 module.exports.handleRaffleEnd = async function handleRaffleEnd(raffle) {
 	const messageId = raffle._id;
@@ -81,4 +134,6 @@ module.exports.handleRaffleEnd = async function handleRaffleEnd(raffle) {
 	await originalRaffleMessage.reply({
 		content: `Congratulations ${mentionsOfWinners}! You won the ${bold(prize)}!`,
 	});
+
+	await createPrivateThreads(raffle, arrayOfWinners, originalRaffleMessage);
 };
