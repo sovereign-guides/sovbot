@@ -28,6 +28,7 @@ function createJoinRaffleModal() {
 		.setStyle(TextInputStyle.Paragraph)
 		.setPlaceholder('When I notice an enemy...')
 		.setMinLength(10)
+		.setMaxLength(1250)
 		.setRequired(true);
 
 	const firstActionRow = new ActionRowBuilder().addComponents(vodLinkInput);
