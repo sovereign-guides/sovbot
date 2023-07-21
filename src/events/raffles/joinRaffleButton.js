@@ -27,6 +27,7 @@ function createJoinRaffleModal() {
 		.setLabel('🔎 What is the particular focus?')
 		.setStyle(TextInputStyle.Paragraph)
 		.setPlaceholder('When I notice an enemy...')
+		.setMinLength(10)
 		.setRequired(true);
 
 	const firstActionRow = new ActionRowBuilder().addComponents(vodLinkInput);
