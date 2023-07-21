@@ -7,10 +7,8 @@ const { Events,
 	TextInputStyle,
 } = require('discord.js');
 const UpcomingRaffle = require('../../schemas/raffles/upcoming-raffle-schema');
+const isAlreadyInRaffle = require('../../utils/raffles/isAlreadyInRaffle');
 
-function isAlreadyInRaffle(userId, entries) {
-	return entries.id(userId);
-}
 
 function createJoinRaffleModal() {
 	const modal = new ModalBuilder()
@@ -37,6 +35,7 @@ function createJoinRaffleModal() {
 	modal.addComponents(firstActionRow, secondActionRow);
 	return modal;
 }
+
 
 module.exports = {
 	name: Events.InteractionCreate,

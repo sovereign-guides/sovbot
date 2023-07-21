@@ -1,9 +1,7 @@
 const { Events, EmbedBuilder } = require('discord.js');
 const UpcomingRaffle = require('../../schemas/raffles/upcoming-raffle-schema');
+const isAlreadyInRaffle = require('../../utils/raffles/isAlreadyInRaffle');
 
-function isAlreadyInRaffle(userId, entries) {
-	return entries.id(userId);
-}
 
 function updateTotal(raffleMessage, updatedRaffleDocument) {
 	const regex = new RegExp('Entries: \\*\\*[0-9]\\*\\*+');
@@ -22,6 +20,7 @@ async function leaveRaffleButton(userId, raffle) {
 	return raffle.save();
 }
 
+
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
@@ -30,6 +29,13 @@ module.exports = {
 
 		const raffleMessage = await interaction.channel.messages.fetch(interaction.message.reference.messageId);
 		const raffle = await UpcomingRaffle.findById(raffleMessage.id);
+		if (!raffle) {
+			return await interaction.update({
+				content: '💥 This raffle has already ended!',
+				components: [],
+				ephemeral: true,
+			});
+		}
 
 		if (!isAlreadyInRaffle(interaction.user.id, raffle.entries)) {
 			return await interaction.update({

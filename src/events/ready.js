@@ -1,7 +1,7 @@
 const { Events } = require('discord.js');
 const mongoose = require('mongoose');
 const Raffle = require('../schemas/raffles/upcoming-raffle-schema');
-const queryRaffleDatabase = require('../utils/queryRaffleDatabase');
+const queryRaffleDatabase = require('../utils/raffles/queryRaffleDatabase');
 const { mongo } = require('../dev.config.json');
 
 async function connectToMongo(database) {

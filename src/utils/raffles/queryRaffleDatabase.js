@@ -1,5 +1,6 @@
 const dayjs = require('dayjs');
-const { handleRaffleEnd } = require('../events/raffles/handleRaffleEnd');
+const { handleRaffleEnd } = require('../../events/raffles/handleRaffleEnd');
+
 
 module.exports = async function queryRaffleDatabase(table) {
 	const currentDate = dayjs();
@@ -11,4 +12,3 @@ module.exports = async function queryRaffleDatabase(table) {
 	const raffle = docs[0];
 	await handleRaffleEnd(raffle);
 };
-

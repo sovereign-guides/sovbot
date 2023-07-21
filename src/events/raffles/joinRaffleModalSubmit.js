@@ -3,6 +3,7 @@ const { Events,
 } = require('discord.js');
 const UpcomingRaffle = require('../../schemas/raffles/upcoming-raffle-schema');
 
+
 async function joinRaffle(userId, raffle, vodLinkInput, focusInput) {
 	raffle.entries.push({ _id: userId, vodLink: vodLinkInput, focus: focusInput });
 	return raffle.save();
@@ -19,6 +20,7 @@ function updateTotal(raffleMessage, updatedRaffleDocument) {
 	return EmbedBuilder.from(oldEmbed)
 		.setDescription(newEmbedDescription);
 }
+
 
 module.exports = {
 	name: Events.InteractionCreate,

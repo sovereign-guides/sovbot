@@ -1,94 +1,10 @@
-const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, userMention, bold } = require('discord.js');
+const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, bold } = require('discord.js');
 const PastRaffle = require('../../schemas/raffles/past-raffle-schema');
+const getWinners = require('../../utils/raffles/getWinners');
+const convertWinnerArrayToMentions = require('../../utils/raffles/convertWinnerArrayToMentions');
+const getOriginalRaffleMessage = require('../../utils/raffles/getOriginalRaffleMessage');
 const SovBot = require('../../index');
 
-async function resolveGuildMember(memberId, guild) {
-	return await guild.members.fetch(memberId)
-		.catch(e => {
-			if (e.code === 10017) {
-				return false;
-			}
-		});
-}
-
-async function getPremiumExtraOdds(guildMemberRoles) {
-	const premiumRoles = new Map;
-	premiumRoles.set('1077686372518871060', { odds: '2' });
-	premiumRoles.set('1077688625967403119', { odds: '3' });
-	premiumRoles.set('1077690600280838245', { odds: '5' });
-	// TODO remove
-	premiumRoles.set('1065727708824350792', { odds: '6' });
-
-	// TODO Remove
-	const tierZay = '1065727708824350792';
-
-	const tier3 = '1077690600280838245';
-	const tier2 = '1077688625967403119';
-	const tier1 = '1077686372518871060';
-
-	if (guildMemberRoles.has(tierZay)) {
-		return premiumRoles.get(tierZay).odds;
-	}
-
-	if (guildMemberRoles.has(tier3)) {
-		return premiumRoles.get(tier3).odds;
-	}
-
-	else if (guildMemberRoles.has(tier2)) {
-		return premiumRoles.get(tier2).odds;
-	}
-
-	else if (guildMemberRoles.has(tier1)) {
-		return premiumRoles.get(tier1).odds;
-	}
-
-	else {
-		return 1;
-	}
-}
-
-async function getWinners(entries, guild, noOfWinners) {
-	let entriesWithOdds = [];
-
-	for await (const entry of entries) {
-		const memberId = entry._id;
-
-		const guildMember = await resolveGuildMember(memberId, guild);
-		if (!guildMember) {
-			continue;
-		}
-
-		const guildMemberRoles = guildMember.roles.cache;
-		const extraOdds = await getPremiumExtraOdds(guildMemberRoles);
-
-		for (let i = 0; i < extraOdds; i++) {
-			entriesWithOdds.push(entry);
-		}
-	}
-
-	const winners = [];
-	for (let i = 0; i < noOfWinners; i++) {
-		const winner = entriesWithOdds[Math.floor(Math.random() * entriesWithOdds.length)]
-			?? { _id: '1000927602518798487' };
-		winners.push(winner);
-		entriesWithOdds = entriesWithOdds.filter(entry => entry !== winner);
-	}
-
-	return winners;
-}
-
-function convertWinnerArrayToMentions(arrayOfWinners) {
-	const mentionsOfWinners = [];
-	for (const winner of arrayOfWinners) {
-		mentionsOfWinners.push(userMention(winner._id));
-	}
-
-	return mentionsOfWinners;
-}
-
-async function getOriginalRaffleMessage(messageId, channel) {
-	return channel.messages.fetch(messageId);
-}
 
 async function disableRaffleMessageComponents(originalRaffleMessage) {
 	const oldButton = originalRaffleMessage.components[0].components[0];
@@ -139,6 +55,7 @@ async function migrateRaffleDocument(oldRaffleDoc, winners) {
 		.catch(console.error)
 		.then(await oldRaffleDoc.deleteOne()).catch(console.error);
 }
+
 
 module.exports.handleRaffleEnd = async function handleRaffleEnd(raffle) {
 	const messageId = raffle._id;
