@@ -6,9 +6,18 @@ const raffleEntrySchema = new Schema({
 	vodLink: String,
 	focus: String,
 	game: {
-		agent: String,
-		map: String,
-		rank: String,
+		agent: {
+			type: String,
+			default: '',
+		},
+		map: {
+			type: String,
+			default: '',
+		},
+		rank: {
+			type: String,
+			default: '',
+		},
 	},
 });
 

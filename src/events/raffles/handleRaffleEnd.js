@@ -93,7 +93,7 @@ async function createPrivateThreads(raffle, arrayOfWinners, originalRaffleMessag
 		}
 
 		const thread = await originalRaffleMessage.channel.threads.create({
-			name: (guildMember.nickname ?? guildMember.user.username) + ' — ' + raffle._id,
+			name: (guildMember.nickname ?? guildMember.user.username) + ` (${guildMember.user.id}) ` + ' — ' + raffle._id,
 			type: ChannelType.PrivateThread,
 			invitable: false,
 		});
@@ -101,7 +101,7 @@ async function createPrivateThreads(raffle, arrayOfWinners, originalRaffleMessag
 		const buttonRow = createPrivateThreadButtons();
 		await thread.send({
 			content: `Congrats ${userMention(guildMember.id)}, you won ${bold(raffle.prize)}!\n`
-				+ 'Now, before we can continue, please fill in some information about your VOD submitted via the buttons below!\n\n'
+				+ 'Now, before we can continue, please fill in some information about your VOD via the buttons below!\n\n'
 				+ `🔎 What is the particular focus? ${winner.focus}\n`
 				+ `🔗 The YouTube link to your VOD? ${winner.vodLink}`,
 			components: [buttonRow],
