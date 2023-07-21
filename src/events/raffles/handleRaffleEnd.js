@@ -70,7 +70,12 @@ module.exports.handleRaffleEnd = async function handleRaffleEnd(raffle) {
 
 	const mentionsOfWinners = convertWinnerArrayToMentions(arrayOfWinners);
 
-	const originalRaffleMessage = await getOriginalRaffleMessage(messageId, channel);
+	const originalRaffleMessage = await getOriginalRaffleMessage(messageId, channel)
+		.catch(e => console.error(e.code));
+	if (!originalRaffleMessage) {
+		return console.error('Raffle Deleted!', raffle);
+	}
+
 	await editRaffleMessage(originalRaffleMessage, mentionsOfWinners);
 
 	await originalRaffleMessage.reply({
