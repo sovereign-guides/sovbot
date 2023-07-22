@@ -80,7 +80,12 @@ function createPrivateThreadButtons() {
 		.setLabel('Set Rank')
 		.setStyle(ButtonStyle.Secondary);
 
-	return new ActionRowBuilder().addComponents(agentButton, mapButton, rankButton);
+	const calendlyButton = new ButtonBuilder()
+		.setLabel('Schedule Session')
+		.setStyle(ButtonStyle.Link)
+		.setURL('https://calendly.com/sovereignguides/free-coaching');
+
+	return new ActionRowBuilder().addComponents(agentButton, mapButton, rankButton, calendlyButton);
 }
 
 async function createPrivateThreads(raffle, arrayOfWinners, originalRaffleMessage) {
@@ -100,8 +105,12 @@ async function createPrivateThreads(raffle, arrayOfWinners, originalRaffleMessag
 
 		const buttonRow = createPrivateThreadButtons();
 		await thread.send({
-			content: `Congrats ${userMention(guildMember.id)}, you won ${bold(raffle.prize)}!\n`
-				+ 'Now, before we can continue, please fill in some information about your VOD via the buttons below!\n\n'
+			content: `Congrats ${userMention(guildMember.id)}, you won ${bold(raffle.prize)}! `
+				+ 'Now, please follow these next few steps.\n\n'
+				+ '1. Submit which agent you played with.\n'
+				+ '2. Submit which map you played on.\n'
+				+ '3. Submit which rank you played in.\n'
+				+ '4. Book your session with Airen using the Calendly link below!\n\n'
 				+ `🔎 What is the particular focus? ${winner.focus}\n`
 				+ `🔗 The YouTube link to your VOD? ${winner.vodLink}`,
 			components: [buttonRow],
