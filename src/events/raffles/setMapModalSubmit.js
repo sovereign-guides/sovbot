@@ -41,23 +41,31 @@ async function setMapResponse(raffleMessageId, thread, map) {
 	).catch(e => console.error(e));
 }
 
+
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
 		if (!interaction.isModalSubmit()) return;
 		if (interaction.customId !== 'modal-raffle-set-map') return;
 
-		const agentInput = interaction.fields.getTextInputValue('mapInput');
+		const mapInput = interaction.fields.getTextInputValue('mapInput');
 		const allMaps = await getAllMaps();
 		if (!allMaps) {
-			return interaction.reply('Could not get map.');
+			return interaction.reply('Could not get maps.');
 		}
 
 		let gameMap = '';
 		for (const map of allMaps) {
-			if (map.toLowerCase() === agentInput) {
+			if (map.toLowerCase() === mapInput) {
 				gameMap = map;
 			}
+		}
+
+		if (gameMap === '') {
+			return interaction.reply({
+				content: 'Please enter a valid map. Make sure you\'re entering only the name!',
+				ephemeral: true,
+			});
 		}
 
 		const thread = interaction.message.channel;

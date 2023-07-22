@@ -41,6 +41,7 @@ async function setAgentResponse(raffleMessageId, thread, agent) {
 	).catch(e => console.error(e));
 }
 
+
 module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
@@ -50,7 +51,7 @@ module.exports = {
 		const agentInput = interaction.fields.getTextInputValue('agentInput');
 		const allAgents = await getAllAgents();
 		if (!allAgents) {
-			return interaction.reply('Could not get agent.');
+			return interaction.reply('Could not get agents.');
 		}
 
 		let gameAgent = '';
@@ -58,6 +59,13 @@ module.exports = {
 			if (agent.toLowerCase() === agentInput) {
 				gameAgent = agent;
 			}
+		}
+
+		if (gameAgent === '') {
+			return interaction.reply({
+				content: 'Please enter a valid agent. Make sure you\'re entering only the name!',
+				ephemeral: true,
+			});
 		}
 
 		const thread = interaction.message.channel;
