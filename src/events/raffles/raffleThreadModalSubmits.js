@@ -1,8 +1,11 @@
-const { Events } = require('discord.js');
+const { Events, GuildScheduledEventPrivacyLevel, GuildScheduledEventEntityType } = require('discord.js');
 const axios = require('axios');
 const PastRaffle = require('../../schemas/raffles/past-raffle-schema');
 const getWinnerIdFromThread = require('../../utils/raffles/getWinnerIdFromThread');
 const getRaffleMessageIdFromThread = require('../../utils/raffles/getRaffleMessageIdFromThread');
+const validateDate = require('../../utils/raffles/validateDate');
+const getRaffleObject = require('../../utils/raffles/getWinnerObject');
+const dayjs = require('dayjs');
 
 
 async function getAllAgents() {
@@ -96,6 +99,34 @@ async function setRankResponse(raffleMessageId, thread, rank) {
 	).catch(e => console.error(e));
 }
 
+async function createGuildEvent(interaction, date) {
+	const thread = await interaction.guild.channels.cache.get(interaction.channelId);
+	const raffleId = getRaffleMessageIdFromThread(thread);
+	const winnerId = getWinnerIdFromThread(thread);
+
+	const raffleObject = await getRaffleObject(raffleId);
+	const { prize, description } = raffleObject;
+
+	const winnerObject = raffleObject.winners.filter(winner => winner._id === winnerId)[0];
+	const { game: { agent: agent, map: map, rank: rank } } = winnerObject;
+
+	const event = await interaction.guild.scheduledEvents.create({
+		name: `${prize}: ${agent} — ${map} — ${rank}`,
+		scheduledStartTime: date,
+		privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
+		entityType: GuildScheduledEventEntityType.StageInstance,
+		description: description ?? '',
+		channel: '1132164025136980039',
+		// TODO
+		// channel: '1077681347709108324'
+	});
+
+	await interaction.reply({
+		content: `Event created!\n${event.url}`,
+		ephemeral: true,
+	});
+}
+
 
 module.exports = {
 	name: Events.InteractionCreate,
@@ -161,7 +192,7 @@ module.exports = {
 			});
 		}
 
-		if (interaction.customId === 'modal-raffle-set-rank') {
+		else if (interaction.customId === 'modal-raffle-set-rank') {
 			const rankInput = interaction.fields.getTextInputValue('rankInput').toLowerCase();
 			const allRanks = await getAllRanks();
 			if (!allRanks) {
@@ -189,6 +220,19 @@ module.exports = {
 				content: `${gameRank} set as VOD rank.`,
 				ephemeral: true,
 			});
+		}
+
+		else if (interaction.customId === 'modal-raffle-get-event-start-time') {
+			const date = interaction.fields.getTextInputValue('timeInput');
+
+			if (validateDate(date) === false) {
+				return interaction.reply({
+					content: 'Please enter a valid date.',
+					ephemeral: true,
+				});
+			}
+
+			await createGuildEvent(interaction, dayjs.unix(date));
 		}
 	},
 };

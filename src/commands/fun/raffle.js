@@ -8,27 +8,9 @@ const { SlashCommandBuilder,
 	ButtonStyle,
 	ActionRowBuilder,
 } = require('discord.js');
-const dayjs = require('dayjs');
-const customParseFormat = require('dayjs/plugin/customParseFormat');
+const validateDate = require('../../utils/raffles/validateDate');
 const UpcomingRaffle = require('../../schemas/raffles/upcoming-raffle-schema');
 
-function validateDate(date) {
-	let isValid = true;
-	const formattedDate = dayjs.unix(date);
-
-	dayjs.extend(customParseFormat);
-	if (dayjs(formattedDate, 'x').isValid() === false) {
-		isValid = false;
-	}
-
-	const now = dayjs();
-	const timeDifference = formattedDate - now;
-	if (timeDifference < 0) {
-		return false;
-	}
-
-	return isValid;
-}
 
 function createRaffleEmbed(prize, description, date, noOfWinners) {
 	if (description) {
