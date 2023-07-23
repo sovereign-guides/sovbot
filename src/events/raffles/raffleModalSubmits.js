@@ -1,12 +1,31 @@
-const { Events, GuildScheduledEventPrivacyLevel, GuildScheduledEventEntityType } = require('discord.js');
+const { Events, GuildScheduledEventPrivacyLevel, GuildScheduledEventEntityType, userMention, inlineCode, EmbedBuilder } = require('discord.js');
 const axios = require('axios');
+const dayjs = require('dayjs');
 const PastRaffle = require('../../schemas/raffles/past-raffle-schema');
+const UpcomingRaffle = require('../../schemas/raffles/upcoming-raffle-schema');
 const getWinnerIdFromThread = require('../../utils/raffles/getWinnerIdFromThread');
 const getRaffleMessageIdFromThread = require('../../utils/raffles/getRaffleMessageIdFromThread');
 const validateDate = require('../../utils/raffles/validateDate');
 const getRaffleObject = require('../../utils/raffles/getWinnerObject');
-const dayjs = require('dayjs');
+const matchYouTubeLink = require('../../utils/matchYouTubeLink');
 
+
+async function joinRaffle(userId, raffle, vodLinkInput, focusInput) {
+	raffle.entries.push({ _id: userId, vodLink: vodLinkInput, focus: focusInput });
+	return raffle.save();
+}
+
+function updateTotal(raffleMessage, updatedRaffleDocument) {
+	const regex = new RegExp('Entries: \\*\\*[0-9]\\*\\*+');
+
+	const oldEmbed = raffleMessage.embeds[0];
+
+	const newEntryCount = updatedRaffleDocument.entries.length;
+	const newEmbedDescription = oldEmbed.description.replace(regex, `Entries: **${newEntryCount}**`);
+
+	return EmbedBuilder.from(oldEmbed)
+		.setDescription(newEmbedDescription);
+}
 
 async function getAllAgents() {
 	const req = await axios.get('https://valorant-api.com/v1/agents?isPlayableCharacter=true')
@@ -132,7 +151,33 @@ module.exports = {
 	name: Events.InteractionCreate,
 	async execute(interaction) {
 		if (!interaction.isModalSubmit()) return;
-		if (interaction.customId === 'modal-raffle-set-agent') {
+
+		if (interaction.customId === 'modal-raffle-join') {
+			const raffleMessage = interaction.message;
+			const raffle = await UpcomingRaffle.findById(raffleMessage.id);
+
+			const focusInput = interaction.fields.getTextInputValue('focusInput');
+			const vodLinkInput = interaction.fields.getTextInputValue('vodLinkInput');
+
+			const linkValidity = matchYouTubeLink(vodLinkInput);
+			if (!linkValidity) {
+				return await interaction.reply({
+					content: `I'm sorry, I do not believe your VOD link to be a YouTube link. Please upload your VOD to YouTube then resubmit this form. If I am wrong, please contact ${userMention('1032393684378992692')}.`
+						+ `\n\n🔎 What is the particular focus? ${inlineCode(focusInput)}`
+						+ `\n🔗 The YouTube link to your VOD? ${inlineCode(vodLinkInput)}`,
+					ephemeral: true,
+				});
+			}
+
+			const updatedRaffleDocument = await joinRaffle(interaction.user.id, raffle, vodLinkInput, focusInput);
+			const updatedRaffleMessageEmbed = await updateTotal(raffleMessage, updatedRaffleDocument);
+
+			await interaction.update({
+				embeds: [updatedRaffleMessageEmbed],
+			});
+		}
+
+		else if (interaction.customId === 'modal-raffle-set-agent') {
 			const agentInput = interaction.fields.getTextInputValue('agentInput').toLowerCase();
 			const allAgents = await getAllAgents();
 			if (!allAgents) {

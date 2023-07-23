@@ -116,7 +116,7 @@ async function createPrivateThreads(raffle, arrayOfWinners, originalRaffleMessag
 				+ '1. Submit which agent you played with.\n'
 				+ '2. Submit which map you played on.\n'
 				+ '3. Submit which rank you played in.\n'
-				+ '4. Book your session with Airen using the Calendly link!\n\n'
+				+ '4. Schedule your session with Airen using the Calendly link!\n\n'
 				+ `🔎 What is the particular focus? ${winner.focus}\n`
 				+ `🔗 The YouTube link to your VOD? ${winner.vodLink}`,
 			components: [buttonRow],
