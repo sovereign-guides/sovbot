@@ -141,6 +141,8 @@ async function gatekeepCreateEventButton(interaction) {
 			ephemeral: true,
 		});
 	}
+
+	return false;
 }
 
 async function getEventStartTime(interaction) {
@@ -237,8 +239,10 @@ module.exports = {
 		}
 
 		else if (interaction.customId === 'thread-create-event-button') {
-			await gatekeepCreateEventButton(interaction);
-			await getEventStartTime(interaction);
+			const stopSubmit = await gatekeepCreateEventButton(interaction);
+			if (!stopSubmit) {
+				await getEventStartTime(interaction);
+			}
 		}
 	},
 };
