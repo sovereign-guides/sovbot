@@ -102,7 +102,7 @@ module.exports = {
 	async execute(interaction) {
 		if (!interaction.isModalSubmit()) return;
 		if (interaction.customId === 'modal-raffle-set-agent') {
-			const agentInput = interaction.fields.getTextInputValue('agentInput');
+			const agentInput = interaction.fields.getTextInputValue('agentInput').toLowerCase();
 			const allAgents = await getAllAgents();
 			if (!allAgents) {
 				return interaction.reply('Could not get agents.');
@@ -132,7 +132,7 @@ module.exports = {
 		}
 
 		else if (interaction.customId === 'modal-raffle-set-map') {
-			const mapInput = interaction.fields.getTextInputValue('mapInput');
+			const mapInput = interaction.fields.getTextInputValue('mapInput').toLowerCase();
 			const allMaps = await getAllMaps();
 			if (!allMaps) {
 				return interaction.reply('Could not get maps.');
