@@ -33,7 +33,7 @@ module.exports = {
 	async execute(oldMember, newMember) {
 		if (oldMember.pending && !newMember.pending) {
 
-			if (!newMember.guild.available) { return; }
+			if (!newMember.guild.available) return;
 
 			await removeUnverifiedRole(newMember);
 
