@@ -1,6 +1,5 @@
 const { Events } = require('discord.js');
 const mongoose = require('mongoose');
-const Raffle = require('../../raffles/schemas/upcoming-raffle-schema');
 const queryRaffleDatabase = require('../../raffles/utils/queryRaffleDatabase');
 const { mongo } = require('../../../config.json');
 
@@ -27,8 +26,8 @@ async function validateClient(client) {
 	console.log(`${client.user.tag} (${client.user.id}) is online!`);
 }
 
-async function scheduleTableQuery(table) {
-	setInterval(await queryRaffleDatabase, 60_000, table);
+async function scheduleTableQuery() {
+	setInterval(await queryRaffleDatabase, 60_000);
 }
 
 module.exports = {
@@ -37,6 +36,6 @@ module.exports = {
 	async execute(client) {
 		await connectToMongo('raffles');
 		await validateClient(client);
-		await scheduleTableQuery(Raffle);
+		await scheduleTableQuery();
 	},
 };
