@@ -51,6 +51,7 @@ async function saveRaffle(raffleMessage, prize, description, date, noOfWinners) 
 	await doc.save();
 }
 
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('raffle')

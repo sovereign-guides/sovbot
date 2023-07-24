@@ -113,7 +113,7 @@ async function createPrivateThreads(raffle, arrayOfWinners, originalRaffleMessag
 }
 
 
-module.exports.handleRaffleEnd = async function handleRaffleEnd(raffle) {
+module.exports = async function handleRaffleEnd(raffle) {
 	const messageId = raffle._id;
 	const { channelId, prize, noOfWinners, entries } = raffle;
 
