@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits, inlineCode } = require('discord.js');
 const axios = require('axios');
-const matchYouTubeLink = require('../../utils/matchYouTubeLink');
-const { youTubeAPIKey } = require('../../config.json');
+const matchYouTubeLink = require('../../../utils/matchYouTubeLink');
+const { youTubeAPIKey } = require('../../../config.json');
 
 
 async function getVideoTitle(vodLinkId) {

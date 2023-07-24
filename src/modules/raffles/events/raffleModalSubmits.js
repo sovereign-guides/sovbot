@@ -1,13 +1,13 @@
 const { Events, GuildScheduledEventPrivacyLevel, GuildScheduledEventEntityType, userMention, inlineCode, EmbedBuilder } = require('discord.js');
 const axios = require('axios');
 const dayjs = require('dayjs');
-const PastRaffle = require('../../schemas/raffles/past-raffle-schema');
-const UpcomingRaffle = require('../../schemas/raffles/upcoming-raffle-schema');
-const getWinnerIdFromThread = require('../../utils/raffles/getWinnerIdFromThread');
-const getRaffleMessageIdFromThread = require('../../utils/raffles/getRaffleMessageIdFromThread');
-const validateDate = require('../../utils/raffles/validateDate');
-const getRaffleObject = require('../../utils/raffles/getWinnerObject');
-const matchYouTubeLink = require('../../utils/matchYouTubeLink');
+const PastRaffle = require('../schemas/past-raffle-schema');
+const UpcomingRaffle = require('../schemas/upcoming-raffle-schema');
+const getWinnerIdFromThread = require('../utils/getWinnerIdFromThread');
+const getRaffleMessageIdFromThread = require('../utils/getRaffleMessageIdFromThread');
+const validateDate = require('../utils/validateDate');
+const getRaffleObject = require('../utils/getWinnerObject');
+const matchYouTubeLink = require('../../../utils/matchYouTubeLink');
 
 
 async function joinRaffle(userId, raffle, vodLinkInput, focusInput) {
@@ -216,7 +216,7 @@ module.exports = {
 			).catch(e => console.error(e));
 
 			await interaction.reply({
-				content: `${agentInput}, ${mapInput}, ${rankInput} all set!`,
+				content: `${toPascalCase(agentInput)}, ${toPascalCase(mapInput)}, ${toPascalCase(rankInput)} all set!`,
 			});
 		}
 

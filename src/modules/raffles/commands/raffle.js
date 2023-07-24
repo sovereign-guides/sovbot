@@ -8,8 +8,8 @@ const { SlashCommandBuilder,
 	ButtonStyle,
 	ActionRowBuilder,
 } = require('discord.js');
-const validateDate = require('../../utils/raffles/validateDate');
-const UpcomingRaffle = require('../../schemas/raffles/upcoming-raffle-schema');
+const validateDate = require('../utils/validateDate');
+const UpcomingRaffle = require('../schemas/upcoming-raffle-schema');
 
 
 function createRaffleEmbed(prize, description, date, noOfWinners) {

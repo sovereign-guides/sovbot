@@ -6,11 +6,11 @@ const { Events,
 	TextInputBuilder,
 	TextInputStyle, EmbedBuilder,
 } = require('discord.js');
-const UpcomingRaffle = require('../../schemas/raffles/upcoming-raffle-schema');
-const isAlreadyInRaffle = require('../../utils/raffles/isAlreadyInRaffle');
-const getRaffleMessageIdFromThread = require('../../utils/raffles/getRaffleMessageIdFromThread');
-const getWinnerIdFromThread = require('../../utils/raffles/getWinnerIdFromThread');
-const getRaffleObject = require('../../utils/raffles/getWinnerObject');
+const UpcomingRaffle = require('../schemas/upcoming-raffle-schema');
+const isAlreadyInRaffle = require('../utils/isAlreadyInRaffle');
+const getRaffleMessageIdFromThread = require('../utils/getRaffleMessageIdFromThread');
+const getWinnerIdFromThread = require('../utils/getWinnerIdFromThread');
+const getRaffleObject = require('../utils/getWinnerObject');
 
 
 function createJoinRaffleModal() {

@@ -35,7 +35,7 @@ const client = new Client({
 });
 
 client.commands = new Collection();
-const commandFiles = globSync('src/commands/**/*.js');
+const commandFiles = globSync('src/modules/**/commands/*.js');
 for (let file of commandFiles) {
 	file = file.replace('src\\', './');
 	const command = require(file);
@@ -48,7 +48,7 @@ for (let file of commandFiles) {
 	}
 }
 
-const eventFiles = globSync('src/events/**/*.js');
+const eventFiles = globSync('src/modules/**/events/*.js');
 for (let file of eventFiles) {
 	file = file.replace('src\\', './');
 	const event = require(file);

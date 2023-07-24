@@ -1,9 +1,9 @@
-const { globSync } = require('glob');
 const { REST, Routes } = require('discord.js');
-const { clientId, discordToken } = require('./dev.config.json');
+const { globSync } = require('glob');
+const { discordToken, clientId, guildId } = require('./dev.config.json');
 
 const commands = [];
-const commandFiles = globSync('./commands/**/*.js');
+const commandFiles = globSync('./modules/**/commands/*.js');
 
 for (const file of commandFiles) {
 	const command = require(`./${file}`);
@@ -17,7 +17,7 @@ const rest = new REST({ version: '10' }).setToken(discordToken);
 		console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
 		const data = await rest.put(
-			Routes.applicationCommands(clientId),
+			Routes.applicationGuildCommands(clientId, guildId),
 			{ body: commands },
 		);
 

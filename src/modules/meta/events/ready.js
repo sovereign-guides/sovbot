@@ -1,8 +1,8 @@
 const { Events } = require('discord.js');
 const mongoose = require('mongoose');
-const Raffle = require('../schemas/raffles/upcoming-raffle-schema');
-const queryRaffleDatabase = require('../utils/raffles/queryRaffleDatabase');
-const { mongo } = require('../dev.config.json');
+const Raffle = require('../../raffles/schemas/upcoming-raffle-schema');
+const queryRaffleDatabase = require('../../raffles/utils/queryRaffleDatabase');
+const { mongo } = require('../../../dev.config.json');
 
 async function connectToMongo(database) {
 	const username = encodeURIComponent(mongo.username);

@@ -1,10 +1,10 @@
 const { Events, userMention, hyperlink } = require('discord.js');
 const handleRaffleEnd = require('./handleRaffleEnd');
-const getOriginalRaffleMessage = require('../../utils/raffles/getOriginalRaffleMessage');
-const getWinners = require('../../utils/raffles/getWinners');
-const convertWinnerArrayToMentions = require('../../utils/raffles/convertWinnerArrayToMentions');
-const PastRaffle = require('../../schemas/raffles/past-raffle-schema');
-const UpcomingRaffle = require('../../schemas/raffles/upcoming-raffle-schema');
+const getOriginalRaffleMessage = require('../utils/getOriginalRaffleMessage');
+const getWinners = require('../utils/getWinners');
+const convertWinnerArrayToMentions = require('../utils/convertWinnerArrayToMentions');
+const PastRaffle = require('../schemas/past-raffle-schema');
+const UpcomingRaffle = require('../schemas/upcoming-raffle-schema');
 
 
 async function isCompletedRaffle(interaction, targetMessage) {

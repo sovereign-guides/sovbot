@@ -6,12 +6,12 @@ const { EmbedBuilder,
 	userMention,
 	ButtonStyle,
 } = require('discord.js');
-const PastRaffle = require('../../schemas/raffles/past-raffle-schema');
-const getWinners = require('../../utils/raffles/getWinners');
-const convertWinnerArrayToMentions = require('../../utils/raffles/convertWinnerArrayToMentions');
-const getOriginalRaffleMessage = require('../../utils/raffles/getOriginalRaffleMessage');
-const resolveGuildMember = require('../../utils/raffles/resolveGuildMember');
-const SovBot = require('../../index');
+const PastRaffle = require('../schemas/past-raffle-schema');
+const getWinners = require('../utils/getWinners');
+const convertWinnerArrayToMentions = require('../utils/convertWinnerArrayToMentions');
+const getOriginalRaffleMessage = require('../utils/getOriginalRaffleMessage');
+const resolveGuildMember = require('../utils/resolveGuildMember');
+const SovBot = require('../../../index');
 
 
 async function disableRaffleMessageComponents(originalRaffleMessage) {
