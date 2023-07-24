@@ -1,6 +1,6 @@
 const { REST, Routes } = require('discord.js');
 const { globSync } = require('glob');
-const { discordToken, clientId, guildId } = require('./dev.config.json');
+const { discordToken, clientId, guildId } = require('./config.json');
 
 const commands = [];
 const commandFiles = globSync('./modules/**/commands/*.js');

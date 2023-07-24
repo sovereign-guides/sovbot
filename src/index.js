@@ -1,6 +1,6 @@
 const { Client, GatewayIntentBits, Collection, Options } = require('discord.js');
 const { globSync } = require('glob');
-const { discordToken } = require('./dev.config.json');
+const { discordToken } = require('./config.json');
 
 const client = new Client({
 	intents: [
