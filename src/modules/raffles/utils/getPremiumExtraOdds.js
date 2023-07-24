@@ -8,11 +8,6 @@ module.exports = async function getPremiumExtraOdds(guildMemberRoles) {
 	premiumRoles.set('1077686372518871060', { odds: 2 });
 	premiumRoles.set('1077688625967403119', { odds: 3 });
 	premiumRoles.set('1077690600280838245', { odds: 5 });
-	// TODO remove
-	premiumRoles.set('1065727708824350792', { odds: 6 });
-
-	// TODO Remove
-	const tierZay = '1065727708824350792';
 
 	const tier3 = '1077690600280838245';
 	const tier2 = '1077688625967403119';

@@ -93,9 +93,7 @@ module.exports = {
 			const description = interaction.options?.getString('description') || null;
 			const date = interaction.options.getNumber('date');
 			const channel = interaction.options?.getChannel('channel')
-				// TODO
-				// ?? await interaction.options.guild.channels.cache.get('1112540056528375913');
-				?? await interaction.guild.channels.cache.get('1126970529224597544');
+				?? await interaction.options.guild.channels.cache.get('1112540056528375913');
 			const noOfWinners = interaction.options?.getNumber('winner-count') ?? 1;
 
 			if (validateDate(date) === false) {

@@ -96,9 +96,7 @@ async function createGuildEvent(interaction, date) {
 		privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
 		entityType: GuildScheduledEventEntityType.StageInstance,
 		description: description ?? '',
-		channel: '1132164025136980039',
-		// TODO
-		// channel: '1077681347709108324'
+		channel: '1077681347709108324',
 	});
 
 	await interaction.reply({

@@ -28,8 +28,7 @@ async function validateClient(client) {
 }
 
 async function scheduleTableQuery(table) {
-	// ToDo Adjust 10000 -> 60_000
-	setInterval(await queryRaffleDatabase, 10_000, table);
+	setInterval(await queryRaffleDatabase, 60_000, table);
 }
 
 module.exports = {
