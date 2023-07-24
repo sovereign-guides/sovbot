@@ -1,5 +1,6 @@
+const fs = require('node:fs');
+const path = require('node:path');
 const { Client, GatewayIntentBits, Collection, Options } = require('discord.js');
-const { globSync } = require('glob');
 const { discordToken } = require('./config.json');
 
 const client = new Client({
@@ -35,29 +36,41 @@ const client = new Client({
 });
 
 client.commands = new Collection();
-const commandFiles = globSync('src/modules/**/commands/*.js');
-for (let file of commandFiles) {
-	file = file.replace('src\\', './');
-	const command = require(file);
+const modulesPath = path.join(__dirname, 'modules');
+const modulesFolders = fs.readdirSync(modulesPath);
 
-	if ('data' in command && 'execute' in command) {
-		client.commands.set(command.data.name, command);
+for (const module of modulesFolders) {
+	const commandsPath = path.join(modulesPath, module, 'commands');
+	const commandFiles = fs.readdirSync(commandsPath);
+
+	if (commandFiles.length === 0) {
+		continue;
 	}
-	else {
-		console.log(`[WARNING] The command at ${file} is missing a required "data" or "execute" property.`);
+
+	for (const file of commandFiles) {
+		const filePath = path.join(commandsPath, file);
+		const command = require(filePath);
+		if ('data' in command && 'execute' in command) {
+			client.commands.set(command.data.name, command);
+		}
+		else {
+			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+		}
 	}
 }
 
-const eventFiles = globSync('src/modules/**/events/*.js');
-for (let file of eventFiles) {
-	file = file.replace('src\\', './');
-	const event = require(file);
-
-	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
-	}
-	else {
-		client.on(event.name, (...args) => event.execute(...args));
+for (const module of modulesFolders) {
+	const eventsPath = path.join(modulesPath, module, 'events');
+	const eventsFiles = fs.readdirSync(eventsPath);
+	for (const file of eventsFiles) {
+		const filePath = path.join(eventsPath, file);
+		const event = require(filePath);
+		if (event.once) {
+			client.once(event.name, (...args) => event.execute(...args));
+		}
+		else {
+			client.on(event.name, (...args) => event.execute(...args));
+		}
 	}
 }
 
