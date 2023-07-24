@@ -42,19 +42,6 @@ async function getAllAgents() {
 	return allAgents;
 }
 
-async function setAgentResponse(raffleMessageId, thread, agent) {
-	const winnerId = getWinnerIdFromThread(thread);
-
-	await PastRaffle.findOneAndUpdate(
-		{ '_id': raffleMessageId, 'winners._id': winnerId },
-		{
-			'$set': {
-				'winners.$.game.agent': agent,
-			},
-		},
-	).catch(e => console.error(e));
-}
-
 async function getAllMaps() {
 	const req = await axios.get('https://valorant-api.com/v1/maps')
 		.catch(e => console.error(e));
@@ -68,19 +55,6 @@ async function getAllMaps() {
 	}
 
 	return allMaps;
-}
-
-async function setMapResponse(raffleMessageId, thread, map) {
-	const winnerId = getWinnerIdFromThread(thread);
-
-	await PastRaffle.findOneAndUpdate(
-		{ '_id': raffleMessageId, 'winners._id': winnerId },
-		{
-			'$set': {
-				'winners.$.game.map': map,
-			},
-		},
-	).catch(e => console.error(e));
 }
 
 function toPascalCase(text) {
@@ -103,19 +77,6 @@ async function getAllRanks() {
 	}
 
 	return allRanks;
-}
-
-async function setRankResponse(raffleMessageId, thread, rank) {
-	const winnerId = getWinnerIdFromThread(thread);
-
-	await PastRaffle.findOneAndUpdate(
-		{ '_id': raffleMessageId, 'winners._id': winnerId },
-		{
-			'$set': {
-				'winners.$.game.rank': rank,
-			},
-		},
-	).catch(e => console.error(e));
 }
 
 async function createGuildEvent(interaction, date) {
@@ -177,8 +138,11 @@ module.exports = {
 			});
 		}
 
-		else if (interaction.customId === 'modal-raffle-set-agent') {
+		else if (interaction.customId === 'modal-raffle-set-vod-information') {
 			const agentInput = interaction.fields.getTextInputValue('agentInput').toLowerCase();
+			const mapInput = interaction.fields.getTextInputValue('mapInput').toLowerCase();
+			const rankInput = interaction.fields.getTextInputValue('rankInput').toLowerCase();
+
 			const allAgents = await getAllAgents();
 			if (!allAgents) {
 				return interaction.reply('Could not get agents.');
@@ -198,17 +162,6 @@ module.exports = {
 				});
 			}
 
-			const thread = interaction.message.channel;
-			const raffleMessageId = getRaffleMessageIdFromThread(thread);
-			await setAgentResponse(raffleMessageId, thread, gameAgent);
-			await interaction.reply({
-				content: `${gameAgent} set as VOD agent.`,
-				ephemeral: true,
-			});
-		}
-
-		else if (interaction.customId === 'modal-raffle-set-map') {
-			const mapInput = interaction.fields.getTextInputValue('mapInput').toLowerCase();
 			const allMaps = await getAllMaps();
 			if (!allMaps) {
 				return interaction.reply('Could not get maps.');
@@ -228,17 +181,6 @@ module.exports = {
 				});
 			}
 
-			const thread = interaction.message.channel;
-			const raffleMessageId = getRaffleMessageIdFromThread(thread);
-			await setMapResponse(raffleMessageId, thread, gameMap);
-			await interaction.reply({
-				content: `${gameMap} set as VOD map.`,
-				ephemeral: true,
-			});
-		}
-
-		else if (interaction.customId === 'modal-raffle-set-rank') {
-			const rankInput = interaction.fields.getTextInputValue('rankInput').toLowerCase();
 			const allRanks = await getAllRanks();
 			if (!allRanks) {
 				return interaction.reply('Could not get ranks.');
@@ -258,12 +200,23 @@ module.exports = {
 				});
 			}
 
-			const thread = interaction.message.channel;
-			const raffleMessageId = getRaffleMessageIdFromThread(thread);
-			await setRankResponse(raffleMessageId, thread, gameRank);
+			const thread = await interaction.guild.channels.cache.get(interaction.channelId);
+			const raffleId = getRaffleMessageIdFromThread(thread);
+			const winnerId = getWinnerIdFromThread(thread);
+
+			await PastRaffle.findOneAndUpdate(
+				{ '_id': raffleId, 'winners._id': winnerId },
+				{
+					'$set': {
+						'winners.$.game.agent': gameAgent,
+						'winners.$.game.map': gameMap,
+						'winners.$.game.rank': gameRank,
+					},
+				},
+			).catch(e => console.error(e));
+
 			await interaction.reply({
-				content: `${gameRank} set as VOD rank.`,
-				ephemeral: true,
+				content: `${agentInput}, ${mapInput}, ${rankInput} all set!`,
 			});
 		}
 

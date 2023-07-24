@@ -58,10 +58,10 @@ async function leaveRaffle(userId, raffle) {
 	return raffle.save();
 }
 
-async function getAgentResponse(interaction) {
+async function getVODInformationResponse(interaction) {
 	const modal = new ModalBuilder()
-		.setCustomId('modal-raffle-set-agent')
-		.setTitle('Set VOD Agent');
+		.setCustomId('modal-raffle-set-vod-information')
+		.setTitle('Set VOD Information');
 
 	const agentInput = new TextInputBuilder()
 		.setCustomId('agentInput')
@@ -69,35 +69,11 @@ async function getAgentResponse(interaction) {
 		.setStyle(TextInputStyle.Short)
 		.setRequired(true);
 
-	const row = new ActionRowBuilder()
-		.addComponents(agentInput);
-
-	modal.addComponents(row);
-	await interaction.showModal(modal);
-}
-
-async function getMapResponse(interaction) {
-	const modal = new ModalBuilder()
-		.setCustomId('modal-raffle-set-map')
-		.setTitle('Set VOD Map');
-
 	const mapInput = new TextInputBuilder()
 		.setCustomId('mapInput')
 		.setLabel('Which map? (Include only the name)')
 		.setStyle(TextInputStyle.Short)
 		.setRequired(true);
-
-	const row = new ActionRowBuilder()
-		.addComponents(mapInput);
-
-	modal.addComponents(row);
-	await interaction.showModal(modal);
-}
-
-async function getRankResponse(interaction) {
-	const modal = new ModalBuilder()
-		.setCustomId('modal-raffle-set-rank')
-		.setTitle('Set VOD Agent');
 
 	const rankInput = new TextInputBuilder()
 		.setCustomId('rankInput')
@@ -105,10 +81,11 @@ async function getRankResponse(interaction) {
 		.setStyle(TextInputStyle.Short)
 		.setRequired(true);
 
-	const row = new ActionRowBuilder()
-		.addComponents(rankInput);
+	const firstActionRow = new ActionRowBuilder().addComponents(agentInput);
+	const secondActionRow = new ActionRowBuilder().addComponents(mapInput);
+	const thirdActionRow = new ActionRowBuilder().addComponents(rankInput);
 
-	modal.addComponents(row);
+	modal.addComponents(firstActionRow, secondActionRow, thirdActionRow);
 	await interaction.showModal(modal);
 }
 
@@ -226,16 +203,8 @@ module.exports = {
 			});
 		}
 
-		else if (interaction.customId === 'thread-set-agent-button') {
-			await getAgentResponse(interaction);
-		}
-
-		else if (interaction.customId === 'thread-set-map-button') {
-			await getMapResponse(interaction);
-		}
-
-		else if (interaction.customId === 'thread-set-rank-button') {
-			await getRankResponse(interaction);
+		else if (interaction.customId === 'thread-set-vod-information-button') {
+			await getVODInformationResponse(interaction);
 		}
 
 		else if (interaction.customId === 'thread-create-event-button') {

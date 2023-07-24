@@ -65,19 +65,9 @@ async function migrateRaffleDocument(oldRaffleDoc, winners) {
 }
 
 function createPrivateThreadButtons() {
-	const agentButton = new ButtonBuilder()
-		.setCustomId('thread-set-agent-button')
-		.setLabel('Set Agent')
-		.setStyle(ButtonStyle.Secondary);
-
-	const mapButton = new ButtonBuilder()
-		.setCustomId('thread-set-map-button')
-		.setLabel('Set Map')
-		.setStyle(ButtonStyle.Secondary);
-
-	const rankButton = new ButtonBuilder()
-		.setCustomId('thread-set-rank-button')
-		.setLabel('Set Rank')
+	const vodInformationButton = new ButtonBuilder()
+		.setCustomId('thread-set-vod-information-button')
+		.setLabel('Set VOD Information')
 		.setStyle(ButtonStyle.Secondary);
 
 	const calendlyButton = new ButtonBuilder()
@@ -91,7 +81,7 @@ function createPrivateThreadButtons() {
 		.setEmoji('🎉')
 		.setStyle(ButtonStyle.Success);
 
-	return new ActionRowBuilder().addComponents(agentButton, mapButton, rankButton, calendlyButton, createEvent);
+	return new ActionRowBuilder().addComponents(vodInformationButton, calendlyButton, createEvent);
 }
 
 async function createPrivateThreads(raffle, arrayOfWinners, originalRaffleMessage) {
@@ -112,11 +102,9 @@ async function createPrivateThreads(raffle, arrayOfWinners, originalRaffleMessag
 		const buttonRow = createPrivateThreadButtons();
 		await thread.send({
 			content: `Congrats ${userMention(guildMember.id)}, you won ${bold(raffle.prize)}! `
-				+ 'Now, please follow these next few steps using the buttons below.\n\n'
-				+ '1. Submit which agent you played with.\n'
-				+ '2. Submit which map you played on.\n'
-				+ '3. Submit which rank you played in.\n'
-				+ '4. Schedule your session with Airen using the Calendly link!\n\n'
+				+ 'Now, please follow these next steps using the first two buttons below. After, a server staff will create an event!\n\n'
+				+ '1. Enter details surrounding your VOD submitted!.\n'
+				+ '2. Schedule your session with Airen using the Calendly link!\n\n'
 				+ `🔎 What is the particular focus? ${winner.focus}\n`
 				+ `🔗 The YouTube link to your VOD? ${winner.vodLink}`,
 			components: [buttonRow],
