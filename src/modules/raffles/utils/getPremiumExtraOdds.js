@@ -13,10 +13,6 @@ module.exports = async function getPremiumExtraOdds(guildMemberRoles) {
 	const tier2 = '1077688625967403119';
 	const tier1 = '1077686372518871060';
 
-	if (guildMemberRoles.has(tierZay)) {
-		return premiumRoles.get(tierZay).odds;
-	}
-
 	if (guildMemberRoles.has(tier3)) {
 		return premiumRoles.get(tier3).odds;
 	}
