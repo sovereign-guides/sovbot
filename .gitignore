@@ -1,3 +1,17 @@
+# Packages
 /node_modules
+
+# Env
 /src/config.json
+
+# Misc
 /src/deploy-commands.js
+
+# Yarn
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
