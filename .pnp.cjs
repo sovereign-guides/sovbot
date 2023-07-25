@@ -32,7 +32,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["dayjs", "npm:1.11.9"],\
             ["discord.js", "npm:14.11.0"],\
             ["eslint", "npm:8.29.0"],\
-            ["mongoose", "npm:7.3.4"]\
+            ["mongoose", "npm:7.4.1"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -1155,22 +1155,26 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["mongodb", [\
-        ["npm:5.6.0", {\
-          "packageLocation": "./.yarn/cache/mongodb-npm-5.6.0-d7404fc735-5b1594b247.zip/node_modules/mongodb/",\
+        ["npm:5.7.0", {\
+          "packageLocation": "./.yarn/cache/mongodb-npm-5.7.0-c5e415a2e7-16357b6229.zip/node_modules/mongodb/",\
           "packageDependencies": [\
-            ["mongodb", "npm:5.6.0"]\
+            ["mongodb", "npm:5.7.0"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:c1408e44ec38debb371a67c3cacc6e4c8b69ae151ebd9f6f85533556815c6318d135299bea342fd57214f0a62f4c9e1c100bcc853cadb86138d70001ff427f97#npm:5.6.0", {\
-          "packageLocation": "./.yarn/__virtual__/mongodb-virtual-5b4b34f00b/0/cache/mongodb-npm-5.6.0-d7404fc735-5b1594b247.zip/node_modules/mongodb/",\
+        ["virtual:2f000434a13452a0585740b7caded8b8c99664adbefb38e0fe682597281655de2761a3a59a97c1f6c3b3b75e54ccda067040538c176e0bc6cca1f91dec04ebc4#npm:5.7.0", {\
+          "packageLocation": "./.yarn/__virtual__/mongodb-virtual-14db3ace94/0/cache/mongodb-npm-5.7.0-c5e415a2e7-16357b6229.zip/node_modules/mongodb/",\
           "packageDependencies": [\
-            ["mongodb", "virtual:c1408e44ec38debb371a67c3cacc6e4c8b69ae151ebd9f6f85533556815c6318d135299bea342fd57214f0a62f4c9e1c100bcc853cadb86138d70001ff427f97#npm:5.6.0"],\
+            ["mongodb", "virtual:2f000434a13452a0585740b7caded8b8c99664adbefb38e0fe682597281655de2761a3a59a97c1f6c3b3b75e54ccda067040538c176e0bc6cca1f91dec04ebc4#npm:5.7.0"],\
             ["@aws-sdk/credential-providers", null],\
+            ["@mongodb-js/zstd", null],\
             ["@types/aws-sdk__credential-providers", null],\
+            ["@types/kerberos", null],\
             ["@types/mongodb-client-encryption", null],\
+            ["@types/mongodb-js__zstd", null],\
             ["@types/snappy", null],\
             ["bson", "npm:5.4.0"],\
+            ["kerberos", null],\
             ["mongodb-client-encryption", null],\
             ["mongodb-connection-string-url", "npm:2.6.0"],\
             ["saslprep", "npm:1.0.3"],\
@@ -1179,9 +1183,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "packagePeers": [\
             "@aws-sdk/credential-providers",\
+            "@mongodb-js/zstd",\
             "@types/aws-sdk__credential-providers",\
+            "@types/kerberos",\
             "@types/mongodb-client-encryption",\
+            "@types/mongodb-js__zstd",\
             "@types/snappy",\
+            "kerberos",\
             "mongodb-client-encryption",\
             "snappy"\
           ],\
@@ -1200,13 +1208,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["mongoose", [\
-        ["npm:7.3.4", {\
-          "packageLocation": "./.yarn/cache/mongoose-npm-7.3.4-c1408e44ec-1ffdb8449c.zip/node_modules/mongoose/",\
+        ["npm:7.4.1", {\
+          "packageLocation": "./.yarn/cache/mongoose-npm-7.4.1-2f000434a1-e03f55e7a2.zip/node_modules/mongoose/",\
           "packageDependencies": [\
-            ["mongoose", "npm:7.3.4"],\
+            ["mongoose", "npm:7.4.1"],\
             ["bson", "npm:5.4.0"],\
             ["kareem", "npm:2.5.1"],\
-            ["mongodb", "virtual:c1408e44ec38debb371a67c3cacc6e4c8b69ae151ebd9f6f85533556815c6318d135299bea342fd57214f0a62f4c9e1c100bcc853cadb86138d70001ff427f97#npm:5.6.0"],\
+            ["mongodb", "virtual:2f000434a13452a0585740b7caded8b8c99664adbefb38e0fe682597281655de2761a3a59a97c1f6c3b3b75e54ccda067040538c176e0bc6cca1f91dec04ebc4#npm:5.7.0"],\
             ["mpath", "npm:0.9.0"],\
             ["mquery", "npm:5.0.0"],\
             ["ms", "npm:2.1.3"],\
@@ -1538,7 +1546,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["dayjs", "npm:1.11.9"],\
             ["discord.js", "npm:14.11.0"],\
             ["eslint", "npm:8.29.0"],\
-            ["mongoose", "npm:7.3.4"]\
+            ["mongoose", "npm:7.4.1"]\
           ],\
           "linkType": "SOFT"\
         }]\
