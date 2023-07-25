@@ -15,7 +15,7 @@ This is the source code for [SovBot#9299](https://discord.com/users/100092760251
 
 - [Post on Patch](src/modules/automod/events/postOnPatch.js): Creates a discussion post in a Forum!
 
-- [Publish Premium VODs](src/modules/automod/commands/post.js): Posts and tags a premium video, pushes the video's Id into an AutoMod list.
+- [Publish Premium VODs](src/modules/meta/commands/post.js): Posts and tags a premium video, pushes the video's Id into an AutoMod list.
 
 - [Prune Unverified Members](src/modules/automod/commands/prune.js): Removes members that have yet to be verified after 3 weeks of being in the server.
 
