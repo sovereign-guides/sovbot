@@ -4,7 +4,7 @@ const getWinners = require('../utils/getWinners');
 const convertWinnerArrayToMentions = require('../utils/convertWinnerArrayToMentions');
 const getOriginalRaffleMessage = require('../utils/getOriginalRaffleMessage');
 const createPrivateThreads = require('../utils/createPrivateThreads');
-const SovBot = require('../../../index');
+const { SovBot } = require('../../../SovBot');
 
 
 async function disableRaffleMessageComponents(originalRaffleMessage) {
@@ -62,7 +62,7 @@ module.exports = async function handleRaffleEnd(raffle) {
 	const messageId = raffle._id;
 	const { channelId, prize, noOfWinners, entries } = raffle;
 
-	const channel = await SovBot.SovBot.channels.cache.get(channelId);
+	const channel = await SovBot.channels.cache.get(channelId);
 	const guild = channel.guild;
 
 	const arrayOfWinners = await getWinners(entries, guild, noOfWinners);
