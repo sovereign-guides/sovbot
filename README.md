@@ -21,6 +21,9 @@ This is the source code for [SovBot#9299](https://discord.com/users/100092760251
 
 - [AutoMod Link Restrictions](src/modules/automod/events/watchThisLinkPerms.js): Tells ineligible users why their message did not get sent in the #watch-this channel.
 
+- [Raffles](src/modules/raffles/commands/raffle.js): Handles the Free 
+  Coaching Raffles, from entry to creating the event!
+
 ---
 
 ## Contributing
