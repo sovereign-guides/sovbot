@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, Partials } = require('discord.js');
 
 module.exports.SovBot = new Client({
 	intents: [
@@ -10,5 +10,8 @@ module.exports.SovBot = new Client({
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.AutoModerationExecution,
+	],
+	partials: [
+		Partials.GuildMember,
 	],
 });
