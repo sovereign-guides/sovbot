@@ -1,6 +1,6 @@
 {
   "name": "sovbot",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "homepage": "https://github.com/sovereign-guides/sovbot",
   "bugs": "https://github.com/sovereign-guides/sovbot/issues",
   "license": "SEE LICENSE IN LICENSE.md",
@@ -16,7 +16,7 @@
   "dependencies": {
     "axios": "^1.4.0",
     "dayjs": "^1.11.9",
-    "discord.js": "^14.11.0",
+    "discord.js": "^14.12.0",
     "mongoose": "^7.4.1"
   },
   "devDependencies": {

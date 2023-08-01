@@ -12,7 +12,7 @@ module.exports = async function createPrivateThreads(raffle, arrayOfWinners, ori
 		}
 
 		const thread = await originalRaffleMessage.channel.threads.create({
-			name: (guildMember.nickname ?? guildMember.user.username) + ` (${guildMember.user.id}) ` + ' — ' + raffle._id,
+			name: (guildMember.nickname ?? guildMember.user.displayName) + ` (${guildMember.user.id}) ` + ' — ' + raffle._id,
 			type: ChannelType.PrivateThread,
 			invitable: false,
 		});
