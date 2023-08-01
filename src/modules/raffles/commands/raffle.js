@@ -100,6 +100,10 @@ module.exports = {
 				return interaction.followUp('Please enter a valid date.');
 			}
 
+			if (channel === undefined) {
+				return interaction.followUp('Could not find channel.');
+			}
+
 			const raffleEmbed = createRaffleEmbed(prize, description, date, noOfWinners);
 			const raffleButtons = createRaffleButtons();
 
