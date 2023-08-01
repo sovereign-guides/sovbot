@@ -11,7 +11,7 @@ This is the source code for [SovBot#9299](https://discord.com/users/100092760251
 
 ## Current features:
 
-- [Member verification](src/modules/automod/events/rulesScreeningVerification.js): Greets members once they've verified!
+- [Member verification](src/modules/automod/events/onboardingVerification.js): Greets members once they've verified!
 
 - [Post on Patch](src/modules/automod/events/postOnPatch.js): Creates a discussion post in a Forum!
 

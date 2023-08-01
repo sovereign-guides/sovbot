@@ -28,7 +28,7 @@ async function reactToMessage(welcomeMessage) {
 module.exports = {
 	name: Events.GuildMemberUpdate,
 	async execute(oldMember, newMember) {
-		if (oldMember.flags.equals(9) && newMember.flags.equals(11)) {
+		if (!oldMember.flags.has(2) && newMember.flags.has(2)) {
 			if (!newMember.guild.available) return;
 
 			const message = await sendWelcomeMessage(newMember);
