@@ -3,6 +3,7 @@
 
 # Env
 /src/config.json
+/src/dev.config.json
 
 # Misc
 /src/deploy-commands.js

@@ -3,6 +3,7 @@ const handleRaffleEnd = require('./handleRaffleEnd');
 const getOriginalRaffleMessage = require('../utils/getOriginalRaffleMessage');
 const getWinners = require('../utils/getWinners');
 const convertWinnerArrayToMentions = require('../utils/convertWinnerArrayToMentions');
+const createPrivateThreads = require('../utils/createPrivateThreads');
 const PastRaffle = require('../schemas/past-raffle-schema');
 const UpcomingRaffle = require('../schemas/upcoming-raffle-schema');
 
@@ -53,6 +54,8 @@ module.exports = {
 			const newWinnerArray = await getWinners(newEntries, interaction.guild, noOfWinners);
 
 			await updateRaffleWinnersDoc(newWinnerArray, raffle);
+
+			await createPrivateThreads(raffle, newWinnerArray, targetMessage);
 
 			const newWinnerMentions = convertWinnerArrayToMentions(newWinnerArray);
 

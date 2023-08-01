@@ -1,16 +1,9 @@
-const { EmbedBuilder,
-	ButtonBuilder,
-	ActionRowBuilder,
-	bold,
-	ChannelType,
-	userMention,
-	ButtonStyle,
-} = require('discord.js');
+const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, bold } = require('discord.js');
 const PastRaffle = require('../schemas/past-raffle-schema');
 const getWinners = require('../utils/getWinners');
 const convertWinnerArrayToMentions = require('../utils/convertWinnerArrayToMentions');
 const getOriginalRaffleMessage = require('../utils/getOriginalRaffleMessage');
-const resolveGuildMember = require('../utils/resolveGuildMember');
+const createPrivateThreads = require('../utils/createPrivateThreads');
 const SovBot = require('../../../index');
 
 
@@ -62,54 +55,6 @@ async function migrateRaffleDocument(oldRaffleDoc, winners) {
 	await doc.save()
 		.catch(console.error)
 		.then(await oldRaffleDoc.deleteOne()).catch(console.error);
-}
-
-function createPrivateThreadButtons() {
-	const vodInformationButton = new ButtonBuilder()
-		.setCustomId('thread-set-vod-information-button')
-		.setLabel('Set VOD Information')
-		.setStyle(ButtonStyle.Secondary);
-
-	const calendlyButton = new ButtonBuilder()
-		.setLabel('Schedule Session')
-		.setStyle(ButtonStyle.Link)
-		.setURL('https://calendly.com/sovereignguides/free-coaching');
-
-	const createEvent = new ButtonBuilder()
-		.setCustomId('thread-create-event-button')
-		.setLabel('Create Event!')
-		.setEmoji('🎉')
-		.setStyle(ButtonStyle.Success);
-
-	return new ActionRowBuilder().addComponents(vodInformationButton, calendlyButton, createEvent);
-}
-
-async function createPrivateThreads(raffle, arrayOfWinners, originalRaffleMessage) {
-	const guild = originalRaffleMessage.guild;
-
-	for (const winner of arrayOfWinners) {
-		const guildMember = await resolveGuildMember(winner._id, guild);
-		if (!guildMember) {
-			continue;
-		}
-
-		const thread = await originalRaffleMessage.channel.threads.create({
-			name: (guildMember.nickname ?? guildMember.user.username) + ` (${guildMember.user.id}) ` + ' — ' + raffle._id,
-			type: ChannelType.PrivateThread,
-			invitable: false,
-		});
-
-		const buttonRow = createPrivateThreadButtons();
-		await thread.send({
-			content: `Congrats ${userMention(guildMember.id)}, you won ${bold(raffle.prize)}! `
-				+ 'Now, please follow these next steps using the first two buttons below. After, a server staff will create an event!\n\n'
-				+ '1. Enter details surrounding your VOD submitted!.\n'
-				+ '2. Schedule your session with Airen using the Calendly link!\n\n'
-				+ `🔎 What is the particular focus? ${winner.focus}\n`
-				+ `🔗 The YouTube link to your VOD? ${winner.vodLink}`,
-			components: [buttonRow],
-		}).then(m => m.pin());
-	}
 }
 
 
