@@ -41,7 +41,7 @@ module.exports = {
 
 		await message.fetch(true);
 
-		if (message.embeds[0]?.author?.name !== 'VALORANT (@PlayVALORANT)') {
+		if (message.embeds[0]?.author?.name !== 'VALORANT (@VALORANT)') {
 			return;
 		}
 
