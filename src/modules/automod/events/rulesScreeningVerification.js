@@ -1,13 +1,10 @@
 const { Events } = require('discord.js');
 
-async function removeUnverifiedRole(guildMember) {
-	await guildMember.roles.remove('1121882989035528202', `${guildMember.user.username} verified!`);
-}
 
 function welcomeMessageGenerator() {
 	const welcomeMessagesArray = [
-		'What\'s your philosophy when it comes to warm-up?',
-		'What\'s one thing that you want to improve in?',
+		'What\'s your favorite agent to play and why?',
+		'Do you have any specific strategies or play styles that you prefer?',
 		'What\'s one thing in your gameplay that you are most proud of?',
 	];
 	return welcomeMessagesArray[Math.floor(Math.random() * welcomeMessagesArray.length)];
@@ -32,10 +29,7 @@ module.exports = {
 	name: Events.GuildMemberUpdate,
 	async execute(oldMember, newMember) {
 		if (oldMember.pending && !newMember.pending) {
-
 			if (!newMember.guild.available) return;
-
-			await removeUnverifiedRole(newMember);
 
 			const message = await sendWelcomeMessage(newMember);
 			await reactToMessage(message);
