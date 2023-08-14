@@ -6,7 +6,6 @@ We <3 corrections and improvements
 ### Prerequisites
 - [Node.js](https://nodejs.org/en/) >= v16.9.
 - [Yarn](https://yarnpkg.com/)
-- [Docker](https://docs.docker.com/)
 - [A Discord bot application](https://discord.com/developers/applications/).
 
 ---

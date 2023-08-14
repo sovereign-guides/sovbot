@@ -13,16 +13,20 @@ This is the source code for [SovBot#9299](https://discord.com/users/100092760251
 
 - [Member verification](src/modules/automod/events/onboardingVerification.js): Greets members once they've verified!
 
-- [Post on Patch](src/modules/automod/events/postOnPatch.js): Creates a discussion post in a Forum!
+- [Post on Patch](src/modules/automod/events/postOnPatch.js): Creates a 
+  discussion post in a forum when there's a new val patch!
 
 - [Publish Premium VODs](src/modules/meta/commands/post.js): Posts and tags a premium video, pushes the video's Id into an AutoMod list.
 
-- [Prune Unverified Members](src/modules/automod/commands/prune.js): Removes members that have yet to be verified after 3 weeks of being in the server.
+- [Prune Unverified Members](src/modules/automod/commands/prune.js): 
+  Removes members that have yet to be verified after 2 weeks of being in the server.
 
-- [AutoMod Link Restrictions](src/modules/automod/events/watchThisLinkPerms.js): Tells ineligible users why their message did not get sent in the #watch-this channel.
+- [AutoMod Link Restrictions](src/modules/automod/events/watchThisLinkPerms.
+  js): Tells ineligible users why their clip did not get sent in the 
+  #watch-this channel.
 
 - [Raffles](src/modules/raffles/commands/raffle.js): Handles the Free 
-  Coaching Raffles, from entry to creating the event!
+  Coaching Raffles, from raffle entry to raffle event start!
 
 ---
 
