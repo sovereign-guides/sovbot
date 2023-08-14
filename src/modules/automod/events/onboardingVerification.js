@@ -28,11 +28,16 @@ async function reactToMessage(welcomeMessage) {
 module.exports = {
 	name: Events.GuildMemberUpdate,
 	async execute(oldMember, newMember) {
-		if (!oldMember.flags.has(2) && newMember.flags.has(2)) {
-			if (!newMember.guild.available) return;
+		// The Verified role.
+		const SovereignSquad = '1136416815686373436';
 
-			const message = await sendWelcomeMessage(newMember);
-			await reactToMessage(message);
-		}
+		const oldRoles = oldMember.roles.cache;
+		const newRoles = newMember.roles.cache;
+
+		if (oldRoles.has(SovereignSquad)) return;
+		if (!newRoles.has(SovereignSquad)) return;
+
+		await sendWelcomeMessage(newMember)
+			.then(async m => await reactToMessage(m));
 	},
 };
