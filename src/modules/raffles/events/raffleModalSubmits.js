@@ -5,7 +5,7 @@ const PastRaffle = require('../schemas/past-raffle-schema');
 const UpcomingRaffle = require('../schemas/upcoming-raffle-schema');
 const getWinnerIdFromThread = require('../utils/getWinnerIdFromThread');
 const getRaffleMessageIdFromThread = require('../utils/getRaffleMessageIdFromThread');
-const validateDate = require('../utils/isValidDate');
+const isValidDate = require('../utils/isValidDate');
 const getRaffleObject = require('../utils/getRaffleObject');
 const matchYouTubeLink = require('../../../utils/matchYouTubeLink');
 
