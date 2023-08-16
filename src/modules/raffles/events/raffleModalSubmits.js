@@ -5,8 +5,8 @@ const PastRaffle = require('../schemas/past-raffle-schema');
 const UpcomingRaffle = require('../schemas/upcoming-raffle-schema');
 const getWinnerIdFromThread = require('../utils/getWinnerIdFromThread');
 const getRaffleMessageIdFromThread = require('../utils/getRaffleMessageIdFromThread');
-const validateDate = require('../utils/validateDate');
-const getRaffleObject = require('../utils/getWinnerObject');
+const validateDate = require('../utils/isValidDate');
+const getRaffleObject = require('../utils/getRaffleObject');
 const matchYouTubeLink = require('../../../utils/matchYouTubeLink');
 
 
@@ -221,7 +221,7 @@ module.exports = {
 		else if (interaction.customId === 'modal-raffle-get-event-start-time') {
 			const date = interaction.fields.getTextInputValue('timeInput');
 
-			if (validateDate(date) === false) {
+			if (isValidDate(date) === false) {
 				return interaction.reply({
 					content: 'Please enter a valid date.',
 					ephemeral: true,

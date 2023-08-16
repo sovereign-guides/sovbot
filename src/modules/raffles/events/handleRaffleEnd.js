@@ -6,7 +6,11 @@ const getOriginalRaffleMessage = require('../utils/getOriginalRaffleMessage');
 const createPrivateThreads = require('../utils/createPrivateThreads');
 const { SovBot } = require('../../../SovBot');
 
-
+/**
+ * Disables raffles' buttons once raffle has finished.
+ * @param originalRaffleMessage MessageResolvable of the raffle.
+ * @returns {Promise<void>}
+ */
 async function disableRaffleMessageComponents(originalRaffleMessage) {
 	const oldButton = originalRaffleMessage.components[0].components[0];
 
@@ -21,18 +25,30 @@ async function disableRaffleMessageComponents(originalRaffleMessage) {
 	});
 }
 
-function updateWinners(oldEmbedDescription, mentionsOfWinners) {
+/**
+ * Replaces the text of winners in the old raffle embed with new winners.
+ * @param oldEmbedDescription
+ * @param mentionsOfWinners
+ * @returns {*}
+ */
+function updateWinnerDescription(oldEmbedDescription, mentionsOfWinners) {
 	const regex = new RegExp('Winners: \\*\\*[0-9]\\*\\*+');
 
 	return oldEmbedDescription.replace(regex, `Winners: ${mentionsOfWinners}`);
 }
 
+/**
+ * Disables buttons and updates winners.
+ * @param originalRaffleMessage
+ * @param mentionsOfWinners
+ * @returns {Promise<void>}
+ */
 async function editRaffleMessage(originalRaffleMessage, mentionsOfWinners) {
 	await disableRaffleMessageComponents(originalRaffleMessage);
 
 	const oldEmbed = originalRaffleMessage.embeds[0];
 
-	const newDescription = updateWinners(oldEmbed.description, mentionsOfWinners);
+	const newDescription = updateWinnerDescription(oldEmbed.description, mentionsOfWinners);
 
 	const newEmbed = EmbedBuilder.from(oldEmbed)
 		.setDescription(newDescription);
@@ -40,6 +56,13 @@ async function editRaffleMessage(originalRaffleMessage, mentionsOfWinners) {
 	await originalRaffleMessage.edit({ embeds: [newEmbed] });
 }
 
+/**
+ * Reposts the raffle document into the "PastRaffles" collection, removes
+ * from "Upcoming Raffles" collection.
+ * @param oldRaffleDoc
+ * @param winners
+ * @returns {Promise<void>}
+ */
 async function migrateRaffleDocument(oldRaffleDoc, winners) {
 	const doc = new PastRaffle({
 		_id: oldRaffleDoc._id,
@@ -57,7 +80,11 @@ async function migrateRaffleDocument(oldRaffleDoc, winners) {
 		.then(await oldRaffleDoc.deleteOne()).catch(console.error);
 }
 
-
+/**
+ * Everything to do with when a raffle ends.
+ * @param raffle
+ * @returns {Promise<void>}
+ */
 module.exports = async function handleRaffleEnd(raffle) {
 	const messageId = raffle._id;
 	const { channelId, prize, noOfWinners, entries } = raffle;

@@ -8,7 +8,7 @@ const { SlashCommandBuilder,
 	ButtonStyle,
 	ActionRowBuilder,
 } = require('discord.js');
-const validateDate = require('../utils/validateDate');
+const validateDate = require('../utils/isValidDate');
 const UpcomingRaffle = require('../schemas/upcoming-raffle-schema');
 
 
@@ -93,10 +93,11 @@ module.exports = {
 			const description = interaction.options?.getString('description') || null;
 			const date = interaction.options.getNumber('date');
 			const channel = interaction.options?.getChannel('channel')
+				// #raffles-entry = 1112540056528375913
 				?? await interaction.guild.channels.cache.get('1112540056528375913');
 			const noOfWinners = interaction.options?.getNumber('winner-count') ?? 1;
 
-			if (validateDate(date) === false) {
+			if (isValidDate(date) === false) {
 				return interaction.followUp('Please enter a valid date.');
 			}
 

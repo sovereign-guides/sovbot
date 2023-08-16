@@ -31,6 +31,7 @@ module.exports = async function getWinners(entries, guild, noOfWinners) {
 	const winners = [];
 	for (let i = 0; i < noOfWinners; i++) {
 		const winner = entriesWithOdds[Math.floor(Math.random() * entriesWithOdds.length)]
+			// @SovBot = 1000927602518798487
 			?? { _id: '1000927602518798487' };
 		winners.push(winner);
 		entriesWithOdds = entriesWithOdds.filter(entry => entry !== winner);

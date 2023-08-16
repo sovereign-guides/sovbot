@@ -10,7 +10,7 @@ const UpcomingRaffle = require('../schemas/upcoming-raffle-schema');
 const isAlreadyInRaffle = require('../utils/isAlreadyInRaffle');
 const getRaffleMessageIdFromThread = require('../utils/getRaffleMessageIdFromThread');
 const getWinnerIdFromThread = require('../utils/getWinnerIdFromThread');
-const getRaffleObject = require('../utils/getWinnerObject');
+const getRaffleObject = require('../utils/getRaffleObject');
 
 
 function createJoinRaffleModal() {

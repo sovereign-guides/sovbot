@@ -2,6 +2,14 @@ const { ChannelType, userMention, bold } = require('discord.js');
 const resolveGuildMember = require('./resolveGuildMember');
 const createPrivateThreadButtons = require('./createPrivateThreadButtons');
 
+/**
+ * Creates a private thread channel for each winner, instructing them what
+ * to do next.
+ * @param raffle
+ * @param arrayOfWinners
+ * @param originalRaffleMessage
+ * @returns {Promise<void>}
+ */
 module.exports = async function createPrivateThreads(raffle, arrayOfWinners, originalRaffleMessage) {
 	const guild = originalRaffleMessage.guild;
 
