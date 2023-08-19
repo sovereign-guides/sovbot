@@ -1,4 +1,9 @@
-const { Events, GuildScheduledEventPrivacyLevel, GuildScheduledEventEntityType, userMention, inlineCode, EmbedBuilder } = require('discord.js');
+const { Events,
+	GuildScheduledEventPrivacyLevel,
+	GuildScheduledEventEntityType,
+	userMention,
+	inlineCode,
+} = require('discord.js');
 const axios = require('axios');
 const dayjs = require('dayjs');
 const PastRaffle = require('../schemas/past-raffle-schema');
