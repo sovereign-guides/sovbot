@@ -4,15 +4,19 @@ const { Events,
 	ActionRowBuilder,
 	ModalBuilder,
 	TextInputBuilder,
-	TextInputStyle, EmbedBuilder,
+	TextInputStyle,
 } = require('discord.js');
 const UpcomingRaffle = require('../schemas/upcoming-raffle-schema');
-const isAlreadyInRaffle = require('../utils/isAlreadyInRaffle');
 const getRaffleMessageIdFromThread = require('../utils/getRaffleMessageIdFromThread');
-const getWinnerIdFromThread = require('../utils/getWinnerIdFromThread');
 const getRaffleObject = require('../utils/getRaffleObject');
+const getWinnerIdFromThread = require('../utils/getWinnerIdFromThread');
+const isAlreadyInRaffle = require('../utils/isAlreadyInRaffle');
+const updateEntryTotal = require('../utils/updateEntryTotal');
 
-
+/**
+ * Prepares the modal shown when a member clicks the join-raffle button.
+ * @returns {ModalBuilder}
+ */
 function createJoinRaffleModal() {
 	const modal = new ModalBuilder()
 		.setCustomId('modal-raffle-join')
@@ -41,23 +45,22 @@ function createJoinRaffleModal() {
 	return modal;
 }
 
-function updateTotal(raffleMessage, updatedRaffleDocument) {
-	const regex = new RegExp('Entries: \\*\\*[0-9]\\*\\*+');
-
-	const oldEmbed = raffleMessage.embeds[0];
-
-	const newEntryCount = updatedRaffleDocument.entries.length;
-	const newEmbedDescription = oldEmbed.description.replace(regex, `Entries: **${newEntryCount}**`);
-
-	return EmbedBuilder.from(oldEmbed)
-		.setDescription(newEmbedDescription);
-}
-
+/**
+ * Removes a user from the raffles entries array.
+ * @param userId
+ * @param raffle
+ * @returns {Promise<*>}
+ */
 async function leaveRaffle(userId, raffle) {
 	raffle.entries.pull(userId);
 	return raffle.save();
 }
 
+/**
+ * Prepares the modal shown when a winner needs to enter VOD information.
+ * @param interaction
+ * @returns {Promise<void>}
+ */
 async function getVODInformationResponse(interaction) {
 	const modal = new ModalBuilder()
 		.setCustomId('modal-raffle-set-vod-information')
@@ -89,10 +92,23 @@ async function getVODInformationResponse(interaction) {
 	await interaction.showModal(modal);
 }
 
+/**
+ * Transforms VOD information into a plaintext string.
+ * @param agent
+ * @param map
+ * @param rank
+ * @returns {string}
+ */
 function printVODInformation(agent, map, rank) {
 	return `Agent: ${agent}\nMap: ${map}\nRank: ${rank}`;
 }
 
+/**
+ * Ensures that the event can only start once all information is perfect,
+ * and that only the guild owner can start the event.
+ * @param interaction
+ * @returns {Promise<*|boolean>}
+ */
 async function gatekeepCreateEventButton(interaction) {
 	if (interaction.member.id !== interaction.guild.ownerId) {
 		return await interaction.reply({
@@ -122,6 +138,11 @@ async function gatekeepCreateEventButton(interaction) {
 	return false;
 }
 
+/**
+ * Prepares the modal shown once the owner clicks on the create-event button.
+ * @param interaction
+ * @returns {Promise<void>}
+ */
 async function getEventStartTime(interaction) {
 	const modal = new ModalBuilder()
 		.setCustomId('modal-raffle-get-event-start-time')
@@ -190,7 +211,7 @@ module.exports = {
 			}
 
 			const updatedRaffleDocument = await leaveRaffle(interaction.user.id, raffle);
-			const updatedRaffleMessageEmbed = await updateTotal(raffleMessage, updatedRaffleDocument);
+			const updatedRaffleMessageEmbed = await updateEntryTotal(raffleMessage, updatedRaffleDocument);
 
 			await raffleMessage.edit({
 				embeds: [updatedRaffleMessageEmbed],
