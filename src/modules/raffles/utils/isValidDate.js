@@ -1,7 +1,12 @@
 const dayjs = require('dayjs');
 const customParseFormat = require('dayjs/plugin/customParseFormat');
 
-module.exports = function validateDate(date) {
+/**
+ * Determines whether an inputted timestamp is valid.
+ * @param date
+ * @returns {boolean}
+ */
+module.exports = function isValidDate(date) {
 	let isValid = true;
 	const formattedDate = dayjs.unix(date);
 

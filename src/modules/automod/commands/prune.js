@@ -1,8 +1,15 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
+/**
+ * Removes active members from the collection of members to kick.
+ * @param members
+ * @returns {*}
+ */
 function sweepCollection(members) {
+	const SovereignSquadRole = '1141879901432074301';
+
 	members.sweep(member => member.user.bot === true);
-	members.sweep(member => member.pending === false);
+	members.sweep(member => member.roles.cache.has(SovereignSquadRole));
 	members.sweep(member => {
 		const dateDifference = Date.now() - member.joinedTimestamp;
 		const twoWeeksUnix = 1209600;
@@ -14,8 +21,12 @@ function sweepCollection(members) {
 	return members;
 }
 
-function notifyMembers(members) {
-	for (const [_, member] of members.entries()) {
+/**
+ * DMs members why they have been removed.
+ * @param members
+ */
+async function notifyMembers(members) {
+	for await (const member of members.values()) {
 		member.send('# ⚠️ Sovereign Guides Server Notice\n'
 			+ 'Your account has been removed from the server as you had not verified after 2 weeks of joining.\n\n'
 			+ 'You may reattempt verification at any time by rejoining the server using this link: https://discord.gg/Jb3Kdqwh8Q\n\n'
@@ -24,10 +35,15 @@ function notifyMembers(members) {
 	}
 }
 
+/**
+ * Kicks members from the server.
+ * @param members
+ * @returns {Promise<number>}
+ */
 async function kickMembers(members) {
 	let kickCounter = 0;
 
-	for await (const [_, member] of members.entries()) {
+	for await (const member of members.values()) {
 		await member.kick('Pruned.').then(() => kickCounter++);
 	}
 
@@ -45,7 +61,7 @@ module.exports = {
 		let members = await interaction.guild.members.fetch();
 		members = sweepCollection(members);
 
-		notifyMembers(members);
+		await notifyMembers(members);
 		const prunedTotal = await kickMembers(members);
 
 		return interaction.followUp(`Pruned ${prunedTotal} members.`);

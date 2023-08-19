@@ -7,7 +7,12 @@ const createPrivateThreads = require('../utils/createPrivateThreads');
 const PastRaffle = require('../schemas/past-raffle-schema');
 const UpcomingRaffle = require('../schemas/upcoming-raffle-schema');
 
-
+/**
+ * Checks whether the message is a completed raffle, if, return the raffle doc.
+ * @param interaction
+ * @param targetMessage
+ * @returns {Promise<PastRaffle|Boolean>}
+ */
 async function isCompletedRaffle(interaction, targetMessage) {
 	if (interaction.applicationId !== targetMessage.author.id) {
 		return false;
@@ -16,6 +21,12 @@ async function isCompletedRaffle(interaction, targetMessage) {
 	return PastRaffle.findById(interaction.targetId);
 }
 
+/**
+ * Checks whether the message is an upcoming raffle, if, return the raffle doc.
+ * @param interaction
+ * @param targetMessage
+ * @returns {Promise<UpcomingRaffle|Boolean>}
+ */
 async function isUpcomingRaffle(interaction, targetMessage) {
 	if (interaction.applicationId !== targetMessage.author.id) {
 		return false;
@@ -24,6 +35,12 @@ async function isUpcomingRaffle(interaction, targetMessage) {
 	return UpcomingRaffle.findById(interaction.targetId);
 }
 
+/**
+ * Updates a raffles' winner array when a raffle is rerolled.
+ * @param newWinnerArray
+ * @param raffle
+ * @returns {Promise<PastRaffle>}
+ */
 async function updateRaffleWinnersDoc(newWinnerArray, raffle) {
 	raffle.winners.push(...newWinnerArray);
 	return raffle.save();
@@ -48,7 +65,8 @@ module.exports = {
 
 			const { noOfWinners, entries: oldEntries, winners: oldWinners } = raffle;
 
-			// :^) https://stackoverflow.com/a/55316303/21395224
+			// Removes past winners from the new raffles entries array.
+			// https://stackoverflow.com/a/55316303/21395224
 			const newEntries = oldEntries.filter(({ _id: id1 }) => !oldWinners.some(({ _id: id2 }) => id2 === id1));
 
 			const newWinnerArray = await getWinners(newEntries, interaction.guild, noOfWinners);

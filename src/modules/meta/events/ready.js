@@ -3,6 +3,11 @@ const mongoose = require('mongoose');
 const queryRaffleDatabase = require('../../raffles/utils/queryRaffleDatabase');
 const { mongo } = require('../../../config.json');
 
+/**
+ * Connect the bot to the specified database.
+ * @param database
+ * @returns {Promise<void>}
+ */
 async function connectToMongo(database) {
 	const username = encodeURIComponent(mongo.username);
 	const password = encodeURIComponent(mongo.password);
@@ -26,6 +31,10 @@ async function validateClient(client) {
 	console.log(`${client.user.tag} (${client.user.id}) is online!`);
 }
 
+/**
+ * Starts an automatic process to query the database every 60,000 ms.
+ * @returns {Promise<void>}
+ */
 async function scheduleTableQuery() {
 	setInterval(await queryRaffleDatabase, 60_000);
 }

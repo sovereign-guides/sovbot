@@ -3,7 +3,11 @@ const axios = require('axios');
 const matchYouTubeLink = require('../../../utils/matchYouTubeLink');
 const { youTubeAPIKey } = require('../../../config.json');
 
-
+/**
+ * Fetches the video title from the YouTube API via its Id.
+ * @param vodLinkId
+ * @returns {Promise<*>}
+ */
 async function getVideoTitle(vodLinkId) {
 	const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&fields=items(id, snippet(title))&id=${vodLinkId}&key=${youTubeAPIKey}`;
 
@@ -23,6 +27,13 @@ async function getVideoTitle(vodLinkId) {
 	return title;
 }
 
+/**
+ * Pushes the video Id into a list of banned words so that the link cannot
+ * be shared in server.
+ * @param autoModRules
+ * @param vodLinkId
+ * @returns {Promise<void>}
+ */
 async function updateAutoModRule(autoModRules, vodLinkId) {
 	const blockPremiumVideosRule = await autoModRules.fetch('1078256973558075453');
 
@@ -34,6 +45,14 @@ async function updateAutoModRule(autoModRules, vodLinkId) {
 	});
 }
 
+/**
+ * Creates a new post in the #VodLibrary category.
+ * @param shelves All GuildBasedChannels.
+ * @param vodShelfId The channel Id of the appropriate VODLibrary channel.
+ * @param vodTitle
+ * @param vodLink
+ * @returns {Promise<void>}
+ */
 async function createForumPost(shelves, vodShelfId, vodTitle, vodLink) {
 	const shelf = await shelves.get(vodShelfId);
 	await shelf.threads.create({

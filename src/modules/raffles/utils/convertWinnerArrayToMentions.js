@@ -1,6 +1,5 @@
 const { userMention } = require('discord.js');
 
-
 /**
  * Destructures an array of winning entry objects to just the appropriate Ids in a mention format.
  * @param arrayOfWinners Entry objects that won.

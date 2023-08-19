@@ -2,7 +2,10 @@ const dayjs = require('dayjs');
 const UpcomingRaffle = require('../../raffles/schemas/upcoming-raffle-schema');
 const handleRaffleEnd = require('../events/handleRaffleEnd');
 
-
+/**
+ * Checks if there are any finished raffles, if, begin the finishing process.
+ * @returns {Promise<void>}
+ */
 module.exports = async function queryRaffleDatabase() {
 	const currentDate = dayjs();
 

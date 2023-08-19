@@ -8,10 +8,17 @@ const { SlashCommandBuilder,
 	ButtonStyle,
 	ActionRowBuilder,
 } = require('discord.js');
-const validateDate = require('../utils/validateDate');
+const isValidDate = require('../utils/isValidDate');
 const UpcomingRaffle = require('../schemas/upcoming-raffle-schema');
 
-
+/**
+ * Creates the Embed object for the raffle.
+ * @param prize
+ * @param description
+ * @param date
+ * @param noOfWinners
+ * @returns {EmbedBuilder}
+ */
 function createRaffleEmbed(prize, description, date, noOfWinners) {
 	if (description) {
 		description = description + '\n' + '\n';
@@ -27,6 +34,10 @@ function createRaffleEmbed(prize, description, date, noOfWinners) {
 		.setTimestamp();
 }
 
+/**
+ * Create the CTA button for joining a raffle.
+ * @returns {ActionRowBuilder<AnyComponentBuilder>}
+ */
 function createRaffleButtons() {
 	const joinRaffleButton = new ButtonBuilder()
 		.setCustomId('button-raffle-join')
@@ -37,6 +48,15 @@ function createRaffleButtons() {
 		.addComponents(joinRaffleButton);
 }
 
+/**
+ * Save the Raffle doucument to the "UpcomingRaffles" collection
+ * @param raffleMessage
+ * @param prize
+ * @param description
+ * @param date
+ * @param noOfWinners
+ * @returns {Promise<void>}
+ */
 async function saveRaffle(raffleMessage, prize, description, date, noOfWinners) {
 	const doc = new UpcomingRaffle({
 		_id: raffleMessage.id,
@@ -93,10 +113,11 @@ module.exports = {
 			const description = interaction.options?.getString('description') || null;
 			const date = interaction.options.getNumber('date');
 			const channel = interaction.options?.getChannel('channel')
+				// #raffles-entry = 1112540056528375913
 				?? await interaction.guild.channels.cache.get('1112540056528375913');
 			const noOfWinners = interaction.options?.getNumber('winner-count') ?? 1;
 
-			if (validateDate(date) === false) {
+			if (isValidDate(date) === false) {
 				return interaction.followUp('Please enter a valid date.');
 			}
 

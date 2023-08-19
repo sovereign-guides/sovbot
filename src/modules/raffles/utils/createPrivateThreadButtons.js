@@ -1,5 +1,9 @@
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 
+/**
+ * Creates the CTA buttons for winners' threads.
+ * @returns {ActionRowBuilder<AnyComponentBuilder>}
+ */
 module.exports = function createPrivateThreadButtons() {
 	const vodInformationButton = new ButtonBuilder()
 		.setCustomId('thread-set-vod-information-button')

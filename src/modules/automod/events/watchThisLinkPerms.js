@@ -1,5 +1,10 @@
 const { Events, inlineCode, channelMention, EmbedBuilder, bold } = require('discord.js');
 
+/**
+ * DMs users why their clip was not sent into #watch-this.
+ * @param user
+ * @returns {Promise<number>}
+ */
 async function messageUser(user) {
 	const messageContent = `Hey, your message was blocked in ${channelMention('797229760978747415')} because you do not meet our requirements of being exp level 5. We enforce this rule to prevent abuse.` + '\n' + '\n' +
 		'You can increase your level by chatting in the server!' + '\n' +
@@ -23,6 +28,13 @@ async function messageUser(user) {
 	return messageStatus;
 }
 
+/**
+ * Logs whenever a clip was denied access, details whether the DM went through.
+ * @param autoModerationActionExecution
+ * @param user
+ * @param messageStatus
+ * @returns {EmbedBuilder}
+ */
 function createLogEmbed(autoModerationActionExecution, user, messageStatus) {
 	return new EmbedBuilder()
 		.setTitle('AutoMod: #📸│watch-this Restrictions')
@@ -49,6 +61,8 @@ module.exports = {
 		const messageStatus = await messageUser(user);
 
 		const logEmbed = createLogEmbed(autoModerationActionExecution, user, messageStatus);
+
+		// #mod-log = 988143057767657502
 		const logChannel = autoModerationActionExecution.guild.channels.cache.get('988143057767657502');
 
 		return logChannel.send({ embeds: [logEmbed] });

@@ -1,32 +1,37 @@
-const { Events, GuildScheduledEventPrivacyLevel, GuildScheduledEventEntityType, userMention, inlineCode, EmbedBuilder } = require('discord.js');
+const { Events,
+	GuildScheduledEventPrivacyLevel,
+	GuildScheduledEventEntityType,
+	userMention,
+	inlineCode,
+} = require('discord.js');
 const axios = require('axios');
 const dayjs = require('dayjs');
 const PastRaffle = require('../schemas/past-raffle-schema');
 const UpcomingRaffle = require('../schemas/upcoming-raffle-schema');
 const getWinnerIdFromThread = require('../utils/getWinnerIdFromThread');
 const getRaffleMessageIdFromThread = require('../utils/getRaffleMessageIdFromThread');
-const validateDate = require('../utils/validateDate');
-const getRaffleObject = require('../utils/getWinnerObject');
+const getRaffleObject = require('../utils/getRaffleObject');
+const isValidDate = require('../utils/isValidDate');
+const updateEntryTotal = require('../utils/updateEntryTotal');
 const matchYouTubeLink = require('../../../utils/matchYouTubeLink');
 
-
+/**
+ * Pushes an entry's information into the raffle entries array.
+ * @param userId
+ * @param raffle
+ * @param vodLinkInput
+ * @param focusInput
+ * @returns {Promise<UpcomingRaffle>}
+ */
 async function joinRaffle(userId, raffle, vodLinkInput, focusInput) {
 	raffle.entries.push({ _id: userId, vodLink: vodLinkInput, focus: focusInput });
 	return raffle.save();
 }
 
-function updateTotal(raffleMessage, updatedRaffleDocument) {
-	const regex = new RegExp('Entries: \\*\\*[0-9]\\*\\*+');
-
-	const oldEmbed = raffleMessage.embeds[0];
-
-	const newEntryCount = updatedRaffleDocument.entries.length;
-	const newEmbedDescription = oldEmbed.description.replace(regex, `Entries: **${newEntryCount}**`);
-
-	return EmbedBuilder.from(oldEmbed)
-		.setDescription(newEmbedDescription);
-}
-
+/**
+ * Fetch all available agents in the game.
+ * @returns {Promise<*[]|boolean>}
+ */
 async function getAllAgents() {
 	const req = await axios.get('https://valorant-api.com/v1/agents?isPlayableCharacter=true')
 		.catch(e => console.error(e));
@@ -42,6 +47,10 @@ async function getAllAgents() {
 	return allAgents;
 }
 
+/**
+ * Fetch all available maps in the game.
+ * @returns {Promise<*[]|boolean>}
+ */
 async function getAllMaps() {
 	const req = await axios.get('https://valorant-api.com/v1/maps')
 		.catch(e => console.error(e));
@@ -57,11 +66,10 @@ async function getAllMaps() {
 	return allMaps;
 }
 
-function toPascalCase(text) {
-	return text.replace(/(\w)(\w*)/g,
-		function(g0, g1, g2) {return g1.toUpperCase() + g2.toLowerCase();});
-}
-
+/**
+ * Fetch all available ranks in the game.
+ * @returns {Promise<*[]|boolean>}
+ */
 async function getAllRanks() {
 	const req = await axios.get('https://valorant-api.com/v1/competitivetiers')
 		.catch(e => console.error(e));
@@ -79,6 +87,22 @@ async function getAllRanks() {
 	return allRanks;
 }
 
+/**
+ * Convert text in PascalCase.
+ * @param text
+ * @returns {String}
+ */
+function toPascalCase(text) {
+	return text.replace(/(\w)(\w*)/g,
+		function(g0, g1, g2) {return g1.toUpperCase() + g2.toLowerCase();});
+}
+
+/**
+ * Creates a guild event for the raffle winner's VOD review.
+ * @param interaction
+ * @param date
+ * @returns {Promise<void>}
+ */
 async function createGuildEvent(interaction, date) {
 	const thread = await interaction.guild.channels.cache.get(interaction.channelId);
 	const raffleId = getRaffleMessageIdFromThread(thread);
@@ -96,6 +120,7 @@ async function createGuildEvent(interaction, date) {
 		privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
 		entityType: GuildScheduledEventEntityType.StageInstance,
 		description: description ?? '',
+		// #! General Stage = 1077681347709108324
 		channel: '1077681347709108324',
 	});
 
@@ -129,7 +154,7 @@ module.exports = {
 			}
 
 			const updatedRaffleDocument = await joinRaffle(interaction.user.id, raffle, vodLinkInput, focusInput);
-			const updatedRaffleMessageEmbed = await updateTotal(raffleMessage, updatedRaffleDocument);
+			const updatedRaffleMessageEmbed = await updateEntryTotal(raffleMessage, updatedRaffleDocument);
 
 			await interaction.update({
 				embeds: [updatedRaffleMessageEmbed],
@@ -221,7 +246,7 @@ module.exports = {
 		else if (interaction.customId === 'modal-raffle-get-event-start-time') {
 			const date = interaction.fields.getTextInputValue('timeInput');
 
-			if (validateDate(date) === false) {
+			if (isValidDate(date) === false) {
 				return interaction.reply({
 					content: 'Please enter a valid date.',
 					ephemeral: true,
