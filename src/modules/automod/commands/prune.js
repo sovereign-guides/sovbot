@@ -1,5 +1,10 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
+/**
+ * Removes active members from the collection of members to kick.
+ * @param members
+ * @returns {*}
+ */
 function sweepCollection(members) {
 	members.sweep(member => member.user.bot === true);
 	members.sweep(member => member.pending === false);
@@ -14,6 +19,10 @@ function sweepCollection(members) {
 	return members;
 }
 
+/**
+ * DMs members why they have been removed.
+ * @param members
+ */
 function notifyMembers(members) {
 	for (const [_, member] of members.entries()) {
 		member.send('# ⚠️ Sovereign Guides Server Notice\n'
@@ -24,6 +33,11 @@ function notifyMembers(members) {
 	}
 }
 
+/**
+ * Kicks members from the server.
+ * @param members
+ * @returns {Promise<number>}
+ */
 async function kickMembers(members) {
 	let kickCounter = 0;
 

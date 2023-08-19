@@ -1,10 +1,23 @@
 const { Events, hyperlink } = require('discord.js');
 
+/**
+ * Matches embed descriptions against a regex determining if the post is
+ * about patch notes.
+ * @param patchDescription The description of the embed.
+ * @returns {*}
+ */
 function isPatchNotes(patchDescription) {
 	const regExp = new RegExp('Patch\\sNotes\\s([+-]?(?=\\.\\d|\\d)(?:\\d+)?\\.?\\d*)');
 	return patchDescription?.match(regExp);
 }
 
+/**
+ * Creates a new forum discussion post around the embed.
+ * @param message The incoming message attached to the embed.
+ * @param title The patch version.
+ * @param body The patch description.
+ * @returns {Promise<void>}
+ */
 async function createForumPost(message, title, body) {
 	// #val-discussion = 1047249775180927026
 	const channel = message.guild?.channels.cache.get('1047249775180927026');
