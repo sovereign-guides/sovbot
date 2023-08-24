@@ -11,7 +11,8 @@
   "scripts": {
     "test": "echo \\\"Error: no test specified\\\" && exit 1",
     "lint": "eslint . --ext .js",
-    "start": "node ."
+    "start-dev": "config='dev.config.json' node .",
+    "start-prod": "config='config.json' node ."
   },
   "dependencies": {
     "axios": "^1.4.0",

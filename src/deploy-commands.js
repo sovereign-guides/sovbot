@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { REST, Routes } = require('discord.js');
-const { discordToken, clientId, guildId } = require('./config.json');
+const { discordToken, clientId, guildId } = require(`./${process.env.config}`);
 
 const commands = [];
 const modulesPath = path.join(__dirname, 'modules');
