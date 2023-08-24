@@ -1,7 +1,7 @@
 const { Events } = require('discord.js');
 const mongoose = require('mongoose');
 const queryRaffleDatabase = require('../../raffles/utils/queryRaffleDatabase');
-const { mongo } = require('../../../config.json');
+const { mongo } = require(`../../../${process.env.config}`);
 
 /**
  * Connect the bot to the specified database.

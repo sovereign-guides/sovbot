@@ -12,14 +12,16 @@ We <3 corrections and improvements
 
 ### Local development
 
-1. Clone the repo with `git clone git@github.com:sovereign-guides/sovbot.git`
+1. Clone the repo with `git clone git@github.com:sovereign-guides/sovbot.git`.
 
 2. Fill in the env variables with `cd src && mv config.json.example config.json && nano config.json`.
 
-3. Install packages with `yarn install`
+3. Install packages with `yarn install`.
 
 4. Run `pm2 start ecosystem.config.js` to start the bot service.
 
+`📝` You can run a developmental instance by making a `dev.config.json` and
+using `pm2 start ecosystem.config.js --env development`.
 
 `📝` When updating, you can use the `bash update.sh` script.
 
