@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Collection } = require('discord.js');
 const { SovBot } = require('./SovBot');
-const { discordToken } = require(`./${process.env.config}`);
+const { discordToken } = require('./config.json');
 
 
 SovBot.commands = new Collection();

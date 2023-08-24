@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits, inlineCode } = require('discord.js');
 const axios = require('axios');
 const matchYouTubeLink = require('../../../utils/matchYouTubeLink');
-const { youTubeAPIKey } = require(`../../../${process.env.config}`);
+const { youTubeAPIKey } = require('../../../config.json');
 
 /**
  * Fetches the video title from the YouTube API via its Id.
