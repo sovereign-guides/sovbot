@@ -19,7 +19,7 @@ module.exports = {
 		const hideMessageFlag = interaction.options.getBoolean('ephemeral') ?? true;
 		const user = interaction.options.getUser('user') ?? interaction.user;
 
-		const res = await getAchievements(user);
+		const res = await getAchievements(user.id);
 		const achievementsEmbed = buildAchievementsEmbed(user, res);
 
 		await interaction.reply({

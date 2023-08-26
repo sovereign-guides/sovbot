@@ -1,4 +1,7 @@
-const { Events, ModalBuilder, TextInputBuilder, TextInputStyle,
+const { Events,
+	ModalBuilder,
+	TextInputBuilder,
+	TextInputStyle,
 	ActionRowBuilder,
 } = require('discord.js');
 const getAchievements = require('../utils/getAchievements');
@@ -9,9 +12,9 @@ module.exports = {
 	async execute(interaction) {
 		if (!interaction.isUserContextMenuCommand()) return;
 		if (interaction.commandName === 'View Achievements') {
-			const user = interaction.user;
+			const user = interaction.targetUser;
 
-			const res = await getAchievements(user);
+			const res = await getAchievements(user.id);
 			const achievementsEmbed = buildAchievementsEmbed(user, res);
 
 			return await interaction.reply({
@@ -21,18 +24,18 @@ module.exports = {
 		}
 		else if (interaction.commandName === 'Modify Achievements') {
 			const modal = new ModalBuilder()
-				.setCustomId('modal-achievements-modify')
+				.setCustomId(`modal-achievements-modify-${interaction.targetId}`)
 				.setTitle('Modify Achievements');
 
 			const addInput = new TextInputBuilder()
 				.setCustomId('add-achievement')
-				.setLabel('Achievements to add? (Comma delimited Ids)')
+				.setLabel('Achievements to add? (e.g., n,n,n)')
 				.setStyle(TextInputStyle.Short)
 				.setRequired(false);
 
 			const removeInput = new TextInputBuilder()
 				.setCustomId('remove-achievement')
-				.setLabel('Achievements to remove? (Comma delimited Ids)')
+				.setLabel('Achievements to remove? (e.g., n,n,n)')
 				.setStyle(TextInputStyle.Short)
 				.setRequired(false);
 

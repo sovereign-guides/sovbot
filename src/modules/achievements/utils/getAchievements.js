@@ -5,6 +5,6 @@ const UserAchievement = require('../schemas/user-achievement-schema');
  * @param user
  * @returns {Promise<Array>}
  */
-module.exports = async function getUserAchievements(user) {
-	return UserAchievement.find({ userId: user.id });
+module.exports = async function getUserAchievements(userId) {
+	return UserAchievement.find({ userId: userId });
 };
