@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const userAchievementSchema = new Schema({
 	_id: mongoose.ObjectId,
 	userId: String,
-	achievementId: Number,
+	achievementId: String,
 });
 
 const UserAchievement = mongoose.model('User-Achievement', userAchievementSchema);

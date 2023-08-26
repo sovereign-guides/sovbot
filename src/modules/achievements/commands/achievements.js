@@ -2,11 +2,17 @@ const { SlashCommandBuilder, EmbedBuilder, codeBlock, italic } = require('discor
 const UserAchievement = require('../schemas/user-achievement-schema');
 const ACHIEVEMENTS = require('../utils/ACHIEVEMENTS');
 
+
+/**
+ * Creates the template embed that achievements will be built onto.
+ * @param user
+ * @returns {EmbedBuilder}
+ */
 function buildEmbed(user) {
 	return new EmbedBuilder()
 		.setColor(0x15af98)
 		.setAuthor({
-			name: user.displayName,
+			name: `${user.displayName}'s Achievements`,
 			iconURL: user.avatarURL() ?? user.defaultAvatarURL,
 		});
 }
@@ -17,7 +23,7 @@ module.exports = {
 		.setDescription('View your achievements!')
 		.addBooleanOption(option =>
 			option.setName('ephemeral')
-				.setDescription('Hide results? (Default false)'),
+				.setDescription('Hide results? (Default True)'),
 		)
 		.addUserOption(option =>
 			option.setName('user')
@@ -25,25 +31,25 @@ module.exports = {
 					' (Default you)'),
 		),
 	async execute(interaction) {
+		const hideMessageFlag = interaction.options.getBoolean('ephemeral') ?? true;
 		const user = interaction.options.getUser('user') ?? interaction.user;
-		const showMessage = interaction.options.getBoolean('ephemeral') ?? false;
 
 		const res = await UserAchievement.find({ userId: user.id });
 
-		const embed = buildEmbed(user);
+		const achievementEmbed = buildEmbed(user);
 
 		if (!res.length) {
-			embed.setDescription(italic('You have no achievements yet...'));
-			return interaction.reply({
-				embeds: [embed],
-				ephemeral: showMessage,
+			achievementEmbed.setDescription(italic('You have no achievements yet...'));
+			return await interaction.reply({
+				embeds: [achievementEmbed],
+				ephemeral: hideMessageFlag,
 			});
 		}
 
 		for (const userAchievement of res) {
-			const achievement = ACHIEVEMENTS[userAchievement.achievementId.toString()];
+			const achievement = ACHIEVEMENTS[userAchievement.achievementId];
 
-			embed.addFields({
+			achievementEmbed.addFields({
 				name: achievement.title,
 				value: codeBlock(achievement.description),
 				inline: true,
@@ -51,8 +57,8 @@ module.exports = {
 		}
 
 		await interaction.reply({
-			embeds: [embed],
-			ephemeral: showMessage,
+			embeds: [achievementEmbed],
+			ephemeral: hideMessageFlag,
 		});
 	},
 };
