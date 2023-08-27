@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dayjs = require('dayjs');
 const ACHIEVEMENTS = require('../utils/ACHIEVEMENTS');
 const UserAchievement = require('../schemas/user-achievement-schema');
+const UserAchievementDates = require('../schemas/user-achievement-dates-schema');
 
 /**
  * Determines whether each Id is a valid Id.
@@ -57,17 +58,30 @@ module.exports = {
 				}));
 			}
 
-			await UserAchievement.insertMany(docs).then(r => savedCount = r.length);
+			await UserAchievement.insertMany(docs).then(async (r) => {
+				savedCount = r.length;
+				await UserAchievementDates.findByIdAndUpdate(
+					{ _id: targetId },
+					{ $inc: { '__v' : 1 }, lastChecked: dayjs() },
+				);
+			});
 		}
 
 		let filteredRemoveIds = [];
 		let deletedCount = 0;
 		if (toRemoveInputs.some(Boolean)) {
 			filteredRemoveIds = toRemoveInputs.filter(validateAchievementIds);
+
 			await UserAchievement.deleteMany({
 				userId: targetId,
 				achievementId: { '$in': filteredRemoveIds },
-			}).then(r => deletedCount = r.deletedCount);
+			}).then(async (r) => {
+				deletedCount = r.deletedCount;
+				await UserAchievementDates.findByIdAndUpdate(
+					{ _id: targetId },
+					{ $inc: { '__v' : 1 }, lastChecked: dayjs() },
+				);
+			});
 		}
 
 		if (toAddInputs[0] === '') { attemptedSaveCount = toAddInputs.length - 1; }

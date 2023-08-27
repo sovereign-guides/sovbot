@@ -5,6 +5,40 @@ const UserAchievementDates = require('../schemas/user-achievement-dates-schema')
 const { SovBot } = require('../../../SovBot');
 const mongoose = require('mongoose');
 
+/**
+ * Determines which achievements a user should have on their first message.
+ * @param member
+ * @returns {Promise<*>}
+ */
+async function firstTimeSetup(member) {
+	const achievementIds = [];
+
+	if (isSixMonths(member)) {
+		achievementIds.push('3');
+
+		if (isTwelveMonths(member)) {
+			achievementIds.push('4');
+		}
+	}
+
+	const docs = [];
+	for (const id of achievementIds) {
+		docs.push(new UserAchievement({
+			_id: new mongoose.Types.ObjectId(),
+			userId: member.user.id,
+			achievementId: id,
+			obtained: dayjs(),
+		}));
+	}
+
+	return await UserAchievement.create(docs)
+		.then(async () => {
+			await new UserAchievementDates({
+				_id: member.user.id,
+				lastChecked: dayjs(),
+			}).save();
+		});
+}
 
 /**
  * Determines whether the member joined at least six months in the past.
@@ -37,15 +71,18 @@ SovBot.on(Events.MessageCreate, async message => {
 	if (message.applicationId) return;
 
 	const member = message.member;
-	const user = member.user;
 
-	const doc = await UserAchievementDates.findById({ _id: user.id });
+	const userDateDoc = await UserAchievementDates.findById({ _id: member.user.id });
 
-	const lastChecked = doc?.lastChecked ?? 0;
+	if (!userDateDoc) { return await firstTimeSetup(member); }
 
-	if (lastChecked < dayjs().subtract(1, 'hour')) {
-		const achievementIds = [];
+	if (userDateDoc.lastChecked > dayjs().subtract(24, 'hour')) return;
 
+	const userAchievementDoc = await UserAchievement.find({ userId: member.user.id });
+
+	const achievementIds = userAchievementDoc.map(i => { return i.achievementId ;});
+
+	if (!achievementIds.includes('3')) {
 		if (isSixMonths(member)) {
 			achievementIds.push('3');
 
@@ -53,25 +90,24 @@ SovBot.on(Events.MessageCreate, async message => {
 				achievementIds.push('4');
 			}
 		}
-
-		const docs = [];
-		for (const id of achievementIds) {
-			docs.push(new UserAchievement({
-				_id: new mongoose.Types.ObjectId(),
-				userId: user.id,
-				achievementId: id,
-				obtained: dayjs(),
-			}));
-		}
-
-		return await UserAchievement.insertMany(docs)
-			.then(async () => {
-				await new UserAchievementDates({
-					_id: user.id,
-					lastChecked: dayjs(),
-				}).save();
-			});
 	}
+
+	const docs = [];
+	for (const id of achievementIds) {
+		docs.push(new UserAchievement({
+			_id: new mongoose.Types.ObjectId(),
+			userId: member.user.id,
+			achievementId: id,
+			obtained: dayjs(),
+		}));
+	}
+
+	await UserAchievement.insertMany(docs).then(async () => {
+		await UserAchievementDates.findByIdAndUpdate(
+			{ _id: member.user.id },
+			{ $inc: { '__v' : 1 }, lastChecked: dayjs() },
+		);
+	});
 });
 
 SovBot.on(Events.VoiceStateUpdate, async (oldState, newState) => {
