@@ -1,9 +1,9 @@
 const { Events } = require('discord.js');
 const dayjs = require('dayjs');
+const mongoose = require('mongoose');
 const UserAchievement = require('../schemas/user-achievement-schema');
 const UserAchievementDates = require('../schemas/user-achievement-dates-schema');
 const { SovBot } = require('../../../SovBot');
-const mongoose = require('mongoose');
 
 /**
  * Determines which achievements a user should have on their first message.
