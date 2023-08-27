@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const queryRaffleDatabase = require('../../raffles/utils/queryRaffleDatabase');
 const { mongo } = require('../../../config.json');
 
+
 /**
  * Connect the bot to the specified database.
  * @param database
@@ -43,7 +44,7 @@ module.exports = {
 	name: Events.ClientReady,
 	once: true,
 	async execute(client) {
-		await connectToMongo('raffles');
+		await connectToMongo('sovbot');
 		await validateClient(client);
 		await scheduleTableQuery();
 	},
