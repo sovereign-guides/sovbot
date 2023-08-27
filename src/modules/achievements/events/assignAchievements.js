@@ -81,20 +81,21 @@ SovBot.on(Events.MessageCreate, async message => {
 
 	const userAchievementDoc = await UserAchievement.find({ userId: member.user.id });
 
-	const achievementIds = userAchievementDoc.map(i => { return i.achievementId ;});
+	const oldAchievementIds = userAchievementDoc.map(i => { return i.achievementId ;});
+	const newAchievementIds = [];
 
-	if (!achievementIds.includes('3')) {
+	if (!oldAchievementIds.includes('3')) {
 		if (isSixMonths(member)) {
-			achievementIds.push('3');
+			newAchievementIds.push('3');
 
 			if (isTwelveMonths(member)) {
-				achievementIds.push('4');
+				newAchievementIds.push('4');
 			}
 		}
 	}
 
 	const docs = [];
-	for (const id of achievementIds) {
+	for (const id of newAchievementIds) {
 		docs.push(new UserAchievement({
 			_id: new mongoose.Types.ObjectId(),
 			userId: member.user.id,
