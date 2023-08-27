@@ -34,6 +34,8 @@ function isTwelveMonths(member) {
 
 
 SovBot.on(Events.MessageCreate, async message => {
+	if (message.applicationId) return;
+
 	const member = message.member;
 	const user = member.user;
 
