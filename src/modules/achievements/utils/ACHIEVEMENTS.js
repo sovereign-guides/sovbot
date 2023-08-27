@@ -5,10 +5,10 @@
 const ACHIEVEMENTS = Object.freeze({
 	'1': {
 		title: '🥇 First 1k Members!',
-		description: 'Be one of the first 1000 members.',
+		description: 'Be one of the first 1000 members in the Discord!',
 	},
 	'2': {
-		title: '🏅 100k Subs!',
+		title: '🏅 100k Subscribers!',
 		description: 'A member when Airen crossed 100k subscribers.',
 	},
 	'3': {
