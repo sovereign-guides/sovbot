@@ -20,7 +20,7 @@ const ACHIEVEMENTS = Object.freeze({
 		description: 'Be a part of this server for over 12 months.',
 	},
 	'5': {
-		title: '🏟️ Ticket Holder',
+		title: '🏟️ Season Ticket Holder',
 		description: 'Attend at least one of Airen\'s stages.',
 	},
 	'6': {

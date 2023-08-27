@@ -10,5 +10,6 @@ module.exports.SovBot = new Client({
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.AutoModerationExecution,
+		GatewayIntentBits.GuildVoiceStates,
 	],
 });

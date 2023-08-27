@@ -1,5 +1,6 @@
 const { Events, inlineCode } = require('discord.js');
 const mongoose = require('mongoose');
+const dayjs = require('dayjs');
 const ACHIEVEMENTS = require('../utils/ACHIEVEMENTS');
 const UserAchievement = require('../schemas/user-achievement-schema');
 
@@ -52,6 +53,7 @@ module.exports = {
 					_id: new mongoose.Types.ObjectId(),
 					userId: targetId,
 					achievementId: id,
+					obtained: dayjs(),
 				}));
 			}
 
