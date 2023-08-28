@@ -5,7 +5,12 @@ const { Events,
 } = require('discord.js');
 const dayjs = require('dayjs');
 
-
+/**
+ * Creates a guild event with given context from activity.
+ * @param guild
+ * @param activity
+ * @returns {Promise<void>}
+ */
 async function createEvent(guild, activity) {
 	const startDate = dayjs().add(1, 'minute');
 	const endDate = dayjs().add(6, 'hour');
