@@ -4,7 +4,7 @@ module.exports = {
 	data: new ContextMenuCommandBuilder()
 		.setName('End Raffle')
 		.setType(ApplicationCommandType.Message)
-		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageEvents),
 	execute() {
 		// Avoids warning from deploy-commands.
 	},

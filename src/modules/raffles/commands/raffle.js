@@ -76,7 +76,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('raffle')
 		.setDescription('Manage all things raffle.')
-		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageEvents)
 		.addSubcommand(subcommand =>
 			subcommand.setName('start')
 				.setDescription('Launch a raffle!')
