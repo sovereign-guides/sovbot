@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, ActivityType } = require('discord.js');
 
 module.exports.SovBot = new Client({
 	intents: [
@@ -13,4 +13,11 @@ module.exports.SovBot = new Client({
 		GatewayIntentBits.AutoModerationExecution,
 		GatewayIntentBits.GuildVoiceStates,
 	],
+	presence: {
+		activities: [{
+			type: ActivityType.Custom,
+			name: 'custom-client',
+			state: '💯',
+		}],
+	},
 });
