@@ -9,21 +9,23 @@ This is the source code for [SovBot#9299](https://discord.com/users/100092760251
 
 ---
 
-## Current features:
+## Notable features:
+
+- [Raffles](src/modules/raffles/commands/raffle.js): Handles the Free
+  Coaching Raffles, from people joining to the raffle ending!
+
+- [Streaming](src/modules/automod/events/airenStreaming.js): Creates a 
+  Guild Event whenever Airen goes live across Twitch or YouTube.
+
+- [Achievements](src/modules/achievements/commands/achievements.js): 
+  Members can unlock achievements in the server, similar to special roles.
 
 - [Post on Patch](src/modules/automod/events/postOnPatch.js): Creates a 
   discussion post in a forum when there's a new val patch!
 
-- [Publish Premium VODs](src/modules/meta/commands/post.js): Posts and tags a premium video, pushes the video's Id into an AutoMod list.
-
-- [Prune Unverified Members](src/modules/automod/commands/prune.js): 
-  Removes members that have yet to be verified after 2 weeks of being in the server.
-
-- [AutoMod Link Restrictions](src/modules/automod/events/watchThisLinkPerms.js): Tells ineligible users why their clip did not get sent in the 
+- [AutoMod](src/modules/automod/events/watchThisLinkPerms.js): Tells ineligible users why their clip did not get sent in the 
   #watch-this channel.
 
-- [Raffles](src/modules/raffles/commands/raffle.js): Handles the Free 
-  Coaching Raffles, from raffle entry to raffle event start!
 
 ---
 

@@ -3,6 +3,7 @@ const { Client, GatewayIntentBits } = require('discord.js');
 module.exports.SovBot = new Client({
 	intents: [
 		// Privileged Intents
+		GatewayIntentBits.GuildPresences,
 		GatewayIntentBits.GuildMembers,
 		GatewayIntentBits.MessageContent,
 
