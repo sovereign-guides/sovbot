@@ -3,6 +3,7 @@ const dayjs = require('dayjs');
 const mongoose = require('mongoose');
 const UserAchievement = require('../schemas/user-achievement-schema');
 const UserAchievementDates = require('../schemas/user-achievement-dates-schema');
+const getAchievements = require('../utils/getAchievements');
 const { SovBot } = require('../../../SovBot');
 
 /**
@@ -79,7 +80,7 @@ SovBot.on(Events.MessageCreate, async message => {
 
 	if (userDateDoc.lastChecked > dayjs().subtract(24, 'hour')) return;
 
-	const userAchievementDoc = await UserAchievement.find({ userId: member.user.id });
+	const userAchievementDoc = await getAchievements(member.user.id);
 
 	const oldAchievementIds = userAchievementDoc.map(i => { return i.achievementId ;});
 	const newAchievementIds = [];
