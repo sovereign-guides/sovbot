@@ -16,7 +16,7 @@ async function createEvent(guild, activity) {
 	const endDate = dayjs().add(6, 'hour');
 
 	await guild.scheduledEvents.create({
-		name: activity.name,
+		name: activity.details,
 		privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
 		entityType: GuildScheduledEventEntityType.External,
 		entityMetadata: { location: activity.url },
@@ -32,13 +32,12 @@ module.exports = {
 	async execute(oldPresence, newPresence) {
 		if (newPresence.userId !== newPresence.guild.ownerId) return;
 
-		if (newPresence.activities.length) {
-			const activities = newPresence.activities;
-			for (const activity of activities) {
-				if (activity.type === ActivityType.Streaming) {
-					return await createEvent(newPresence.guild, activity);
-				}
-			}
+		if (!newPresence.activities.length) return;
+
+		const activities = newPresence.activities;
+		for (const activity of activities) {
+			if (activity.type !== ActivityType.Streaming) return;
+			await createEvent(newPresence.guild, activity);
 		}
 	},
 };
