@@ -14,9 +14,6 @@ This is the source code for [SovBot#9299](https://discord.com/users/100092760251
 - [Raffles](src/modules/raffles/commands/raffle.js): Handles the Free
   Coaching Raffles, from people joining to the raffle ending!
 
-- [Streaming](src/modules/automod/events/airenStreaming.js): Creates a 
-  Guild Event whenever Airen goes live across Twitch or YouTube.
-
 - [Achievements](src/modules/achievements/commands/achievements.js): 
   Members can unlock achievements in the server, similar to special roles.
 
