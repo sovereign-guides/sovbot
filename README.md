@@ -17,7 +17,7 @@ This is the source code for [SovBot#9299](https://discord.com/users/100092760251
 - [Achievements](src/modules/achievements/commands/achievements.js): 
   Members can unlock achievements in the server, similar to special roles.
 
-- [Post on Patch](src/modules/automod/events/postOnPatch.js): Creates a 
+- [Post on Patch](src/modules/postOnPatch/events/handleNewPatch.js): Creates a 
   discussion post in a forum when there's a new val patch!
 
 - [AutoMod](src/modules/automod/events/watchThisLinkPerms.js): Tells ineligible users why their clip did not get sent in the 

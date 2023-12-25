@@ -1,6 +1,7 @@
 const { Events } = require('discord.js');
 const mongoose = require('mongoose');
 const queryRaffleDatabase = require('../../raffles/utils/queryRaffleDatabase');
+const queryPatchDatabase = require('../../postOnPatch/utils/queryPatchDatabase');
 const { mongo } = require('../../../config.json');
 
 
@@ -37,15 +38,16 @@ async function validateClient(client) {
  * @returns {Promise<void>}
  */
 async function scheduleTableQuery() {
-	setInterval(await queryRaffleDatabase, 60_000);
+	await queryRaffleDatabase();
+	await queryPatchDatabase();
 }
 
 module.exports = {
 	name: Events.ClientReady,
 	once: true,
 	async execute(client) {
-		await connectToMongo('sovbot');
 		await validateClient(client);
-		await scheduleTableQuery();
+		await connectToMongo('sovbot');
+		setInterval(await scheduleTableQuery, 60_000);
 	},
 };
