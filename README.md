@@ -20,10 +20,6 @@ This is the source code for [SovBot#9299](https://discord.com/users/100092760251
 - [Post on Patch](src/modules/postOnPatch/events/handleNewPatch.js): Creates a 
   discussion post in a forum when there's a new val patch!
 
-- [AutoMod](src/modules/automod/events/watchThisLinkPerms.js): Tells ineligible users why their clip did not get sent in the 
-  #watch-this channel.
-
-
 ---
 
 ## Contributing
