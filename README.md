@@ -11,15 +11,13 @@ This is the source code for [SovBot#9299](https://discord.com/users/100092760251
 
 ## Notable features:
 
-- [Raffles](src/modules/raffles/commands/raffle.js): Handles the Free
-  Coaching Raffles, from people joining to the raffle ending!
+- [Raffles](src/modules/raffles/commands/raffle.js): Handles the Free Coaching Raffles, from people joining to the raffle ending!
 
-- [Achievements](src/modules/achievements/commands/achievements.js): 
-  Members can unlock achievements in the server, similar to special roles.
+- [Achievements](src/modules/achievements/commands/achievements.js): Members can unlock achievements in the server, similar to special roles.
 
-- [Post on Patch](src/modules/postOnPatch/events/handleNewPatch.js): Creates a 
-  discussion post in a forum when there's a new val patch!
+- [Post on Patch](src/modules/postOnPatch/events/handleNewPatch.js): Creates a discussion post in a forum when there's a new val patch!
 
+- [Volunteering](src/modules/volunteer/commands/volunteer.js): Volunteering allows eligible people to sign up to help shoot b-roll in custom games.
 ---
 
 ## Contributing
