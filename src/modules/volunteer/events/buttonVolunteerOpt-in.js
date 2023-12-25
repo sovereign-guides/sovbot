@@ -1,4 +1,4 @@
-const { Events, channelLink } = require('discord.js');
+const { Events, channelMention } = require('discord.js');
 
 
 /**
@@ -19,7 +19,7 @@ module.exports = {
 				ViewChannel: true,
 			});
 			await interaction.reply({
-				content: `You have been added to ${channelLink('1188685015626821734', interaction.guild.id)}!`,
+				content: `You have been added to ${channelMention('1188685015626821734')}!`,
 				ephemeral: true,
 			});
 		}
