@@ -18,7 +18,7 @@ async function modifyChannelPermissions(interaction, channel) {
 	else {
 		channel.permissionOverwrites.delete(interaction.user);
 		await interaction.followUp({
-			content: 'Successfully opted out!',
+			content: `Successfully opted out of #${channel.name}!`,
 			ephemeral: true,
 		});
 	}
