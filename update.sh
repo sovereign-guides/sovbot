@@ -3,7 +3,9 @@ echo Updating SovBot...
 
 git pull origin main
 
-nvm use
+export NVM_DIR=$HOME/.nvm;
+source $NVM_DIR/nvm.sh;
+
 yarn install
 
 pm2 restart ecosystem.config.js
