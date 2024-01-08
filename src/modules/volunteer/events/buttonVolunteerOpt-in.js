@@ -23,7 +23,7 @@ module.exports = {
 		else {
 			await interaction.member.roles.add(volunteerRole);
 			await interaction.reply({
-				content: `Successfully opted in! Airen will post recording times in ${channelMention('1188685015626821734')} and you will meet in ${channelMention('1188987291981582408')}. Press again to opt out.`,
+				content: `Successfully opted in! Airen will post recording times in ${channelMention('1188685015626821734')} and you will meet in ${channelMention('1193988786053460028')}. Press again to opt out.`,
 				ephemeral: true,
 			});
 		}
