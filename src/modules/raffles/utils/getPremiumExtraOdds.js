@@ -5,24 +5,34 @@
  */
 module.exports = async function getPremiumExtraOdds(guildMemberRoles) {
 	const premiumRoles = new Map;
-	premiumRoles.set('1199122506083209368', { odds: 2 });
-	premiumRoles.set('1199124064535580722', { odds: 3 });
-	premiumRoles.set('1199125254279282690', { odds: 5 });
+	premiumRoles.set('1199125254279282690', { odds: 11 });
+	premiumRoles.set('1199125314446561391', { odds: 33 });
+	premiumRoles.set('1199124147389866064', { odds: 33 });
 
 	const tier1 = '1199122506083209368';
 	const tier2 = '1199124064535580722';
 	const tier3 = '1199125254279282690';
+	const tier4 = '1199125314446561391';
+	const tier5 = '1199124147389866064';
 
-	if (guildMemberRoles.has(tier3)) {
+	if (guildMemberRoles.has(tier5)) {
+		return premiumRoles.get(tier5).odds;
+	}
+
+	else if (guildMemberRoles.has(tier4)) {
+		return premiumRoles.get(tier4).odds;
+	}
+
+	else if (guildMemberRoles.has(tier3)) {
 		return premiumRoles.get(tier3).odds;
 	}
 
 	else if (guildMemberRoles.has(tier2)) {
-		return premiumRoles.get(tier2).odds;
+		return 1;
 	}
 
 	else if (guildMemberRoles.has(tier1)) {
-		return premiumRoles.get(tier1).odds;
+		return 1;
 	}
 
 	else {

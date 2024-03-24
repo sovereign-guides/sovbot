@@ -48,6 +48,6 @@ module.exports = {
 	async execute(client) {
 		await validateClient(client);
 		await connectToMongo('sovbot');
-		setInterval(await scheduleTableQuery, 60_000);
+		setInterval(await scheduleTableQuery, 180_000);
 	},
 };
